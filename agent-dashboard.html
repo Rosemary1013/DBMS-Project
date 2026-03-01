@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard - Insurix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="container dashboard-header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="logo-text">SecureLife Insurance</span>
+                </div>
+                <div class="user-info">
+                    <button class="notification-btn">
+                        <svg class="notification-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <div class="user-details">
+                        <div class="user-text">
+                            <span class="user-name">Sarah Agent</span>
+                            <span class="user-role">Insurance Agent</span>
+                        </div>
+                        <svg class="user-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <button class="logout-btn" onclick="window.location.href='index.html'">
+                        <svg class="logout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="container">
+                <h1 class="dashboard-title">Agent Dashboard</h1>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">Total Clients</span>
+                            <svg class="stat-icon" style="color: #2563eb;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <p class="stat-value">24</p>
+                        <p class="stat-change">+3 this month</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">Active Policies</span>
+                            <svg class="stat-icon" style="color: #10b981;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                        </div>
+                        <p class="stat-value">48</p>
+                        <p class="stat-change">+5 this month</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">Pending Claims</span>
+                            <svg class="stat-icon" style="color: #f59e0b;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                        </div>
+                        <p class="stat-value">2</p>
+                        <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Needs review</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">Commission</span>
+                            <svg class="stat-icon" style="color: #8b5cf6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"/>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
+                        <p class="stat-value">$4,850</p>
+                        <p class="stat-change">This month</p>
+                    </div>
+                </div>
+
+                <!-- Tabs Container -->
+                <div class="tabs-container">
+                    <div class="tabs-header">
+                        <button class="tab-button active" onclick="showTab('clients')">My Clients</button>
+                        <button class="tab-button" onclick="showTab('claims')">Claims to Review</button>
+                    </div>
+
+                    <!-- Clients Tab -->
+                    <div id="clients-tab" class="tab-content">
+                        <div class="tab-header">
+                            <h2 class="tab-title">Client List</h2>
+                            <button class="btn btn-primary">Add New Client</button>
+                        </div>
+                        <div class="content-grid">
+                            <!-- Client 1 -->
+                            <div class="content-card">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">John Doe</h3>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Client ID: C-001</p>
+                                    </div>
+                                    <button class="table-link" style="background: none; border: none; cursor: pointer;">View Profile</button>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Email</p>
+                                        <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">john.doe@example.com</p>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Phone</p>
+                                        <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">(555) 123-4567</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid #f3f4f6;">
+                                    <div style="display: flex; gap: 1rem;">
+                                        <div>
+                                            <p style="font-size: 0.75rem; color: #6b7280;">Policies</p>
+                                            <p style="font-weight: 600; color: #1f2937;">2</p>
+                                        </div>
+                                        <div>
+                                            <p style="font-size: 0.75rem; color: #6b7280;">Total Premium</p>
+                                            <p style="font-weight: 600; color: #2563eb;">$448/month</p>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Manage</button>
+                                </div>
+                            </div>
+
+                            <!-- Client 2 -->
+                            <div class="content-card">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Jane Smith</h3>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Client ID: C-002</p>
+                                    </div>
+                                    <button class="table-link" style="background: none; border: none; cursor: pointer;">View Profile</button>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Email</p>
+                                        <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">jane.smith@example.com</p>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Phone</p>
+                                        <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">(555) 234-5678</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid #f3f4f6;">
+                                    <div style="display: flex; gap: 1rem;">
+                                        <div>
+                                            <p style="font-size: 0.75rem; color: #6b7280;">Policies</p>
+                                            <p style="font-weight: 600; color: #1f2937;">1</p>
+                                        </div>
+                                        <div>
+                                            <p style="font-size: 0.75rem; color: #6b7280;">Total Premium</p>
+                                            <p style="font-weight: 600; color: #2563eb;">$299/month</p>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Manage</button>
+                                </div>
+                            </div>
+
+                            <!-- Client 3 -->
+                            <div class="content-card">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Mike Johnson</h3>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Client ID: C-003</p>
+                                    </div>
+                                    <button class="table-link" style="background: none; border: none; cursor: pointer;">View Profile</button>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Email</p>
+                                        <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">mike.j@example.com</p>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Phone</p>
+                                        <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">(555) 345-6789</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid #f3f4f6;">
+                                    <div style="display: flex; gap: 1rem;">
+                                        <div>
+                                            <p style="font-size: 0.75rem; color: #6b7280;">Policies</p>
+                                            <p style="font-weight: 600; color: #1f2937;">3</p>
+                                        </div>
+                                        <div>
+                                            <p style="font-size: 0.75rem; color: #6b7280;">Total Premium</p>
+                                            <p style="font-weight: 600; color: #2563eb;">$647/month</p>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Manage</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Claims Tab -->
+                    <div id="claims-tab" class="tab-content" style="display: none;">
+                        <h2 class="tab-title">Claims Awaiting Review</h2>
+                        <div class="content-grid">
+                            <!-- Claim 1 -->
+                            <div class="content-card" style="border: 1px solid #fcd34d; background: #fffbeb;">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Claim CLM-1234</h3>
+                                        <p style="font-size: 0.875rem; color: #4b5563;">John Doe - Health Insurance</p>
+                                    </div>
+                                    <span class="status-badge" style="background: #fef3c7; color: #92400e;">Pending Review</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Claim Amount</p>
+                                        <p style="font-weight: 600; color: #1f2937;">$2,500</p>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Submitted</p>
+                                        <p style="font-weight: 600; color: #1f2937;">Feb 5, 2026</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.75rem;">
+                                    <button class="btn btn-primary" style="flex: 1;">Review Claim</button>
+                                    <button class="btn btn-outline">Details</button>
+                                </div>
+                            </div>
+
+                            <!-- Claim 2 -->
+                            <div class="content-card" style="border: 1px solid #fcd34d; background: #fffbeb;">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Claim CLM-1245</h3>
+                                        <p style="font-size: 0.875rem; color: #4b5563;">Mike Johnson - Auto Insurance</p>
+                                    </div>
+                                    <span class="status-badge" style="background: #fef3c7; color: #92400e;">Pending Review</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Claim Amount</p>
+                                        <p style="font-weight: 600; color: #1f2937;">$3,200</p>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">Submitted</p>
+                                        <p style="font-weight: 600; color: #1f2937;">Feb 8, 2026</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.75rem;">
+                                    <button class="btn btn-primary" style="flex: 1;">Review Claim</button>
+                                    <button class="btn btn-outline">Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').style.display = 'block';
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
