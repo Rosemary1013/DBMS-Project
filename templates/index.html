@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureLife — Insurance Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Satoshi:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg: #06080f;
+            --surface: #0d1117;
+            --surface2: #141920;
+            --border: rgba(255,255,255,0.07);
+            --violet: #7c3aed;
+            --violet-light: #a78bfa;
+            --cyan: #06b6d4;
+            --cyan-light: #67e8f9;
+            --emerald: #10b981;
+            --amber: #f59e0b;
+            --rose: #f43f5e;
+            --text: #f1f5f9;
+            --muted: #64748b;
+            --muted2: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* NOISE TEXTURE OVERLAY */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: rgba(6,8,15,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            color: var(--text) !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--violet), var(--cyan));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .nav-link {
+            color: var(--muted2) !important;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            padding: 0.4rem 0.75rem !important;
+        }
+
+        .nav-link:hover { color: var(--text) !important; }
+
+        .btn-nav-cta {
+            background: linear-gradient(135deg, var(--violet), #5b21b6);
+            color: white !important;
+            font-weight: 700;
+            padding: 0.5rem 1.25rem !important;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(124,58,237,0.3);
+        }
+
+        .btn-nav-cta:hover {
+            box-shadow: 0 0 30px rgba(124,58,237,0.5);
+            transform: translateY(-1px);
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            padding-top: 80px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* GLOW ORBS */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%);
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%);
+            top: 100px;
+            right: -50px;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%);
+            bottom: 0;
+            left: 40%;
+        }
+
+        .hero-content { position: relative; z-index: 1; }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(124,58,237,0.12);
+            border: 1px solid rgba(124,58,237,0.25);
+            border-radius: 50px;
+            padding: 0.35rem 1rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--violet-light);
+            margin-bottom: 1.75rem;
+        }
+
+        .hero-eyebrow .live-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--emerald);
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 6.5vw, 5.5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 1.5rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--violet-light) 0%, var(--cyan-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--muted2);
+            line-height: 1.8;
+            max-width: 520px;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+        }
+
+        .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+
+        .btn-primary-glow {
+            background: linear-gradient(135deg, var(--violet) 0%, #4f46e5 100%);
+            color: white;
+            font-weight: 700;
+            padding: 0.9rem 2rem;
+            border-radius: 12px;
+            border: none;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(124,58,237,0.35);
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .btn-primary-glow:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 0 50px rgba(124,58,237,0.5);
+        }
+
+        .btn-ghost {
+            background: rgba(255,255,255,0.05);
+            color: var(--text);
+            font-weight: 600;
+            padding: 0.9rem 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .btn-ghost:hover {
+            color: var(--text);
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        /* HERO STATS */
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-item { text-align: left; }
+
+        .stat-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text), var(--muted2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+            margin-top: 0.1rem;
+        }
+
+        .stat-divider {
+            width: 1px;
+            background: var(--border);
+            align-self: stretch;
+        }
+
+        /* HERO RIGHT PANEL */
+        .hero-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--violet), transparent);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .panel-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.72rem;
+            color: var(--emerald);
+            font-weight: 600;
+        }
+
+        .live-indicator span {
+            width: 6px;
+            height: 6px;
+            background: var(--emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--emerald);
+            animation: blink 2s infinite;
+        }
+
+        .policy-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem;
+            background: var(--surface2);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--border);
+            transition: border-color 0.2s;
+        }
+
+        .policy-row:hover { border-color: rgba(124,58,237,0.3); }
+
+        .policy-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .icon-health { background: rgba(16,185,129,0.15); color: var(--emerald); }
+        .icon-life { background: rgba(124,58,237,0.15); color: var(--violet-light); }
+        .icon-vehicle { background: rgba(6,182,212,0.15); color: var(--cyan); }
+
+        .policy-info { flex: 1; }
+
+        .policy-name {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .policy-meta {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 0.15rem;
+        }
+
+        .policy-amount {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text);
+            text-align: right;
+        }
+
+        .badge-status {
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-active { background: rgba(16,185,129,0.15); color: var(--emerald); }
+        .badge-pending { background: rgba(245,158,11,0.15); color: var(--amber); }
+        .badge-approved { background: rgba(6,182,212,0.15); color: var(--cyan); }
+
+        .panel-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .mini-stat {
+            text-align: center;
+        }
+
+        .mini-stat-val {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .mini-stat-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-top: 0.1rem;
+        }
+
+        /* TICKER */
+        .ticker-wrap {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 0;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ticker-inner {
+            display: flex;
+            gap: 3rem;
+            animation: ticker 30s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes ticker {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--muted2);
+            font-weight: 500;
+        }
+
+        .ticker-item i { color: var(--violet-light); }
+
+        /* FEATURES */
+        .features-section {
+            padding: 7rem 0;
+            position: relative;
+        }
+
+        .section-label-new {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--violet-light);
+            margin-bottom: 1rem;
+        }
+
+        .section-label-new::before {
+            content: '';
+            width: 20px;
+            height: 2px;
+            background: var(--violet-light);
+            border-radius: 1px;
+        }
+
+        .section-title-new {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            color: var(--muted2);
+            font-size: 1rem;
+            line-height: 1.8;
+            max-width: 480px;
+        }
+
+        .feat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            height: 100%;
+            transition: all 0.35s;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .feat-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(124,58,237,0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.35s;
+        }
+
+        .feat-card:hover {
+            border-color: rgba(124,58,237,0.35);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(124,58,237,0.08);
+        }
+
+        .feat-card:hover::after { opacity: 1; }
+
+        .feat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1.25rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feat-icon-v { background: rgba(124,58,237,0.15); color: var(--violet-light); }
+        .feat-icon-c { background: rgba(6,182,212,0.15); color: var(--cyan); }
+        .feat-icon-e { background: rgba(16,185,129,0.15); color: var(--emerald); }
+        .feat-icon-a { background: rgba(245,158,11,0.15); color: var(--amber); }
+        .feat-icon-r { background: rgba(244,63,94,0.15); color: var(--rose); }
+        .feat-icon-s { background: rgba(167,139,250,0.15); color: var(--violet-light); }
+
+        .feat-card h5 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feat-card p {
+            font-size: 0.875rem;
+            color: var(--muted2);
+            line-height: 1.7;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* WHO IS IT FOR */
+        .roles-section {
+            padding: 7rem 0;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .role-tile {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            height: 100%;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .role-tile.customer::before { background: linear-gradient(90deg, var(--violet), var(--violet-light)); }
+        .role-tile.agent::before { background: linear-gradient(90deg, var(--cyan), var(--cyan-light)); }
+        .role-tile.admin::before { background: linear-gradient(90deg, var(--emerald), #34d399); }
+
+        .role-tile:hover::before { opacity: 1; }
+
+        .role-tile:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.12);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .role-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 0.25rem 0.7rem;
+            border-radius: 50px;
+            margin-bottom: 1.5rem;
+        }
+
+        .badge-violet { background: rgba(124,58,237,0.15); color: var(--violet-light); }
+        .badge-cyan { background: rgba(6,182,212,0.15); color: var(--cyan); }
+        .badge-emerald { background: rgba(16,185,129,0.15); color: var(--emerald); }
+
+        .role-tile h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .role-tile p {
+            color: var(--muted2);
+            font-size: 0.9rem;
+            line-height: 1.75;
+            margin-bottom: 1.5rem;
+        }
+
+        .role-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem;
+        }
+
+        .role-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.85rem;
+            color: var(--muted2);
+            padding: 0.35rem 0;
+        }
+
+        .role-features li i {
+            font-size: 0.7rem;
+            color: var(--emerald);
+        }
+
+        .btn-role {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            padding: 0.7rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-family: 'Manrope', sans-serif;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-role-violet {
+            background: rgba(124,58,237,0.15);
+            color: var(--violet-light);
+            border: 1px solid rgba(124,58,237,0.25);
+        }
+
+        .btn-role-violet:hover {
+            background: var(--violet);
+            color: white;
+            box-shadow: 0 0 20px rgba(124,58,237,0.4);
+        }
+
+        .btn-role-cyan {
+            background: rgba(6,182,212,0.15);
+            color: var(--cyan);
+            border: 1px solid rgba(6,182,212,0.25);
+        }
+
+        .btn-role-cyan:hover {
+            background: var(--cyan);
+            color: var(--bg);
+            box-shadow: 0 0 20px rgba(6,182,212,0.4);
+        }
+
+        .btn-role-emerald {
+            background: rgba(16,185,129,0.15);
+            color: var(--emerald);
+            border: 1px solid rgba(16,185,129,0.25);
+        }
+
+        .btn-role-emerald:hover {
+            background: var(--emerald);
+            color: var(--bg);
+            box-shadow: 0 0 20px rgba(16,185,129,0.4);
+        }
+
+        /* LOGIN */
+        .login-section {
+            padding: 7rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-section .orb-login {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .login-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.75rem;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .login-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--violet), var(--cyan), transparent);
+        }
+
+        .login-box-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.4rem;
+        }
+
+        .login-box-sub {
+            color: var(--muted);
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+
+        .role-switcher {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: var(--surface2);
+            padding: 5px;
+            border-radius: 12px;
+        }
+
+        .rs-btn {
+            padding: 0.6rem 0.5rem;
+            border: none;
+            background: transparent;
+            border-radius: 9px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .rs-btn.active {
+            background: var(--surface);
+            color: var(--text);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .rs-btn.active i { color: var(--violet-light); }
+
+        .input-wrap { margin-bottom: 1.2rem; }
+
+        .input-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--muted2);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: rgba(124,58,237,0.5);
+            box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+            background: rgba(124,58,237,0.04);
+        }
+
+        .input-field::placeholder { color: var(--muted); }
+
+        .submit-btn-new {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, var(--violet), #4f46e5);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 25px rgba(124,58,237,0.3);
+            margin-top: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        .submit-btn-new:hover {
+            box-shadow: 0 0 40px rgba(124,58,237,0.5);
+            transform: translateY(-1px);
+        }
+
+        .form-panel { display: none; }
+        .form-panel.active { display: block; }
+
+        .divider-text {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.8rem;
+            margin: 1.25rem 0;
+            position: relative;
+        }
+
+        .divider-text::before, .divider-text::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider-text::before { left: 0; }
+        .divider-text::after { right: 0; }
+
+        .register-cta {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .register-cta a {
+            color: var(--violet-light);
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .register-cta a:hover { color: var(--cyan-light); }
+
+        /* INFO SIDE */
+        .login-info { position: relative; z-index: 1; }
+
+        .info-card {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .info-card:hover {
+            border-color: rgba(124,58,237,0.3);
+            transform: translateX(4px);
+        }
+
+        .info-card-head {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .info-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .info-card h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .info-card p {
+            font-size: 0.825rem;
+            color: var(--muted2);
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 0;
+        }
+
+        .footer-brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-desc {
+            font-size: 0.825rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .footer-link {
+            color: var(--muted2);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.2s;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-link:hover { color: var(--violet-light); }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-copy {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .footer-copy span { color: var(--violet-light); }
+
+        /* ANIMATIONS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .a1 { animation: fadeUp 0.7s ease forwards; }
+        .a2 { animation: fadeUp 0.7s 0.15s ease forwards; opacity: 0; }
+        .a3 { animation: fadeUp 0.7s 0.3s ease forwards; opacity: 0; }
+        .a4 { animation: fadeUp 0.7s 0.45s ease forwards; opacity: 0; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <div class="brand-icon"><i class="bi bi-shield-fill-check text-white" style="font-size:0.85rem"></i></div>
+                SecureLife
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+                <i class="bi bi-list text-white fs-4"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li><a class="nav-link" href="#features">Features</a></li>
+                    <li><a class="nav-link" href="#roles">Who It's For</a></li>
+                    <li><a class="nav-link" href="#login">Login</a></li>
+                    <li><a class="nav-link btn-nav-cta ms-2" href="#login">Get Started →</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- GLOW ORBS -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <div class="hero-eyebrow a1" style="justify-content:center">
+                        <span class="live-dot"></span>
+                        Insurance Management System
+                    </div>
+                    <h1 class="a2">
+                        Insurance<br>
+                        <span class="gradient-text">Reimagined</span><br>
+                        For Everyone.
+                    </h1>
+                    <p class="hero-desc a3" style="margin: 0 auto 2.5rem;">
+                        A complete platform to manage policies, file claims, track payments and protect nominees — built for customers, agents and admins.
+                    </p>
+                    <div class="hero-actions a3" style="justify-content:center;">
+                        <a href="#login" class="btn-primary-glow">
+                            Access Portal <i class="bi bi-arrow-right"></i>
+                        </a>
+                        <a href="#roles" class="btn-ghost">
+                            <i class="bi bi-play-circle"></i> See How It Works
+                        </a>
+                    </div>
+                    <div class="hero-stats a4" style="justify-content:center;">
+                        <div class="stat-item">
+                            <div class="stat-num">500+</div>
+                            <div class="stat-label">Policies Active</div>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <div class="stat-num">98%</div>
+                            <div class="stat-label">Claims Approved</div>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <div class="stat-num">1,200+</div>
+                            <div class="stat-label">Customers</div>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <div class="stat-num">24/7</div>
+                            <div class="stat-label">Support</div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- TICKER -->
+    <div class="ticker-wrap">
+        <div class="ticker-inner">
+            <span class="ticker-item"><i class="bi bi-shield-check"></i> Health Insurance</span>
+            <span class="ticker-item"><i class="bi bi-file-earmark-check"></i> Fast Claims Processing</span>
+            <span class="ticker-item"><i class="bi bi-person-heart"></i> Life Insurance</span>
+            <span class="ticker-item"><i class="bi bi-car-front"></i> Vehicle Insurance</span>
+            <span class="ticker-item"><i class="bi bi-people"></i> Nominee Management</span>
+            <span class="ticker-item"><i class="bi bi-credit-card"></i> Flexible Payments</span>
+            <span class="ticker-item"><i class="bi bi-person-badge"></i> Dedicated Agents</span>
+            <span class="ticker-item"><i class="bi bi-graph-up"></i> Real-time Tracking</span>
+            <!-- Duplicate for seamless loop -->
+            <span class="ticker-item"><i class="bi bi-shield-check"></i> Health Insurance</span>
+            <span class="ticker-item"><i class="bi bi-file-earmark-check"></i> Fast Claims Processing</span>
+            <span class="ticker-item"><i class="bi bi-person-heart"></i> Life Insurance</span>
+            <span class="ticker-item"><i class="bi bi-car-front"></i> Vehicle Insurance</span>
+            <span class="ticker-item"><i class="bi bi-people"></i> Nominee Management</span>
+            <span class="ticker-item"><i class="bi bi-credit-card"></i> Flexible Payments</span>
+            <span class="ticker-item"><i class="bi bi-person-badge"></i> Dedicated Agents</span>
+            <span class="ticker-item"><i class="bi bi-graph-up"></i> Real-time Tracking</span>
+        </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="row align-items-end mb-5">
+                <div class="col-lg-6">
+                    <div class="section-label-new">Platform Features</div>
+                    <h2 class="section-title-new">Everything You Need<br>To Manage Insurance</h2>
+                </div>
+                <div class="col-lg-6">
+                    <p class="section-desc ms-lg-auto">A fully integrated system covering every aspect of insurance management — from policy creation to claim approval.</p>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="feat-card">
+                        <div class="feat-icon feat-icon-v"><i class="bi bi-file-earmark-text"></i></div>
+                        <h5>Policy Management</h5>
+                        <p>Browse Health, Life and Vehicle policies. Compare premiums, coverage amounts and durations before taking out a policy.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feat-card">
+                        <div class="feat-icon feat-icon-c"><i class="bi bi-lightning-charge"></i></div>
+                        <h5>Claims Processing</h5>
+                        <p>File claims online and track their approval status in real time. Admins can approve or reject claims with full audit trail.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feat-card">
+                        <div class="feat-icon feat-icon-e"><i class="bi bi-credit-card-2-front"></i></div>
+                        <h5>Payment Tracking</h5>
+                        <p>Pay premiums by Online, Card or Cash. View your full payment history and track all transactions with dates and amounts.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feat-card">
+                        <div class="feat-icon feat-icon-a"><i class="bi bi-people"></i></div>
+                        <h5>Nominee Protection</h5>
+                        <p>Add and manage nominees for each policy with their contact details, ensuring your loved ones are protected at all times.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feat-card">
+                        <div class="feat-icon feat-icon-r"><i class="bi bi-person-badge"></i></div>
+                        <h5>Agent System</h5>
+                        <p>Dedicated agents are assigned to policies. Agents can verify policy details and manage their assigned customer requests.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feat-card">
+                        <div class="feat-icon feat-icon-s"><i class="bi bi-shield-lock"></i></div>
+                        <h5>Admin Control Panel</h5>
+                        <p>Full system oversight for admins — manage customers, verify policies, approve claims and monitor all payments in one place.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROLES -->
+    <section class="roles-section" id="roles">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="section-label-new" style="justify-content:center">Who It's For</div>
+                <h2 class="section-title-new">Three Roles.<br>One Powerful System.</h2>
+            </div>
+            <div class="row g-4">
+                <!-- Customer -->
+                <div class="col-lg-4">
+                    <div class="role-tile customer">
+                        <span class="role-badge badge-violet">Customer</span>
+                        <h3>Manage Your Policies</h3>
+                        <p>Register, browse available insurance plans, take out policies and stay on top of your claims and payments — all in one dashboard.</p>
+                        <ul class="role-features">
+                            <li><i class="bi bi-check-circle-fill"></i> View & take out policies</li>
+                            <li><i class="bi bi-check-circle-fill"></i> File and track claims</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Pay premiums online</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Manage nominees</li>
+                            <li><i class="bi bi-check-circle-fill"></i> View payment history</li>
+                        </ul>
+                        <button class="btn-role btn-role-violet" onclick="openLogin('customer')">
+                            Customer Login <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Agent -->
+                <div class="col-lg-4">
+                    <div class="role-tile agent">
+                        <span class="role-badge badge-cyan">Agent</span>
+                        <h3>Handle Policy Requests</h3>
+                        <p>Agents are assigned to specific policies and are responsible for verifying customer details and managing policy-related requests.</p>
+                        <ul class="role-features">
+                            <li><i class="bi bi-check-circle-fill"></i> View assigned policies</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Verify customer details</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Process policy requests</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Update agent profile</li>
+                            <li><i class="bi bi-check-circle-fill"></i> View claim statuses</li>
+                        </ul>
+                        <button class="btn-role btn-role-cyan" onclick="openLogin('agent')">
+                            Agent Login <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Admin -->
+                <div class="col-lg-4">
+                    <div class="role-tile admin">
+                        <span class="role-badge badge-emerald">Admin</span>
+                        <h3>Full System Control</h3>
+                        <p>Admins have complete visibility and control over the entire system — from managing users and policies to approving claims and payments.</p>
+                        <ul class="role-features">
+                            <li><i class="bi bi-check-circle-fill"></i> Manage all customers</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Approve / reject claims</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Verify policy agents</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Monitor all payments</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Full audit access</li>
+                        </ul>
+                        <button class="btn-role btn-role-emerald" onclick="openLogin('admin')">
+                            Admin Login <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOGIN -->
+    <section class="login-section" id="login">
+        <div class="orb-login"></div>
+        <div class="container">
+            <div class="text-center mb-5">
+                    <div class="section-label-new" style="justify-content:center">Secure Access</div>
+                    <h2 class="section-title-new">Login To Your Dashboard</h2>
+                    <p style="color:var(--muted2); font-size:0.95rem; margin-top:0.75rem;">Select your role and sign in to continue</p>
+                </div>
+                <div class="row justify-content-center">
+                <!-- Login Form -->
+                <div class="col-lg-6 mx-auto">
+                    <div class="login-box">
+                        <div class="login-box-title" id="login-title">Welcome Back</div>
+                        <div class="login-box-sub" id="login-sub">Sign in to your customer account to continue</div>
+
+                        <div class="role-switcher">
+                            <button class="rs-btn active" id="rs-customer" onclick="switchLogin('customer')">
+                                <i class="bi bi-person"></i> Customer
+                            </button>
+                            <button class="rs-btn" id="rs-agent" onclick="switchLogin('agent')">
+                                <i class="bi bi-person-badge"></i> Agent
+                            </button>
+                            <button class="rs-btn" id="rs-admin" onclick="switchLogin('admin')">
+                                <i class="bi bi-shield-check"></i> Admin
+                            </button>
+                        </div>
+
+                        <!-- Customer -->
+                        <div class="form-panel active" id="fp-customer">
+                            <form action="/customer/login" method="POST">
+                                <div class="input-wrap">
+                                    <label class="input-label">Customer ID</label>
+                                    <input type="text" name="customer_id" class="input-field" placeholder="Enter your Customer ID (e.g. C001)" required>
+                                </div>
+                                <div class="input-wrap">
+                                    <label class="input-label">Password</label>
+                                    <input type="password" name="password" class="input-field" placeholder="Enter your password" required>
+                                </div>
+                                <button type="submit" class="submit-btn-new">Sign In to Customer Portal →</button>
+                            </form>
+                        </div>
+
+                        <!-- Agent -->
+                        <div class="form-panel" id="fp-agent">
+                            <form action="/agent/login" method="POST">
+                                <div class="input-wrap">
+                                    <label class="input-label">Agent ID</label>
+                                    <input type="text" name="agent_id" class="input-field" placeholder="Enter your Agent ID (e.g. A001)" required>
+                                </div>
+                                <div class="input-wrap">
+                                    <label class="input-label">Password</label>
+                                    <input type="password" name="password" class="input-field" placeholder="Enter your password" required>
+                                </div>
+                                <button type="submit" class="submit-btn-new">Sign In to Agent Portal →</button>
+                            </form>
+                        </div>
+
+                        <!-- Admin -->
+                        <div class="form-panel" id="fp-admin">
+                            <form action="/admin/login" method="POST">
+                                <div class="input-wrap">
+                                    <label class="input-label">Admin ID</label>
+                                    <input type="text" name="admin_id" class="input-field" placeholder="Enter your Admin ID" required>
+                                </div>
+                                <div class="input-wrap">
+                                    <label class="input-label">Password</label>
+                                    <input type="password" name="password" class="input-field" placeholder="Enter your password" required>
+                                </div>
+                                <button type="submit" class="submit-btn-new">Sign In to Admin Portal →</button>
+                            </form>
+                        </div>
+
+                        <div class="divider-text">or</div>
+                        <div class="register-cta">
+                            New customer? <a href="/customer/register">Create an account for free</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="footer-brand">
+                        <div class="brand-icon"><i class="bi bi-shield-fill-check text-white" style="font-size:0.85rem"></i></div>
+                        SecureLife
+                    </div>
+                    <p class="footer-desc">A complete Insurance Policy and Claims Management System. Built with Flask, MySQL and Python.</p>
+                </div>
+                <div class="col-lg-2 offset-lg-2">
+                    <div style="font-size:0.75rem; font-weight:700; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:1rem;">Platform</div>
+                    <a class="footer-link" href="#features">Features</a>
+                    <a class="footer-link" href="#roles">Roles</a>
+                    <a class="footer-link" href="#login">Login</a>
+                </div>
+                <div class="col-lg-2">
+                    <div style="font-size:0.75rem; font-weight:700; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:1rem;">Portals</div>
+                    <a class="footer-link" href="#" onclick="openLogin('customer')">Customer</a>
+                    <a class="footer-link" href="#" onclick="openLogin('agent')">Agent</a>
+                    <a class="footer-link" href="#" onclick="openLogin('admin')">Admin</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-copy">&copy; 2026 <span>SecureLife Insurance</span>. All rights reserved.</div>
+                <div class="footer-copy">Built with <span>Flask</span> · <span>MySQL</span> · <span>Python</span></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const titles = {
+            customer: 'Welcome Back',
+            agent: 'Agent Portal',
+            admin: 'Admin Portal'
+        };
+        const subs = {
+            customer: 'Sign in to your customer account to continue',
+            agent: 'Sign in to your agent account to continue',
+            admin: 'Sign in to your admin account to continue'
+        };
+
+        function switchLogin(role) {
+            document.querySelectorAll('.rs-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('rs-' + role).classList.add('active');
+            document.getElementById('fp-' + role).classList.add('active');
+            document.getElementById('login-title').textContent = titles[role];
+            document.getElementById('login-sub').textContent = subs[role];
+        }
+
+        function openLogin(role) {
+            switchLogin(role);
+            document.getElementById('login').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
