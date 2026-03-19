@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Payment - Insurix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-wrapper" style="max-width: 500px; margin: 0 auto; padding-top: 50px;">
+            <a href="{{ url_for('customer_dashboard') }}" class="back-button">
+                <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Dashboard
+            </a>
+
+            <div class="login-card">
+                <div class="login-header">
+                    <h1 class="login-title">Make Payment</h1>
+                    <p class="login-subtitle">Pay your policy premium securely</p>
+                </div>
+
+                {% if error %}
+                <div class="error-message" style="color: #dc2626; background: #fef2f2; padding: 12px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #f87171;">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                {% if policy %}
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #e2e8f0;">
+                    <h3 style="color: #1e40af; margin-bottom: 10px;">{{ policy.POLICY_TYPE }}</h3>
+                    <p style="color: #4b5563; margin-bottom: 5px;"><strong>Policy ID:</strong> {{ policy.POLICY_ID }}</p>
+                    <p style="color: #1e40af; font-size: 1.25rem; font-weight: bold; margin-top: 10px;">Amount Due: ₹{{ policy.PREM_AMT }}</p>
+                </div>
+
+                <form method="POST" class="login-form">
+                    <input type="hidden" name="amount" value="{{ policy.PREM_AMT }}">
+                    
+                    <div class="form-group">
+                        <label class="form-label">Payment Mode</label>
+                        <select name="pay_mode" class="form-input" style="appearance: auto;" required>
+                            <option value="Online">Online Banking</option>
+                            <option value="Card">Credit/Debit Card</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Cash">Cash (Manual Deposit)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full btn-large" style="margin-top: 20px;">
+                        Pay ₹{{ policy.PREM_AMT }}
+                    </button>
+                </form>
+                {% else %}
+                <p style="text-align: center; color: #6b7280;">Policy information could not be retrieved.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

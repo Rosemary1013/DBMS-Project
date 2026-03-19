@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Policy - Insurix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .policy-summary {
+            background-color: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container" style="min-height: 100vh; padding: 40px 0;">
+        <div class="login-wrapper" style="max-width: 800px; margin: 0 auto;">
+            {% if session.agent_id %}
+            <a href="{{ url_for('agent_dashboard') }}" class="back-button">
+            {% else %}
+            <a href="{{ url_for('index') }}" class="back-button">
+            {% endif %}
+                <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Dashboard
+            </a>
+
+            <div class="login-card" style="padding: 40px;">
+                <div class="login-header">
+                    <h1 class="login-title">Take Insurance Policy</h1>
+                    <p class="login-subtitle">Review policy details and register a nominee</p>
+                </div>
+
+                {% if error %}
+                <div class="error-message"
+                    style="color: #dc2626; background-color: #fef2f2; padding: 12px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #f87171;">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                {% if success %}
+                <div class="success-message"
+                    style="color: #16a34a; background-color: #f0fdf4; padding: 12px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #4ade80;">
+                    {{ success }}
+                </div>
+                {% endif %}
+
+                <div class="policy-summary">
+                    <h3 style="margin-bottom: 15px; color: #1e40af; font-size: 1.25rem;">{{ policy.POLICY_TYPE }}</h3>
+                    <div class="form-grid">
+                        <p><strong>Policy ID:</strong> {{ policy.POLICY_ID }}</p>
+                        <p><strong>Coverage:</strong> ₹{{ policy.COV_AMT }}</p>
+                        <p><strong>Premium:</strong> ₹{{ policy.PREM_AMT }}</p>
+                        <p><strong>Duration:</strong> {{ policy.DURATION_DISPLAY }}</p>
+                        <p><strong>Status:</strong> {{ policy.STATUS }}</p>
+                    </div>
+                </div>
+
+                {% if customer_info %}
+                <div class="policy-summary" style="background-color: #f0f9ff; border-color: #bae6fd;">
+                    <h3 style="margin-bottom: 15px; color: #0369a1; font-size: 1.1rem;">Customer Information (Auto-filled)</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 0.75rem;">Full Name</label>
+                            <p><strong>{{ customer_info.FNAME }} {% if customer_info.MNAME %}{{ customer_info.MNAME }} {% endif %}{{ customer_info.LNAME }}</strong></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 0.75rem;">Email Address</label>
+                            <p><strong>{{ customer_info.EMAIL or 'N/A' }}</strong></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 0.75rem;">Phone Number</label>
+                            <p><strong>{{ customer_info.PHONE or 'N/A' }}</strong></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 0.75rem;">Permanent Address</label>
+                            <p><strong>{{ customer_info.PER_ADDR }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <form action="{{ url_for('take_policy', policy_id=policy.POLICY_ID) }}" method="POST">
+                    <input type="hidden" name="cust_id" value="{{ active_cust_id }}">
+                    <h3 style="margin-bottom: 20px; font-size: 1.1rem; color: #1f2937;">Nominee Details</h3>
+                    <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 20px;">Please provide the details of a
+                        nominee for this policy.</p>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="nominee_fname">First Name *</label>
+                            <input type="text" id="nominee_fname" name="nominee_fname" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="nominee_mname">Middle Name</label>
+                            <input type="text" id="nominee_mname" name="nominee_mname" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="nominee_lname">Last Name *</label>
+                            <input type="text" id="nominee_lname" name="nominee_lname" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="nominee_relation">Relationship to You *</label>
+                            <input type="text" id="nominee_relation" name="nominee_relation" class="form-input"
+                                placeholder="e.g. Spouse, Child, Parent" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="nominee_email">Email</label>
+                            <input type="email" id="nominee_email" name="nominee_email" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="nominee_phone">Phone Number</label>
+                            <input type="tel" id="nominee_phone" name="nominee_phone" class="form-input">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full"
+                        style="margin-top: 10px; padding: 14px; font-size: 1rem;">Confirm & Take Policy</button>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline btn-full"
+                        style="margin-top: 15px; text-decoration: none; text-align: center; display: block; padding: 12px;">Cancel</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - Insurix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #1e293b;
+            background-color: #f8fafc;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="container dashboard-header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                    <span class="logo-text">Insurix</span>
+                </div>
+                <div class="user-info">
+                    <button class="notification-btn">
+                        <svg class="notification-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                        </svg>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <div class="user-details">
+                        <div class="user-text">
+                            <span class="user-name">{{ customer_name }}</span>
+                            <span class="user-role">Customer</span>
+                        </div>
+                        <svg class="user-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                    </div>
+                    <button class="logout-btn" data-url="{{ url_for('customer_logout') }}"
+                        onclick="window.location.href=this.getAttribute('data-url')">
+                        <svg class="logout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="container">
+                <h1 class="dashboard-title">Customer Dashboard</h1>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <div class="alert alert-{{ category }}">
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">Active Policies</span>
+                            <svg class="stat-icon" style="color: #2563eb;" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                        </div>
+                        <p class="stat-value">{{ policies|length }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">Total Coverage</span>
+                            <svg class="stat-icon" style="color: #10b981;" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                            </svg>
+                        </div>
+                        <p class="stat-value">₹{{ stats.total_coverage }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">Total Claims</span>
+                            <svg class="stat-icon" style="color: #f59e0b;" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                                <line x1="1" y1="10" x2="23" y2="10" />
+                            </svg>
+                        </div>
+                        <p class="stat-value">{{ stats.total_claims }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">Monthly Premium</span>
+                            <svg class="stat-icon" style="color: #8b5cf6;" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                                <line x1="1" y1="10" x2="23" y2="10" />
+                            </svg>
+                        </div>
+                        <p class="stat-value">₹{{ stats.monthly_premium }}</p>
+                    </div>
+                </div>
+
+                <!-- Tabs Container -->
+                <div class="tabs-container">
+                    <div class="tabs-header">
+                        <button class="tab-button active" onclick="showTab('policies')">My Policies</button>
+                        <button class="tab-button" onclick="showTab('claims')">Claims</button>
+                        <button class="tab-button" onclick="showTab('payments')">Payments</button>
+                        <button class="tab-button" onclick="showTab('nominees')">Nominees</button>
+                    </div>
+
+                    <!-- Policies Tab -->
+                    <div id="policies-tab" class="tab-content">
+                        <div class="tab-header">
+                            <h2 class="tab-title">My Insurance Policies</h2>
+                            <a href="/#policies-section" class="btn btn-primary" style="text-decoration: none;">+ Buy New Policy</a>
+                        </div>
+                        <div class="content-grid">
+                            {% if policies %}
+                            {% for policy in policies %}
+                            <div class="content-card">
+                                <div class="card-header">
+                                    <div>
+                                        <h3 class="card-title">{{ policy.POLICY_TYPE }}</h3>
+                                        <p class="card-subtitle">Policy ID: {{ policy.POLICY_ID }}</p>
+                                    </div>
+                                    <span class="status-badge status-active">{{ policy.STATUS }}</span>
+                                </div>
+                                <div class="card-details">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Premium</span>
+                                        <span class="detail-value">₹{{ "{:,.2f}".format(policy.PREM_AMT) }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Coverage</span>
+                                        <span class="detail-value">₹{{ "{:,.2f}".format(policy.COV_AMT) }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Duration</span>
+                                        <span class="detail-value">{{ policy.DURATION_DISPLAY }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Taken Date</span>
+                                        <span class="detail-value">{{ policy.TAKEN_DATE }}</span>
+                                    </div>
+                                    <div class="detail-item" style="grid-column: span 2; margin-top: 5px;">
+                                        <span class="detail-label">Policy Status</span>
+                                        <span class="detail-value">
+                                            {% if policy.LATEST_CLAIM_STATUS == 'Success' %}
+                                                <span style="color: #059669; font-weight: 600;">✅ Claimed & Settled</span>
+                                            {% elif policy.LATEST_CLAIM_STATUS == 'Pending' %}
+                                                <span style="color: #d97706; font-weight: 600;">⏳ Claim Under Process</span>
+                                            {% elif policy.IS_MATURE %}
+                                                {% if policy.HAS_PAYMENT %}
+                                                    <span style="color: #2563eb; font-weight: 600;">💎 Mature (Eligible). You can claim this</span>
+                                                {% else %}
+                                                    <span style="color: #dc2626; font-weight: 600;">⚠️ Mature, but Payment Required to Claim</span>
+                                                {% endif %}
+                                            {% else %}
+                                                <span style="color: #64748b; font-weight: 600;">🛡️ Active (Not Mature)</span>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    {% if policy.N_FNAME %}
+                                    <div class="detail-item" style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e2e8f0; grid-column: span 2;">
+                                        <span class="detail-label">Nominee</span>
+                                        <span class="detail-value" style="color: #1e40af; font-weight: 500;">
+                                            {{ policy.N_FNAME }} {% if policy.N_MNAME %}{{ policy.N_MNAME }} {% endif %}{{ policy.N_LNAME }} ({{ policy.RELATION }})
+                                        </span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="card-actions" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;">
+                                    <a href="{{ url_for('policy_details', policy_id=policy.POLICY_ID) }}" class="btn btn-secondary btn-icon" style="flex: 1; min-width: 100px; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center;">
+                                        <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg>
+                                        View Details
+                                    </a>
+
+                                    {% if policy.LATEST_CLAIM_STATUS != 'Success' and policy.DURATION_DISPLAY != '4 Days' %}
+                                    <a href="{{ url_for('make_payment', policy_id=policy.POLICY_ID) }}" class="btn btn-outline" style="flex: 1; min-width: 100px; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center;">
+                                        Payment
+                                    </a>
+                                    {% endif %}
+
+                                    {% if policy.LATEST_CLAIM_STATUS == 'Success' %}
+                                        <button class="btn btn-primary" style="flex: 1; min-width: 100px; opacity: 0.5; cursor: not-allowed;" disabled>
+                                            Settled
+                                        </button>
+                                    {% elif policy.IS_MATURE %}
+                                        {% if policy.HAS_PAYMENT %}
+                                            <a href="{{ url_for('request_claim', policy_id=policy.POLICY_ID) }}" class="btn btn-primary" style="flex: 1; min-width: 100px; text-align: center; text-decoration: none; background-color: #059669; display: flex; align-items: center; justify-content: center;">
+                                                Claim Now
+                                            </a>
+                                        {% else %}
+                                            <button class="btn btn-primary" style="flex: 1; min-width: 100px; opacity: 0.5; background-color: #94a3b8; cursor: not-allowed;" title="You must make a payment before claiming" disabled>
+                                                Pay to Claim
+                                            </button>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <p style="padding: 20px;">You haven't taken any policies yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Claims Tab -->
+                    <div id="claims-tab" class="tab-content" style="display: none;">
+                        <div class="tab-header">
+                            <h2 class="tab-title">My Claims</h2>
+                            <button class="btn btn-primary" onclick="openClaimModal()">+ File New Claim</button>
+                        </div>
+                        <div style="overflow-x: auto;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Claim ID</th>
+                                        <th>Policy</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if claims %}
+                                    {% for claim in claims %}
+                                    <tr>
+                                        <td><strong>{{ claim.CLAIM_ID }}</strong></td>
+                                        <td>{{ claim.POLICY_TYPE }}</td>
+                                        <td><strong>₹{{ "{:,.2f}".format(claim.CLAIM_AMT) }}</strong></td>
+                                        <td>{{ claim.CLAIM_DATE }}</td>
+                                        <td>
+                                            {% if claim.CLAIM_STATUS == 'Pending' %}
+                                                <span class="status-badge" style="background: #fef3c7; color: #92400e;">Awaiting</span>
+                                            {% elif claim.CLAIM_STATUS == 'Success' %}
+                                                <span class="status-badge" style="background: #dcfce7; color: #166534;">Success</span>
+                                            {% elif claim.CLAIM_STATUS == 'Failed' %}
+                                                <span class="status-badge" style="background: #fee2e2; color: #991b1b;">Failed</span>
+                                            {% else %}
+                                                <span class="status-badge">{{ claim.CLAIM_STATUS }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td><a href="{{ url_for('policy_details', policy_id=claim.POLICY_ID) }}" class="table-link">View Details</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="6" style="text-align:center; padding: 20px;">No claims found.</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Payments Tab -->
+                    <div id="payments-tab" class="tab-content" style="display: none;">
+                        <h2 class="tab-title">Payment History</h2>
+                        <div class="content-grid">
+                            {% if payments %}
+                            {% for payment in payments %}
+                            <div class="content-card">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <p style="font-weight: 600; color: #1f2937;">Payment ID: {{ payment.PAY_ID }}
+                                        </p>
+                                        <p style="font-size: 0.875rem; color: #6b7280;">{{ payment.PAY_DATE }} - {{
+                                            payment.PAY_MODE }}</p>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <p style="font-weight: 600; color: #1f2937;">₹{{ "{:,.2f}".format(payment.AMOUNT) }}</p>
+                                        <span class="status-badge status-paid">Paid</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <p style="padding: 20px;">No payment history available.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Nominees Tab -->
+                    <div id="nominees-tab" class="tab-content" style="display: none;">
+                        <h2 class="tab-title">My Nominees</h2>
+                        <div class="content-grid">
+                            {% if nominees %}
+                            {% for nominee in nominees %}
+                            <div class="content-card">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <div>
+                                        <p style="font-weight: 600; color: #1f2937; font-size: 1.1rem;">{{ nominee.FNAME
+                                            }} {{ nominee.MNAME }} {{ nominee.LNAME }}</p>
+                                        <p style="font-size: 0.875rem; color: #1e40af; margin-bottom: 8px;">
+                                            Relationship: {{ nominee.RELATION }}</p>
+                                        <p style="font-size: 0.875rem; color: #4b5563;">🆔 Nominee ID: {{
+                                            nominee.NOMINEE_ID }}</p>
+                                        {% if nominee.PHONE %}
+                                        <p style="font-size: 0.875rem; color: #4b5563;">📞 {{ nominee.PHONE }}</p>
+                                        {% endif %}
+                                        {% if nominee.EMAIL %}
+                                        <p style="font-size: 0.875rem; color: #4b5563;">📧 {{ nominee.EMAIL }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <p style="padding: 20px;">No nominees registered yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Claim Modal -->
+    <div id="claimModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeClaimModal()">&times;</span>
+            <h2 class="modal-title">File a New Claim</h2>
+            <form id="claimForm" action="" method="POST">
+                <div class="form-group">
+                    <label class="form-label">Select Policy</label>
+                    <select class="form-select" id="policySelect" name="policy_id" onchange="updateClaimAction()">
+                        <option value="" disabled selected>Choose a policy...</option>
+                        {% for policy in policies %}
+                            {% if policy.LATEST_CLAIM_STATUS != 'Success' and policy.LATEST_CLAIM_STATUS != 'Pending' %}
+                                <option value="{{ policy.POLICY_ID }}" data-mature="{{ policy.IS_MATURE|lower }}" data-paid="{{ policy.HAS_PAYMENT|lower }}">
+                                    {{ policy.POLICY_TYPE }} ({{ policy.POLICY_ID }})
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 20px;">
+                    Note: Claims can only be filed once the policy duration has completed **and at least one premium payment has been made**.
+                </p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeClaimModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitClaimBtn" disabled>Submit Claim</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').style.display = 'block';
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function openClaimModal() {
+            document.getElementById('claimModal').style.display = 'block';
+        }
+
+        function closeClaimModal() {
+            document.getElementById('claimModal').style.display = 'none';
+        }
+
+        function updateClaimAction() {
+            const select = document.getElementById('policySelect');
+            const submitBtn = document.getElementById('submitClaimBtn');
+            const form = document.getElementById('claimForm');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            if (select.value) {
+                const isMature = selectedOption.getAttribute('data-mature') === 'true';
+                const isPaid = selectedOption.getAttribute('data-paid') === 'true';
+                form.action = "/customer/claim/" + select.value;
+                submitBtn.disabled = !(isMature && isPaid);
+                
+                if (!isMature) {
+                    alert("This policy has not matured yet and cannot be claimed.");
+                } else if (!isPaid) {
+                    alert("You must make at least one payment before filing a claim.");
+                }
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('claimModal');
+            if (event.target == modal) {
+                closeClaimModal();
+            }
+        }
+    </script>
+</body>
+
+</html>

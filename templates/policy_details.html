@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy Details - Insurix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        :root {
+            --primary-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent: #2563eb;
+            --border: #e2e8f0;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        .details-page {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-full {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .card-full {
+                grid-column: span 1;
+            }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--accent);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+            color: #1e293b;
+        }
+
+        .info-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #334155;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .data-table th {
+            padding: 12px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.9375rem;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-success { background-color: #dcfce7; color: #166534; }
+        .status-warning { background-color: #fef3c7; color: #92400e; }
+        .status-info { background-color: #dbeafe; color: #1e40af; }
+        .status-default { background-color: #f1f5f9; color: #475569; }
+
+        .action-box {
+            margin-top: 32px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="details-page">
+        <div class="header-section">
+            <h1 class="page-title">Policy Details</h1>
+            <a href="{{ url_for('customer_dashboard') }}" class="back-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Dashboard
+            </a>
+        </div>
+
+        <div class="details-grid">
+            <!-- Policy Info Card -->
+            <div class="card">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                    <h2 class="card-title">Policy Information</h2>
+                </div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <span class="info-label">Policy ID</span>
+                        <span class="info-value">{{ policy.POLICY_ID }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Type</span>
+                        <span class="info-value">{{ policy.POLICY_TYPE }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Premium</span>
+                        <span class="info-value">₹{{ "{:,.2f}".format(policy.PREM_AMT) }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Coverage</span>
+                        <span class="info-value">₹{{ "{:,.2f}".format(policy.COV_AMT) }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Taken Date</span>
+                        <span class="info-value">{{ policy.TAKEN_DATE }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Duration</span>
+                        <span class="info-value">{{ policy.DURATION_DISPLAY }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Holder Details Card -->
+            <div class="card">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    <h2 class="card-title">Personal Details</h2>
+                </div>
+                <div class="info-list">
+                    <div class="info-item" style="grid-column: span 2;">
+                        <span class="info-label">Full Name</span>
+                        <span class="info-value">{{ customer.FNAME }} {% if customer.MNAME %}{{ customer.MNAME }} {% endif %}{{ customer.LNAME }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email</span>
+                        <span class="info-value">{{ customer.EMAIL }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Phone</span>
+                        <span class="info-value">{{ customer.PHONE }}</span>
+                    </div>
+                    <div class="info-item" style="grid-column: span 2;">
+                        <span class="info-label">Address</span>
+                        <span class="info-value">{{ customer.COMM_ADDR }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nominee Details Card -->
+            {% if nominee %}
+            <div class="card card-full">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <h2 class="card-title">Nominee Details</h2>
+                </div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <span class="info-label">Name</span>
+                        <span class="info-value">{{ nominee.FNAME }} {% if nominee.MNAME %}{{ nominee.MNAME }} {% endif %}{{ nominee.LNAME }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Relationship</span>
+                        <span class="info-value">{{ nominee.RELATION }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Payment History Card -->
+            <div class="card card-full">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="5" width="20" height="14" rx="2" />
+                        <line x1="2" y1="10" x2="22" y2="10" />
+                    </svg>
+                    <h2 class="card-title">Payment History</h2>
+                </div>
+                <div class="table-container">
+                    {% if payments %}
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Payment ID</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in payments %}
+                            <tr>
+                                <td><strong>{{ p.PAY_ID }}</strong></td>
+                                <td>₹{{ "{:,.2f}".format(p.AMOUNT) }}</td>
+                                <td>{{ p.PAY_DATE }}</td>
+                                <td>{{ p.PAY_MODE }}</td>
+                                <td><span class="status-pill status-success">Completed</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p style="padding: 10px; color: var(--text-muted); text-align: center;">No payment records found.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Claim Section -->
+            <div class="card card-full" style="background-color: #eff6ff; border-color: #bfdbfe;">
+                <div class="card-header" style="border-bottom-color: #bfdbfe;">
+                    <svg class="card-icon" style="color: #2563eb;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    <h2 class="card-title" style="color: #1e40af;">Claim Request</h2>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+                    <div>
+                        <p style="color: #1e40af; font-size: 0.9375rem; margin-bottom: 8px; font-weight: 500;">
+                            {% if policy.LATEST_CLAIM_STATUS == 'Success' %}
+                                This policy has been settled. No further actions are required.
+                            {% elif policy.LATEST_CLAIM_STATUS == 'Pending' %}
+                                Your claim request is currently being reviewed by the administrator.
+                            {% elif policy.IS_MATURE %}
+                                {% if policy.HAS_PAYMENT %}
+                                    Your policy has matured. You are now eligible to request a claim.
+                                {% else %}
+                                    <span style="color: #dc2626;">Your policy has matured, but you must complete at least one payment before filing a claim.</span>
+                                {% endif %}
+                            {% else %}
+                                This policy has not matured yet. You can only request a claim after the duration period ends.
+                            {% endif %}
+                        </p>
+                        <p style="color: #64748b; font-size: 0.875rem;">
+                            Expected Maturity Date: {{ policy.END_DATE_FORMATTED if policy.END_DATE_FORMATTED else 'Determined by Duration' }}
+                        </p>
+                    </div>
+                    <div>
+                        <form action="{{ url_for('request_claim', policy_id=policy.POLICY_ID) }}" method="POST">
+                            {% if policy.LATEST_CLAIM_STATUS == 'Success' %}
+                                <button class="btn btn-primary" disabled>Settled</button>
+                            {% elif policy.LATEST_CLAIM_STATUS == 'Pending' %}
+                                <button class="btn btn-primary" disabled>Awaiting Verification</button>
+                            {% elif policy.IS_MATURE %}
+                                {% if policy.HAS_PAYMENT %}
+                                    <button type="submit" class="btn btn-primary">Request Claim Now</button>
+                                {% else %}
+                                    <button class="btn btn-primary" style="opacity: 0.6;" title="Payment required" disabled>Payment Required</button>
+                                {% endif %}
+                            {% else %}
+                                <button class="btn btn-primary" style="opacity: 0.6;" disabled>Not Mature Yet</button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

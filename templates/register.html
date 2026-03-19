@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Portal - Insurix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .register-options {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-wrapper">
+            <a href="{{ url_for('index') }}" class="back-button">
+                <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12" />
+                    <polyline points="12 19 5 12 12 5" />
+                </svg>
+                Back to Home
+            </a>
+
+            <div class="login-card" style="text-align: center; padding: 40px;">
+                <div class="login-header" style="margin-bottom: 20px;">
+                    <div class="icon-circle" style="margin: 0 auto 20px;">
+                        <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="8.5" cy="7" r="4" />
+                            <line x1="20" y1="8" x2="20" y2="14" />
+                            <line x1="23" y1="11" x2="17" y2="11" />
+                        </svg>
+                    </div>
+                    <h1 class="login-title">Join Insurix</h1>
+                    <p class="login-subtitle">Choose your account type to get started</p>
+                </div>
+
+                <div class="register-options">
+                    <a href="{{ url_for('customer_register') }}" class="btn btn-primary btn-large" style="flex: 1;">
+                        Register as Customer
+                    </a>
+                    <a href="{{ url_for('agent_register') }}" class="btn btn-outline btn-large" style="flex: 1;">
+                        Register as Agent
+                    </a>
+                </div>
+
+                <div class="switch-links" style="margin-top: 40px;">
+                    <p class="switch-text">Already have an account?</p>
+                    <div class="switch-buttons" style="justify-content: center;">
+                        <a href="{{ url_for('customer_login') }}" class="switch-link">Customer Login</a>
+                        <a href="{{ url_for('agent_login') }}" class="switch-link">Agent Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

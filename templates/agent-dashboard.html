@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard - Insurix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="container dashboard-header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                    <span class="logo-text">Insurix</span>
+                </div>
+                <div class="user-info">
+                    <button class="notification-btn">
+                        <svg class="notification-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                        </svg>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <div class="user-details">
+                        <div class="user-text">
+                            <span class="user-name">{{ agent_name }}</span>
+                            <span class="user-role">Agent</span>
+                        </div>
+                        <svg class="user-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                    </div>
+                    <button class="logout-btn" data-url="{{ url_for('agent_logout') }}"
+                        onclick="window.location.href=this.getAttribute('data-url')">
+                        <svg class="logout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="container">
+                <h1 class="dashboard-title">Agent Dashboard</h1>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">Total Clients</span>
+                            <svg class="stat-icon" style="color: #2563eb;" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                            </svg>
+                        </div>
+                        <p class="stat-value">{{ stats.total_clients }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">Active Policies</span>
+                            <svg class="stat-icon" style="color: #10b981;" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                        </div>
+                        <p class="stat-value">{{ stats.active_policies }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">Related Claims</span>
+                            <svg class="stat-icon" style="color: #f59e0b;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                            </svg>
+                        </div>
+                        <p class="stat-value">{{ claims|length }}</p>
+                    </div>
+                </div>
+
+                <!-- Tabs Container -->
+                <div class="tabs-container">
+                    <div class="tabs-header">
+                        <button class="tab-button active" onclick="showTab('clients')">My Clients</button>
+                        <button class="tab-button" onclick="showTab('claims')">Policy Claims</button>
+                    </div>
+
+                    <!-- Clients Tab -->
+                    <div id="clients-tab" class="tab-content">
+                        <div class="tab-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <h2 class="tab-title">Client Details & Policies</h2>
+                            <a href="{{ url_for('customer_register') }}" class="btn btn-primary" style="text-decoration: none;">+ Add New Customer</a>
+                        </div>
+                        <div class="content-grid">
+                            {% if clients %}
+                            {% for client in clients %}
+                            <div class="content-card">
+                                <div class="card-header">
+                                    <div>
+                                        <h3 class="card-title">{{ client.FNAME }} {% if client.MNAME %}{{ client.MNAME }} {% endif %}{{ client.LNAME }}</h3>
+                                        <p class="card-subtitle">Client ID: {{ client.CUST_ID }}</p>
+                                    </div>
+                                    <span class="status-badge status-active">Active Client</span>
+                                </div>
+                                <div class="card-details">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Email</span>
+                                        <span class="detail-value">{{ client.EMAIL or 'Not provided' }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Phone</span>
+                                        <span class="detail-value">{{ client.PHONE or 'Not provided' }}</span>
+                                    </div>
+                                    <div class="detail-item" style="margin-top: 15px; border-top: 1px solid #f3f4f6; padding-top: 15px;">
+                                        <span class="detail-label">Taken Policy</span>
+                                        <span class="detail-value" style="color: #1e40af; font-weight: 600;">{{ client.POLICY_TYPE or 'None yet' }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Policy ID</span>
+                                        <span class="detail-value">{{ client.POLICY_ID or 'N/A' }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Duration</span>
+                                        <span class="detail-value">{% if client.DURATION_DISPLAY %}{{ client.DURATION_DISPLAY }}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Premium</span>
+                                        <span class="detail-value">{% if client.PREM_AMT %}₹{{ client.PREM_AMT }}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                </div>
+                                <div class="card-actions" style="margin-top: 15px; display: flex; gap: 10px;">
+                                    {% if not client.POLICY_ID %}
+                                    <a href="{{ url_for('index') }}" class="btn btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.875rem; padding: 10px;">Assign Policy</a>
+                                    {% else %}
+                                    <button class="btn btn-outline" style="flex: 1; cursor: default; font-size: 0.875rem; padding: 10px; color: #059669; border-color: #059669;">Policy Active</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <p style="padding: 20px;">No clients registered yet. Use "Register New Customer" to add clients.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Claims Tab -->
+                    <div id="claims-tab" class="tab-content" style="display: none;">
+                        <h2 class="tab-title">Claims associated with your Policies</h2>
+                        <div style="overflow-x: auto;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Claim ID</th>
+                                        <th>Customer</th>
+                                        <th>Policy Type</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if claims %}
+                                    {% for claim in claims %}
+                                    <tr>
+                                        <td><strong>{{ claim.CLAIM_ID }}</strong></td>
+                                        <td>{{ claim.FNAME }} {% if claim.MNAME %}{{ claim.MNAME }} {% endif %}{{ claim.LNAME }}</td>
+                                        <td>{{ claim.POLICY_TYPE }}</td>
+                                        <td><strong>₹{{ claim.CLAIM_AMT }}</strong></td>
+                                        <td>{{ claim.CLAIM_DATE }}</td>
+                                        <td><span class="status-badge status-processing">{{ claim.CLAIM_STATUS }}</span></td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; padding: 20px;">No claims found for the policies you manage.</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(tabName + '-tab').style.display = 'block';
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

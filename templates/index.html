@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                <span class="logo-text">Insurix</span>
+            </div>
+            <nav class="nav-buttons">
+                <a href="{{ url_for('customer_login') }}" class="btn btn-secondary">Customer Login</a>
+                <a href="{{ url_for('agent_login') }}" class="btn btn-secondary">Agent Login</a>
+                <a href="{{ url_for('admin_login') }}" class="btn btn-primary">Admin Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Insurix</h1>
+                <p class="hero-description">
+                    A comprehensive platform for managing insurance policies and claims with ease.
+                    Our system provides seamless policy management, efficient claims processing,
+                    and real-time tracking for customers, agents, and administrators.
+                </p>
+                <div class="hero-buttons">
+                    <a href="{{ url_for('customer_login') }}" class="btn btn-primary btn-large">Get Started</a>
+                    <a href="{{ url_for('learn_more') }}" class="btn btn-outline btn-large">Learn More</a>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features-grid">
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    <h3 class="feature-title">Easy Policy Management</h3>
+                    <p class="feature-description">
+                        View, purchase, and manage all your insurance policies in one centralized platform.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    <h3 class="feature-title">Quick Claims Processing</h3>
+                    <p class="feature-description">
+                        Submit and track claims in real-time with our streamlined claims management system.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                        <polyline points="17 6 23 6 23 12" />
+                    </svg>
+                    <h3 class="feature-title">Real-Time Analytics</h3>
+                    <p class="feature-description">
+                        Access detailed reports and analytics to make informed decisions about your coverage.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Policies Section -->
+    <section id="policies-section" class="policies-section">
+        <div class="container">
+            <h2 class="section-title">Our Insurance Policies</h2>
+            <p class="section-description">Choose from our comprehensive range of insurance products</p>
+
+            <div class="policies-grid">
+                {% if policies %}
+                {% for policy in policies %}
+                <div class="policy-card {% if policy.STATUS|lower == 'expired' %}policy-card-expired{% endif %}">
+                    <div class="policy-header">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <h3 class="policy-name">{{ policy.POLICY_TYPE }}</h3>
+                                {% if policy.VERIFIED_BY %}
+                                    <span style="background: #dcfce7; color: #166534; font-size: 0.7rem; padding: 2px 8px; border-radius: 99px; font-weight: 600;">Verified</span>
+                                {% endif %}
+                            </div>
+                            <p class="policy-description">Policy ID: {{ policy.POLICY_ID }}</p>
+                        </div>
+                        <svg class="policy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+                    <div class="policy-details">
+                        <div class="policy-detail">
+                            <span class="detail-label">Coverage</span>
+                            <span class="detail-value">₹{{ policy.COV_AMT }}</span>
+                        </div>
+                        <div class="policy-detail">
+                            <span class="detail-label">Premium</span>
+                            <span class="detail-value premium">₹{{ policy.PREM_AMT }}</span>
+                        </div>
+                        <div class="policy-detail">
+                            <span class="detail-label">Duration</span>
+                            <span class="detail-value">{{ policy.DURATION_DISPLAY }}</span>
+                        </div>
+                    </div>
+                    <div class="policy-features" style="margin-bottom: 20px;">
+                        <p class="features-label {% if policy.STATUS|lower == 'expired' %}text-expired{% endif %}">
+                            Status: {{ policy.STATUS }}
+                        </p>
+                        <p style="font-size: 0.875rem; color: #4b5563;">Start Date: {{ policy.START_DATE }}</p>
+                    </div>
+                    {% if policy.STATUS|lower == 'expired' %}
+                    <button class="btn btn-full" disabled style="background: #9ca3af; cursor: not-allowed;">
+                        Policy Expired
+                    </button>
+                    {% else %}
+                    <a href="{{ url_for('take_policy', policy_id=policy.POLICY_ID) }}"
+                        class="btn btn-primary btn-full">Take Policy</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>No policies are currently available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+                <h2 class="cta-title">Ready to Get Protected?</h2>
+                <p class="cta-description">
+                    Join thousands of satisfied customers who trust us with their insurance needs
+                </p>
+                <div class="hero-buttons" style="justify-content: center;">
+                    <a href="{{ url_for('register') }}" class="btn btn-white btn-large">Sign Up Today</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact-section-->
+    <section class="contact">
+        <div class="container">
+            <h2 class="cont-auth-off">Contact Us</h2>
+            <p class="cont-desc">If you have any queries, you can contact our administrators through the following
+                emails:</p>
+            <div style="margin-top: 15px;">
+                {% if admin_emails %}
+                {% for email in admin_emails %}
+                <p style="color: #2563eb; font-weight: 500; margin-bottom: 5px;">📧 {{ email }}</p>
+                {% endfor %}
+                {% else %}
+                <p style="color: #64748b;">Contact details are currently unavailable.</p>
+                {% endif %}
+            </div>
+            <br>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                <span class="logo-text">Insurix</span>
+            </div>
+            <p class="footer-text">© 2026 Insurix. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

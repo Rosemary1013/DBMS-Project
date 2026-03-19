@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Verification - Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container { max-width: 900px; width: 100%; }
+
+        h1 { font-size: 2rem; margin-bottom: 30px; color: #818cf8; }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .header-box { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .status-tag { padding: 6px 12px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; }
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+
+        h2 { font-size: 1.25rem; color: #818cf8; margin-top: 0; margin-bottom: 20px; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .info-group { margin-bottom: 15px; }
+        .label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
+        .value { font-size: 1.05rem; font-weight: 500; }
+
+        .payment-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .payment-table th { text-align: left; padding: 12px; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+        .payment-table td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        .actions { display: flex; gap: 20px; margin-top: 30px; }
+        .btn { flex: 1; padding: 14px; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; border: none; transition: all 0.3s ease; text-align: center; color: white; }
+        .btn-approve { background: var(--success); }
+        .btn-approve:hover { background: #16a34a; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
+        .btn-reject { background: var(--danger); }
+        .btn-reject:hover { background: #dc2626; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+
+        .back-link { display: inline-block; margin-top: 20px; color: var(--text-muted); text-decoration: none; }
+        .back-link:hover { color: var(--text-main); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Claim Verification</h1>
+
+        <div class="card">
+            <div class="header-box">
+                <div>
+                    <h2>Claim Details</h2>
+                    <p style="color: var(--text-muted);">Request ID: {{ claim.CLAIM_ID }}</p>
+                </div>
+                <span class="status-tag status-pending">{{ claim.CLAIM_STATUS }}</span>
+            </div>
+
+            <div class="grid">
+                <div class="info-group">
+                    <span class="label">Customer Name</span>
+                    <span class="value">{{ claim.FNAME }} {% if claim.MNAME %}{{ claim.MNAME }} {% endif %}{{ claim.LNAME }}</span>
+                </div>
+                <div class="info-group">
+                    <span class="label">Policy Type</span>
+                    <span class="value">{{ claim.POLICY_TYPE }}</span>
+                </div>
+                <div class="info-group">
+                    <span class="label">Claim Amount</span>
+                    <span class="value">₹{{ "{:,.2f}".format(claim.CLAIM_AMT) }}</span>
+                </div>
+                <div class="info-group">
+                    <span class="label">Request Date</span>
+                    <span class="value">{{ claim.CLAIM_DATE }}</span>
+                </div>
+                <div class="info-group">
+                    <span class="label">Policy Taken Date</span>
+                    <span class="value">{{ claim.TAKEN_DATE }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Payment History Check</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Verify if the customer has paid all monthly premiums correctly.</p>
+            
+            {% if payments %}
+            <table class="payment-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Mode</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in payments %}
+                    <tr>
+                        <td>{{ p.PAY_DATE }}</td>
+                        <td>₹{{ "{:,.2f}".format(p.AMOUNT) }}</td>
+                        <td>{{ p.PAY_MODE }}</td>
+                        <td><span style="color: var(--success);">Paid</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p style="color: var(--danger);">No payment records found for this policy!</p>
+            {% endif %}
+        </div>
+
+        <div class="actions">
+            <form action="{{ url_for('admin_claim_action', claim_id=claim.CLAIM_ID, action='approve') }}" method="POST" style="flex: 1;">
+                <button type="submit" class="btn btn-approve">Approve Claim</button>
+            </form>
+            <form action="{{ url_for('admin_claim_action', claim_id=claim.CLAIM_ID, action='reject') }}" method="POST" style="flex: 1;">
+                <button type="submit" class="btn btn-reject">Not Approve</button>
+            </form>
+        </div>
+
+        <a href="{{ url_for('admin_dashboard') }}" class="back-link">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

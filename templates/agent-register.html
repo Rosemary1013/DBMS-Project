@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Registration - Insurix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-wrapper">
+            <a href="{{ url_for('index') }}" class="back-button">
+                <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"/>
+                    <polyline points="12 19 5 12 12 5"/>
+                </svg>
+                Back to Home
+            </a>
+
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="icon-circle">
+                        <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h1 class="login-title">Agent Registration</h1>
+                    <p class="login-subtitle">Join us to manage client policies and earn commissions</p>
+                </div>
+
+                <form class="login-form" method="POST" action="{{ url_for('agent_register') }}">
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" name="fname" class="form-input" placeholder="First Name" required>
+                        <input type="text" name="mname" class="form-input" placeholder="M.I.">
+                        <input type="text" name="lname" class="form-input" placeholder="Last Name" required>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" name="phone" class="form-input" placeholder="10-digit number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" name="email" class="form-input" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-input" placeholder="Max 15 characters" maxlength="15" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full btn-large" style="margin-top: 20px;">Register</button>
+                    
+                    {% if error %}
+                        <p style="color:red; text-align:center; margin-top: 10px;">{{ error }}</p>
+                    {% endif %}
+                </form>
+
+                <div class="switch-links" style="margin-top: 20px;">
+                    <p class="switch-text">Already an agent?</p>
+                    <a href="{{ url_for('agent_login') }}" class="btn btn-outline btn-full">Login Here</a>
+                </div>
+
+                <div class="switch-links">
+                    <p class="switch-text">Login as different user type:</p>
+                    <div class="switch-buttons">
+                        <a href="{{ url_for('customer_login') }}" class="switch-link">Customer</a>
+                        <a href="{{ url_for('admin_login') }}" class="switch-link">Admin</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
