@@ -1,0 +1,11 @@
+app.py
+templates/
+    admin-login.html
+    admin-dashboard.html
+    index.html
+    customer-login.html
+    customer-dashboard.html
+    agent-login.html
+    agent-dashboard.html
+static/
+    styles.css

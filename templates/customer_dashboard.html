@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard — SecureLife</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #06080f;
+            --surface: #0d1117;
+            --surface2: #141920;
+            --surface3: #1a2130;
+            --border: rgba(255,255,255,0.07);
+            --violet: #7c3aed;
+            --violet-light: #a78bfa;
+            --cyan: #06b6d4;
+            --cyan-light: #67e8f9;
+            --emerald: #10b981;
+            --amber: #f59e0b;
+            --rose: #f43f5e;
+            --text: #f1f5f9;
+            --muted: #64748b;
+            --muted2: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--violet), var(--cyan));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .brand-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text);
+        }
+
+        /* PROFILE CARD IN SIDEBAR */
+        .sidebar-profile {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .profile-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--violet), #4f46e5);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            margin-bottom: 0.75rem;
+        }
+
+        .profile-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+
+        .profile-id {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 0.1rem;
+        }
+
+        /* NAV */
+        .sidebar-nav {
+            padding: 1rem 0.75rem;
+            flex: 1;
+        }
+
+        .nav-section-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item-custom {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.7rem 0.75rem;
+            border-radius: 10px;
+            color: var(--muted2);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            margin-bottom: 0.15rem;
+            border: 1px solid transparent;
+        }
+
+        .nav-item-custom:hover {
+            background: var(--surface2);
+            color: var(--text);
+            border-color: var(--border);
+        }
+
+        .nav-item-custom.active {
+            background: rgba(124,58,237,0.12);
+            color: var(--violet-light);
+            border-color: rgba(124,58,237,0.2);
+        }
+
+        .nav-item-custom i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.7rem 0.75rem;
+            border-radius: 10px;
+            color: var(--rose);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            width: 100%;
+            border: 1px solid transparent;
+            background: none;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .logout-btn:hover {
+            background: rgba(244,63,94,0.1);
+            border-color: rgba(244,63,94,0.2);
+            color: var(--rose);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .topbar-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .topbar-subtitle {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-top: 0.2rem;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .greeting-badge {
+            background: rgba(124,58,237,0.12);
+            border: 1px solid rgba(124,58,237,0.2);
+            border-radius: 50px;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            color: var(--violet-light);
+            font-weight: 600;
+        }
+
+        /* SUMMARY CARDS */
+        .summary-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .summary-card:hover { transform: translateY(-3px); }
+        .summary-card:hover::before { opacity: 1; }
+
+        .card-v::before { background: linear-gradient(90deg, var(--violet), var(--violet-light)); }
+        .card-c::before { background: linear-gradient(90deg, var(--cyan), var(--cyan-light)); }
+        .card-e::before { background: linear-gradient(90deg, var(--emerald), #34d399); }
+        .card-a::before { background: linear-gradient(90deg, var(--amber), #fcd34d); }
+
+        .summary-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .icon-v { background: rgba(124,58,237,0.15); color: var(--violet-light); }
+        .icon-c { background: rgba(6,182,212,0.15); color: var(--cyan); }
+        .icon-e { background: rgba(16,185,129,0.15); color: var(--emerald); }
+        .icon-a { background: rgba(245,158,11,0.15); color: var(--amber); }
+
+        .summary-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .summary-label {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 0.35rem;
+            font-weight: 500;
+        }
+
+        /* SECTION HEADERS */
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-top: 0.5rem;
+        }
+
+        .section-head h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-head h4 i { font-size: 1rem; }
+
+        /* TABLE STYLE */
+        .data-table {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .data-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead th {
+            background: var(--surface2);
+            padding: 0.9rem 1.25rem;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .data-table tbody td {
+            padding: 1rem 1.25rem;
+            font-size: 0.875rem;
+            color: var(--muted2);
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .data-table tbody tr:last-child td { border-bottom: none; }
+
+        .data-table tbody tr {
+            transition: background 0.2s;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .td-bold {
+            font-weight: 700;
+            color: var(--text) !important;
+        }
+
+        /* BADGES */
+        .badge-pill {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.25rem 0.7rem;
+            border-radius: 50px;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-active { background: rgba(16,185,129,0.15); color: var(--emerald); }
+        .badge-pending { background: rgba(245,158,11,0.15); color: var(--amber); }
+        .badge-approved { background: rgba(6,182,212,0.15); color: var(--cyan); }
+        .badge-rejected { background: rgba(244,63,94,0.15); color: var(--rose); }
+        .badge-online { background: rgba(124,58,237,0.15); color: var(--violet-light); }
+        .badge-cash { background: rgba(16,185,129,0.15); color: var(--emerald); }
+        .badge-card { background: rgba(6,182,212,0.15); color: var(--cyan); }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--muted);
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            display: block;
+            opacity: 0.4;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+        }
+
+        /* PROFILE SECTION */
+        .profile-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .profile-header {
+            background: var(--surface2);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--violet), var(--cyan));
+        }
+
+        .profile-avatar-lg {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--violet), #4f46e5);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .profile-header-info h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .profile-header-info p {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 0.2rem;
+        }
+
+        .profile-body {
+            padding: 1.5rem;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .profile-field {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .field-label-p {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .field-value-p {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* POLICY TYPE ICONS */
+        .policy-type-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .a1 { animation: fadeUp 0.5s ease forwards; }
+        .a2 { animation: fadeUp 0.5s 0.1s ease forwards; opacity: 0; }
+        .a3 { animation: fadeUp 0.5s 0.2s ease forwards; opacity: 0; }
+        .a4 { animation: fadeUp 0.5s 0.3s ease forwards; opacity: 0; }
+        .a5 { animation: fadeUp 0.5s 0.4s ease forwards; opacity: 0; }
+        .a6 { animation: fadeUp 0.5s 0.5s ease forwards; opacity: 0; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon"><i class="bi bi-shield-fill-check text-white" style="font-size:0.85rem"></i></div>
+            <span class="brand-name">SecureLife</span>
+        </div>
+
+        <div class="sidebar-profile">
+            <div class="profile-avatar" id="sidebar-avatar">
+                {{ customer[1][0] if customer else 'C' }}
+            </div>
+            <div class="profile-name">{{ customer[1] }} {{ customer[3] }}</div>
+            <div class="profile-id">ID: {{ customer[0] }}</div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">Dashboard</div>
+            <a class="nav-item-custom active" href="#overview" onclick="showSection('overview', this)">
+                <i class="bi bi-grid-1x2"></i> Overview
+            </a>
+            <a class="nav-item-custom" href="#profile" onclick="showSection('profile', this)">
+                <i class="bi bi-person-circle"></i> My Profile
+            </a>
+
+            <div class="nav-section-label mt-3">Insurance</div>
+            <a class="nav-item-custom" href="#policies" onclick="showSection('policies', this)">
+                <i class="bi bi-file-earmark-text"></i> My Policies
+            </a>
+            <a class="nav-item-custom" href="#claims" onclick="showSection('claims', this)">
+                <i class="bi bi-lightning-charge"></i> My Claims
+            </a>
+            <a class="nav-item-custom" href="#payments" onclick="showSection('payments', this)">
+                <i class="bi bi-credit-card"></i> My Payments
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="/logout" class="logout-btn">
+                <i class="bi bi-box-arrow-left"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+        <!-- TOPBAR -->
+        <div class="topbar a1">
+            <div>
+                <div class="topbar-title">Customer Dashboard</div>
+                <div class="topbar-subtitle">Insurance Policy & Claims Management</div>
+            </div>
+            <div class="topbar-right">
+                <span class="greeting-badge">
+                    <i class="bi bi-person-check me-1"></i>
+                    Welcome, {{ customer[1] if customer else 'Customer' }}
+                </span>
+            </div>
+        </div>
+
+        <!-- ===== OVERVIEW SECTION ===== -->
+        <div id="section-overview">
+
+            <!-- SUMMARY CARDS -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3 a2">
+                    <div class="summary-card card-v">
+                        <div class="summary-icon icon-v"><i class="bi bi-file-earmark-text"></i></div>
+                        <div class="summary-num">{{ policies|length }}</div>
+                        <div class="summary-label">Active Policies</div>
+                    </div>
+                </div>
+                <div class="col-md-3 a3">
+                    <div class="summary-card card-c">
+                        <div class="summary-icon icon-c"><i class="bi bi-lightning-charge"></i></div>
+                        <div class="summary-num">{{ claims|length }}</div>
+                        <div class="summary-label">Claims Filed</div>
+                    </div>
+                </div>
+                <div class="col-md-3 a4">
+                    <div class="summary-card card-e">
+                        <div class="summary-icon icon-e"><i class="bi bi-credit-card"></i></div>
+                        <div class="summary-num">{{ payments|length }}</div>
+                        <div class="summary-label">Payments Made</div>
+                    </div>
+                </div>
+                <div class="col-md-3 a5">
+                    <div class="summary-card card-a">
+                        <div class="summary-icon icon-a"><i class="bi bi-shield-check"></i></div>
+                        <div class="summary-num">
+                            {% set approved = claims|selectattr(3, 'equalto', 'Approved')|list %}
+                            {{ approved|length }}
+                        </div>
+                        <div class="summary-label">Claims Approved</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECENT POLICIES -->
+            <div class="section-head a5">
+                <h4><i class="bi bi-file-earmark-text" style="color:var(--violet-light)"></i> Recent Policies</h4>
+            </div>
+            <div class="data-table a6">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Policy ID</th>
+                            <th>Type</th>
+                            <th>Start Date</th>
+                            <th>Premium</th>
+                            <th>Coverage</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if policies %}
+                            {% for p in policies %}
+                            <tr>
+                                <td class="td-bold">{{ p[0] }}</td>
+                                <td>
+                                    {% if 'Health' in p[1] %}
+                                        <span style="color:var(--emerald)"><i class="bi bi-heart-pulse me-1"></i></span>
+                                    {% elif 'Life' in p[1] %}
+                                        <span style="color:var(--violet-light)"><i class="bi bi-person-heart me-1"></i></span>
+                                    {% else %}
+                                        <span style="color:var(--cyan)"><i class="bi bi-car-front me-1"></i></span>
+                                    {% endif %}
+                                    {{ p[1] }}
+                                </td>
+                                <td>{{ p[2] }}</td>
+                                <td class="td-bold">₹{{ "%.2f"|format(p[3]) }}</td>
+                                <td>₹{{ "%.2f"|format(p[4]) }}</td>
+                                <td>
+                                    <span class="badge-pill {% if p[5] == 'Active' %}badge-active{% else %}badge-pending{% endif %}">
+                                        {{ p[5] }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="6">
+                                <div class="empty-state">
+                                    <i class="bi bi-file-earmark-x"></i>
+                                    <p>No policies found</p>
+                                </div>
+                            </td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- RECENT CLAIMS -->
+            <div class="section-head">
+                <h4><i class="bi bi-lightning-charge" style="color:var(--cyan)"></i> Recent Claims</h4>
+            </div>
+            <div class="data-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Claim ID</th>
+                            <th>Amount</th>
+                            <th>Date Filed</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if claims %}
+                            {% for c in claims %}
+                            <tr>
+                                <td class="td-bold">{{ c[0] }}</td>
+                                <td class="td-bold">₹{{ "%.2f"|format(c[1]) }}</td>
+                                <td>{{ c[2] }}</td>
+                                <td>
+                                    <span class="badge-pill
+                                        {% if c[3] == 'Approved' %}badge-approved
+                                        {% elif c[3] == 'Rejected' %}badge-rejected
+                                        {% else %}badge-pending{% endif %}">
+                                        {{ c[3] }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="4">
+                                <div class="empty-state">
+                                    <i class="bi bi-lightning-slash"></i>
+                                    <p>No claims filed yet</p>
+                                </div>
+                            </td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== PROFILE SECTION ===== -->
+        <div id="section-profile" style="display:none">
+            <div class="profile-section a1">
+                <div class="profile-header">
+                    <div class="profile-avatar-lg">
+                        {{ customer[1][0] if customer else 'C' }}
+                    </div>
+                    <div class="profile-header-info">
+                        <h3>{{ customer[1] }} {{ customer[2] if customer[2] else '' }} {{ customer[3] }}</h3>
+                        <p>Customer ID: {{ customer[0] }}</p>
+                    </div>
+                </div>
+                <div class="profile-body">
+                    <div class="profile-grid">
+                        <div class="profile-field">
+                            <div class="field-label-p">First Name</div>
+                            <div class="field-value-p">{{ customer[1] if customer[1] else '—' }}</div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="field-label-p">Middle Name</div>
+                            <div class="field-value-p">{{ customer[2] if customer[2] else '—' }}</div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="field-label-p">Last Name</div>
+                            <div class="field-value-p">{{ customer[3] if customer[3] else '—' }}</div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="field-label-p">Date of Birth</div>
+                            <div class="field-value-p">{{ customer[4] if customer[4] else '—' }}</div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="field-label-p">Phone</div>
+                            <div class="field-value-p">{{ phone[0] if phone else '—' }}</div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="field-label-p">Email</div>
+                            <div class="field-value-p">{{ email[0] if email else '—' }}</div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="field-label-p">Permanent Address</div>
+                            <div class="field-value-p">{{ customer[5] if customer[5] else '—' }}</div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="field-label-p">Communication Address</div>
+                            <div class="field-value-p">{{ customer[6] if customer[6] else '—' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== POLICIES SECTION ===== -->
+        <div id="section-policies" style="display:none">
+            <div class="section-head a1">
+                <h4><i class="bi bi-file-earmark-text" style="color:var(--violet-light)"></i> All My Policies</h4>
+            </div>
+            <div class="data-table a2">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Policy ID</th>
+                            <th>Type</th>
+                            <th>Start Date</th>
+                            <th>Premium Amount</th>
+                            <th>Coverage Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if policies %}
+                            {% for p in policies %}
+                            <tr>
+                                <td class="td-bold">{{ p[0] }}</td>
+                                <td>
+                                    {% if 'Health' in p[1] %}
+                                        <span style="color:var(--emerald)"><i class="bi bi-heart-pulse me-1"></i></span>
+                                    {% elif 'Life' in p[1] %}
+                                        <span style="color:var(--violet-light)"><i class="bi bi-person-heart me-1"></i></span>
+                                    {% else %}
+                                        <span style="color:var(--cyan)"><i class="bi bi-car-front me-1"></i></span>
+                                    {% endif %}
+                                    {{ p[1] }}
+                                </td>
+                                <td>{{ p[2] }}</td>
+                                <td class="td-bold">₹{{ "%.2f"|format(p[3]) }}</td>
+                                <td>₹{{ "%.2f"|format(p[4]) }}</td>
+                                <td>
+                                    <span class="badge-pill {% if p[5] == 'Active' %}badge-active{% else %}badge-pending{% endif %}">
+                                        {{ p[5] }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="6">
+                                <div class="empty-state">
+                                    <i class="bi bi-file-earmark-x"></i>
+                                    <p>No policies found</p>
+                                </div>
+                            </td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== CLAIMS SECTION ===== -->
+        <div id="section-claims" style="display:none">
+            <div class="section-head a1">
+                <h4><i class="bi bi-lightning-charge" style="color:var(--cyan)"></i> All My Claims</h4>
+            </div>
+            <div class="data-table a2">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Claim ID</th>
+                            <th>Claim Amount</th>
+                            <th>Date Filed</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if claims %}
+                            {% for c in claims %}
+                            <tr>
+                                <td class="td-bold">{{ c[0] }}</td>
+                                <td class="td-bold">₹{{ "%.2f"|format(c[1]) }}</td>
+                                <td>{{ c[2] }}</td>
+                                <td>
+                                    <span class="badge-pill
+                                        {% if c[3] == 'Approved' %}badge-approved
+                                        {% elif c[3] == 'Rejected' %}badge-rejected
+                                        {% else %}badge-pending{% endif %}">
+                                        {{ c[3] }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="4">
+                                <div class="empty-state">
+                                    <i class="bi bi-lightning-slash"></i>
+                                    <p>No claims filed yet</p>
+                                </div>
+                            </td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== PAYMENTS SECTION ===== -->
+        <div id="section-payments" style="display:none">
+            <div class="section-head a1">
+                <h4><i class="bi bi-credit-card" style="color:var(--emerald)"></i> All My Payments</h4>
+            </div>
+            <div class="data-table a2">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Payment ID</th>
+                            <th>Amount</th>
+                            <th>Mode</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if payments %}
+                            {% for p in payments %}
+                            <tr>
+                                <td class="td-bold">{{ p[0] }}</td>
+                                <td class="td-bold">₹{{ "%.2f"|format(p[1]) }}</td>
+                                <td>
+                                    <span class="badge-pill
+                                        {% if p[2] == 'Online' %}badge-online
+                                        {% elif p[2] == 'Cash' %}badge-cash
+                                        {% else %}badge-card{% endif %}">
+                                        <i class="bi {% if p[2] == 'Online' %}bi-globe{% elif p[2] == 'Cash' %}bi-cash{% else %}bi-credit-card{% endif %} me-1"></i>
+                                        {{ p[2] }}
+                                    </span>
+                                </td>
+                                <td>{{ p[3] }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="4">
+                                <div class="empty-state">
+                                    <i class="bi bi-credit-card-2-back"></i>
+                                    <p>No payments found</p>
+                                </div>
+                            </td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div><!-- end main-content -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showSection(name, el) {
+            event.preventDefault();
+
+            // Hide all sections
+            ['overview','profile','policies','claims','payments'].forEach(s => {
+                document.getElementById('section-' + s).style.display = 'none';
+            });
+
+            // Show selected
+            document.getElementById('section-' + name).style.display = 'block';
+
+            // Update nav
+            document.querySelectorAll('.nav-item-custom').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+        }
+    </script>
+</body>
+</html>

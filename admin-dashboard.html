@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Insurix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="container dashboard-header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="logo-text">SecureLife Insurance</span>
+                </div>
+                <div class="user-info">
+                    <button class="notification-btn">
+                        <svg class="notification-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <div class="user-details">
+                        <div class="user-text">
+                            <span class="user-name">Admin User</span>
+                            <span class="user-role">System Administrator</span>
+                        </div>
+                        <svg class="user-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <button class="logout-btn" onclick="window.location.href='index.html'">
+                        <svg class="logout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="container">
+                <h1 class="dashboard-title">Admin Dashboard</h1>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <svg class="stat-icon" style="color: #2563eb;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem;">Customers</p>
+                        <p class="stat-value" style="font-size: 1.5rem;">1,248</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <svg class="stat-icon" style="color: #10b981;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem;">Agents</p>
+                        <p class="stat-value" style="font-size: 1.5rem;">42</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <svg class="stat-icon" style="color: #8b5cf6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem;">Active Policies</p>
+                        <p class="stat-value" style="font-size: 1.5rem;">2,893</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <svg class="stat-icon" style="color: #f97316;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem;">Total Claims</p>
+                        <p class="stat-value" style="font-size: 1.5rem;">156</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <svg class="stat-icon" style="color: #f59e0b;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem;">Pending Claims</p>
+                        <p class="stat-value" style="font-size: 1.5rem;">23</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <svg class="stat-icon" style="color: #10b981;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"/>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem;">Monthly Revenue</p>
+                        <p class="stat-value" style="font-size: 1.5rem;">$428K</p>
+                    </div>
+                </div>
+
+                <!-- Tabs Container -->
+                <div class="tabs-container">
+                    <div class="tabs-header">
+                        <button class="tab-button active" onclick="showTab('overview')">Overview</button>
+                        <button class="tab-button" onclick="showTab('claims')">Claims Management</button>
+                        <button class="tab-button" onclick="showTab('agents')">Agent Performance</button>
+                        <button class="tab-button" onclick="showTab('users')">User Management</button>
+                    </div>
+
+                    <!-- Overview Tab -->
+                    <div id="overview-tab" class="tab-content">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+                            <!-- Policy Distribution -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem;">
+                                <h3 style="font-weight: 600; color: #1f2937; margin-bottom: 1rem;">Policy Distribution</h3>
+                                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.5rem;">
+                                            <span style="color: #4b5563;">Health Insurance</span>
+                                            <span style="font-weight: 600; color: #1f2937;">35%</span>
+                                        </div>
+                                        <div style="width: 100%; background: #e5e7eb; border-radius: 9999px; height: 0.75rem;">
+                                            <div style="background: #2563eb; height: 0.75rem; border-radius: 9999px; width: 35%;"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.5rem;">
+                                            <span style="color: #4b5563;">Auto Insurance</span>
+                                            <span style="font-weight: 600; color: #1f2937;">30%</span>
+                                        </div>
+                                        <div style="width: 100%; background: #e5e7eb; border-radius: 9999px; height: 0.75rem;">
+                                            <div style="background: #10b981; height: 0.75rem; border-radius: 9999px; width: 30%;"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.5rem;">
+                                            <span style="color: #4b5563;">Home Insurance</span>
+                                            <span style="font-weight: 600; color: #1f2937;">20%</span>
+                                        </div>
+                                        <div style="width: 100%; background: #e5e7eb; border-radius: 9999px; height: 0.75rem;">
+                                            <div style="background: #8b5cf6; height: 0.75rem; border-radius: 9999px; width: 20%;"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.5rem;">
+                                            <span style="color: #4b5563;">Life Insurance</span>
+                                            <span style="font-weight: 600; color: #1f2937;">15%</span>
+                                        </div>
+                                        <div style="width: 100%; background: #e5e7eb; border-radius: 9999px; height: 0.75rem;">
+                                            <div style="background: #f97316; height: 0.75rem; border-radius: 9999px; width: 15%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Revenue Trend Placeholder -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem;">
+                                <h3 style="font-weight: 600; color: #1f2937; margin-bottom: 1rem;">Monthly Revenue Trend</h3>
+                                <div style="height: 16rem; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;">
+                                    <div style="text-align: center;">
+                                        <svg style="width: 4rem; height: 4rem; color: #2563eb; margin: 0 auto 0.5rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                            <polyline points="17 6 23 6 23 12"/>
+                                        </svg>
+                                        <p style="color: #4b5563;">Chart Visualization</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Claims Tab -->
+                    <div id="claims-tab" class="tab-content" style="display: none;">
+                        <h2 class="tab-title">Recent Claims</h2>
+                        <div style="overflow-x: auto;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Claim ID</th>
+                                        <th>Customer</th>
+                                        <th>Agent</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>CLM-1250</strong></td>
+                                        <td>Emily Brown</td>
+                                        <td>Sarah Agent</td>
+                                        <td>Health</td>
+                                        <td><strong>$3,200</strong></td>
+                                        <td>Feb 11, 2026</td>
+                                        <td><span class="status-badge status-pending">Pending</span></td>
+                                        <td><a href="#" class="table-link">Review</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>CLM-1249</strong></td>
+                                        <td>David Wilson</td>
+                                        <td>John Agent</td>
+                                        <td>Auto</td>
+                                        <td><strong>$2,800</strong></td>
+                                        <td>Feb 10, 2026</td>
+                                        <td><span class="status-badge status-processing">Processing</span></td>
+                                        <td><a href="#" class="table-link">Review</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>CLM-1248</strong></td>
+                                        <td>Lisa Anderson</td>
+                                        <td>Sarah Agent</td>
+                                        <td>Home</td>
+                                        <td><strong>$5,500</strong></td>
+                                        <td>Feb 9, 2026</td>
+                                        <td><span class="status-badge status-approved">Approved</span></td>
+                                        <td><a href="#" class="table-link">Review</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Agents Tab -->
+                    <div id="agents-tab" class="tab-content" style="display: none;">
+                        <h2 class="tab-title">Top Performing Agents</h2>
+                        <div class="content-grid">
+                            <!-- Agent 1 -->
+                            <div class="content-card">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Sarah Agent</h3>
+                                        <div style="display: flex; align-items: center; gap: 0.25rem;">
+                                            <span style="color: #f59e0b;">★</span>
+                                            <span style="font-size: 0.875rem; font-weight: 500; color: #374151;">4.9</span>
+                                        </div>
+                                    </div>
+                                    <span class="status-badge" style="background: #dbeafe; color: #1e40af;">Rank #1</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Policies Sold</p>
+                                        <p style="font-size: 1.25rem; font-weight: bold; color: #1f2937;">48</p>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Total Commission</p>
+                                        <p style="font-size: 1.25rem; font-weight: bold; color: #10b981;">$12,450</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Agent 2 -->
+                            <div class="content-card">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">John Agent</h3>
+                                        <div style="display: flex; align-items: center; gap: 0.25rem;">
+                                            <span style="color: #f59e0b;">★</span>
+                                            <span style="font-size: 0.875rem; font-weight: 500; color: #374151;">4.8</span>
+                                        </div>
+                                    </div>
+                                    <span class="status-badge" style="background: #dbeafe; color: #1e40af;">Rank #2</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Policies Sold</p>
+                                        <p style="font-size: 1.25rem; font-weight: bold; color: #1f2937;">42</p>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Total Commission</p>
+                                        <p style="font-size: 1.25rem; font-weight: bold; color: #10b981;">$10,890</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Agent 3 -->
+                            <div class="content-card">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Mike Agent</h3>
+                                        <div style="display: flex; align-items: center; gap: 0.25rem;">
+                                            <span style="color: #f59e0b;">★</span>
+                                            <span style="font-size: 0.875rem; font-weight: 500; color: #374151;">4.7</span>
+                                        </div>
+                                    </div>
+                                    <span class="status-badge" style="background: #dbeafe; color: #1e40af;">Rank #3</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Policies Sold</p>
+                                        <p style="font-size: 1.25rem; font-weight: bold; color: #1f2937;">38</p>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Total Commission</p>
+                                        <p style="font-size: 1.25rem; font-weight: bold; color: #10b981;">$9,720</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Users Tab -->
+                    <div id="users-tab" class="tab-content" style="display: none;">
+                        <div class="tab-header">
+                            <h2 class="tab-title">User Management</h2>
+                            <button class="btn btn-primary">Add New User</button>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                            <!-- Customers Card -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; text-align: center;">
+                                <svg style="width: 3rem; height: 3rem; color: #2563eb; margin: 0 auto 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                                <p style="font-size: 1.875rem; font-weight: bold; color: #1f2937; margin-bottom: 0.5rem;">1,248</p>
+                                <p style="color: #4b5563; margin-bottom: 1rem;">Total Customers</p>
+                                <button class="btn btn-outline btn-full">View All</button>
+                            </div>
+
+                            <!-- Agents Card -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; text-align: center;">
+                                <svg style="width: 3rem; height: 3rem; color: #10b981; margin: 0 auto 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                                <p style="font-size: 1.875rem; font-weight: bold; color: #1f2937; margin-bottom: 0.5rem;">42</p>
+                                <p style="color: #4b5563; margin-bottom: 1rem;">Total Agents</p>
+                                <button class="btn btn-outline btn-full" style="border-color: #10b981; color: #10b981;">View All</button>
+                            </div>
+
+                            <!-- Admins Card -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; text-align: center;">
+                                <svg style="width: 3rem; height: 3rem; color: #8b5cf6; margin: 0 auto 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                <p style="font-size: 1.875rem; font-weight: bold; color: #1f2937; margin-bottom: 0.5rem;">3</p>
+                                <p style="color: #4b5563; margin-bottom: 1rem;">Administrators</p>
+                                <button class="btn btn-outline btn-full" style="border-color: #8b5cf6; color: #8b5cf6;">View All</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').style.display = 'block';
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Insurix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="container dashboard-header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="logo-text">SecureLife Insurance</span>
+                </div>
+                <div class="user-info">
+                    <button class="notification-btn">
+                        <svg class="notification-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <div class="user-details">
+                        <div class="user-text">
+                            <span class="user-name">Admin User</span>
+                            <span class="user-role">System Administrator</span>
+                        </div>
+                        <svg class="user-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <button class="logout-btn" onclick="window.location.href='index.html'">
+                        <svg class="logout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="container">
+                <h1 class="dashboard-title">Admin Dashboard</h1>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <svg class="stat-icon" style="color: #2563eb;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem;">Customers</p>
+                        <p class="stat-value" style="font-size: 1.5rem;">1,248</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <svg class="stat-icon" style="color: #10b981;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem;">Agents</p>
+                        <p class="stat-value" style="font-size: 1.5rem;">42</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <svg class="stat-icon" style="color: #8b5cf6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem;">Active Policies</p>
+                        <p class="stat-value" style="font-size: 1.5rem;">2,893</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <svg class="stat-icon" style="color: #f97316;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem;">Total Claims</p>
+                        <p class="stat-value" style="font-size: 1.5rem;">156</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <svg class="stat-icon" style="color: #f59e0b;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem;">Pending Claims</p>
+                        <p class="stat-value" style="font-size: 1.5rem;">23</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <svg class="stat-icon" style="color: #10b981;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"/>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem;">Monthly Revenue</p>
+                        <p class="stat-value" style="font-size: 1.5rem;">$428K</p>
+                    </div>
+                </div>
+
+                <!-- Tabs Container -->
+                <div class="tabs-container">
+                    <div class="tabs-header">
+                        <button class="tab-button active" onclick="showTab('overview')">Overview</button>
+                        <button class="tab-button" onclick="showTab('claims')">Claims Management</button>
+                        <button class="tab-button" onclick="showTab('agents')">Agent Performance</button>
+                        <button class="tab-button" onclick="showTab('users')">User Management</button>
+                    </div>
+
+                    <!-- Overview Tab -->
+                    <div id="overview-tab" class="tab-content">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+                            <!-- Policy Distribution -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem;">
+                                <h3 style="font-weight: 600; color: #1f2937; margin-bottom: 1rem;">Policy Distribution</h3>
+                                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.5rem;">
+                                            <span style="color: #4b5563;">Health Insurance</span>
+                                            <span style="font-weight: 600; color: #1f2937;">35%</span>
+                                        </div>
+                                        <div style="width: 100%; background: #e5e7eb; border-radius: 9999px; height: 0.75rem;">
+                                            <div style="background: #2563eb; height: 0.75rem; border-radius: 9999px; width: 35%;"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.5rem;">
+                                            <span style="color: #4b5563;">Auto Insurance</span>
+                                            <span style="font-weight: 600; color: #1f2937;">30%</span>
+                                        </div>
+                                        <div style="width: 100%; background: #e5e7eb; border-radius: 9999px; height: 0.75rem;">
+                                            <div style="background: #10b981; height: 0.75rem; border-radius: 9999px; width: 30%;"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.5rem;">
+                                            <span style="color: #4b5563;">Home Insurance</span>
+                                            <span style="font-weight: 600; color: #1f2937;">20%</span>
+                                        </div>
+                                        <div style="width: 100%; background: #e5e7eb; border-radius: 9999px; height: 0.75rem;">
+                                            <div style="background: #8b5cf6; height: 0.75rem; border-radius: 9999px; width: 20%;"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.5rem;">
+                                            <span style="color: #4b5563;">Life Insurance</span>
+                                            <span style="font-weight: 600; color: #1f2937;">15%</span>
+                                        </div>
+                                        <div style="width: 100%; background: #e5e7eb; border-radius: 9999px; height: 0.75rem;">
+                                            <div style="background: #f97316; height: 0.75rem; border-radius: 9999px; width: 15%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Revenue Trend Placeholder -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem;">
+                                <h3 style="font-weight: 600; color: #1f2937; margin-bottom: 1rem;">Monthly Revenue Trend</h3>
+                                <div style="height: 16rem; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;">
+                                    <div style="text-align: center;">
+                                        <svg style="width: 4rem; height: 4rem; color: #2563eb; margin: 0 auto 0.5rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                            <polyline points="17 6 23 6 23 12"/>
+                                        </svg>
+                                        <p style="color: #4b5563;">Chart Visualization</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Claims Tab -->
+                    <div id="claims-tab" class="tab-content" style="display: none;">
+                        <h2 class="tab-title">Recent Claims</h2>
+                        <div style="overflow-x: auto;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Claim ID</th>
+                                        <th>Customer</th>
+                                        <th>Agent</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>CLM-1250</strong></td>
+                                        <td>Emily Brown</td>
+                                        <td>Sarah Agent</td>
+                                        <td>Health</td>
+                                        <td><strong>$3,200</strong></td>
+                                        <td>Feb 11, 2026</td>
+                                        <td><span class="status-badge status-pending">Pending</span></td>
+                                        <td><a href="#" class="table-link">Review</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>CLM-1249</strong></td>
+                                        <td>David Wilson</td>
+                                        <td>John Agent</td>
+                                        <td>Auto</td>
+                                        <td><strong>$2,800</strong></td>
+                                        <td>Feb 10, 2026</td>
+                                        <td><span class="status-badge status-processing">Processing</span></td>
+                                        <td><a href="#" class="table-link">Review</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>CLM-1248</strong></td>
+                                        <td>Lisa Anderson</td>
+                                        <td>Sarah Agent</td>
+                                        <td>Home</td>
+                                        <td><strong>$5,500</strong></td>
+                                        <td>Feb 9, 2026</td>
+                                        <td><span class="status-badge status-approved">Approved</span></td>
+                                        <td><a href="#" class="table-link">Review</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Agents Tab -->
+                    <div id="agents-tab" class="tab-content" style="display: none;">
+                        <h2 class="tab-title">Top Performing Agents</h2>
+                        <div class="content-grid">
+                            <!-- Agent 1 -->
+                            <div class="content-card">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Sarah Agent</h3>
+                                        <div style="display: flex; align-items: center; gap: 0.25rem;">
+                                            <span style="color: #f59e0b;">★</span>
+                                            <span style="font-size: 0.875rem; font-weight: 500; color: #374151;">4.9</span>
+                                        </div>
+                                    </div>
+                                    <span class="status-badge" style="background: #dbeafe; color: #1e40af;">Rank #1</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Policies Sold</p>
+                                        <p style="font-size: 1.25rem; font-weight: bold; color: #1f2937;">48</p>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Total Commission</p>
+                                        <p style="font-size: 1.25rem; font-weight: bold; color: #10b981;">$12,450</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Agent 2 -->
+                            <div class="content-card">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">John Agent</h3>
+                                        <div style="display: flex; align-items: center; gap: 0.25rem;">
+                                            <span style="color: #f59e0b;">★</span>
+                                            <span style="font-size: 0.875rem; font-weight: 500; color: #374151;">4.8</span>
+                                        </div>
+                                    </div>
+                                    <span class="status-badge" style="background: #dbeafe; color: #1e40af;">Rank #2</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Policies Sold</p>
+                                        <p style="font-size: 1.25rem; font-weight: bold; color: #1f2937;">42</p>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Total Commission</p>
+                                        <p style="font-size: 1.25rem; font-weight: bold; color: #10b981;">$10,890</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Agent 3 -->
+                            <div class="content-card">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Mike Agent</h3>
+                                        <div style="display: flex; align-items: center; gap: 0.25rem;">
+                                            <span style="color: #f59e0b;">★</span>
+                                            <span style="font-size: 0.875rem; font-weight: 500; color: #374151;">4.7</span>
+                                        </div>
+                                    </div>
+                                    <span class="status-badge" style="background: #dbeafe; color: #1e40af;">Rank #3</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Policies Sold</p>
+                                        <p style="font-size: 1.25rem; font-weight: bold; color: #1f2937;">38</p>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Total Commission</p>
+                                        <p style="font-size: 1.25rem; font-weight: bold; color: #10b981;">$9,720</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Users Tab -->
+                    <div id="users-tab" class="tab-content" style="display: none;">
+                        <div class="tab-header">
+                            <h2 class="tab-title">User Management</h2>
+                            <button class="btn btn-primary">Add New User</button>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                            <!-- Customers Card -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; text-align: center;">
+                                <svg style="width: 3rem; height: 3rem; color: #2563eb; margin: 0 auto 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                                <p style="font-size: 1.875rem; font-weight: bold; color: #1f2937; margin-bottom: 0.5rem;">1,248</p>
+                                <p style="color: #4b5563; margin-bottom: 1rem;">Total Customers</p>
+                                <button class="btn btn-outline btn-full">View All</button>
+                            </div>
+
+                            <!-- Agents Card -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; text-align: center;">
+                                <svg style="width: 3rem; height: 3rem; color: #10b981; margin: 0 auto 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                                <p style="font-size: 1.875rem; font-weight: bold; color: #1f2937; margin-bottom: 0.5rem;">42</p>
+                                <p style="color: #4b5563; margin-bottom: 1rem;">Total Agents</p>
+                                <button class="btn btn-outline btn-full" style="border-color: #10b981; color: #10b981;">View All</button>
+                            </div>
+
+                            <!-- Admins Card -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; text-align: center;">
+                                <svg style="width: 3rem; height: 3rem; color: #8b5cf6; margin: 0 auto 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                <p style="font-size: 1.875rem; font-weight: bold; color: #1f2937; margin-bottom: 0.5rem;">3</p>
+                                <p style="color: #4b5563; margin-bottom: 1rem;">Administrators</p>
+                                <button class="btn btn-outline btn-full" style="border-color: #8b5cf6; color: #8b5cf6;">View All</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').style.display = 'block';
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
