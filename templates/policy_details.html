@@ -55,7 +55,7 @@
                 <div style="display: flex; flex-direction: column; gap: 1.25rem;">
                     <div>
                         <p style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Holder</p>
-                        <p style="font-weight: 600;">{{ customer.FNAME }} {{ customer.LNAME }}</p>
+                        <p style="font-weight: 600;">{{ customer.FNAME }} {% if customer.MNAME %}{{ customer.MNAME }} {% endif %}{{ customer.LNAME }}</p>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div>
@@ -80,7 +80,7 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
                 <div>
                     <p style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Full Name</p>
-                    <p style="font-weight: 600;">{{ nominee.FNAME }} {{ nominee.LNAME }}</p>
+                    <p style="font-weight: 600;">{{ nominee.FNAME }} {% if nominee.MNAME %}{{ nominee.MNAME }} {% endif %}{{ nominee.LNAME }}</p>
                 </div>
                 <div>
                     <p style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Relationship</p>

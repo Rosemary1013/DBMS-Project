@@ -31,7 +31,7 @@
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
                 <div>
                     <p style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Client Name</p>
-                    <p style="font-weight: 700;">{{ claim.FNAME }} {{ claim.LNAME }}</p>
+                    <p style="font-weight: 700;">{{ claim.FNAME }} {% if claim.MNAME %}{{ claim.MNAME }} {% endif %}{{ claim.LNAME }}</p>
                 </div>
                 <div>
                     <p style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Policy Type</p>

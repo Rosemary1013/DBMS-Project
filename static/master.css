@@ -259,6 +259,10 @@ tr:hover td {
     color: var(--primary-light);
 }
 
+.hamburger-btn {
+    display: none;
+}
+
 /* Badges */
 .badge {
     display: inline-flex;
@@ -292,6 +296,42 @@ tr:hover td {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
+}
+
+/* Flash Messages */
+.flash-overlay {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 3000;
+    padding: 1.5rem 2.5rem;
+    border-radius: 16px;
+    background: var(--card-bg);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--shadow-xl);
+    animation: fadeIn 0.4s ease-out;
+    border: 1px solid transparent;
+}
+
+.flash-overlay.flash-error {
+    border-color: var(--danger);
+}
+
+.flash-overlay.flash-error .flash-icon {
+    font-size: 1.5rem;
+    color: var(--danger);
+}
+
+.flash-overlay.flash-success {
+    border-color: var(--primary);
+}
+
+.flash-overlay.flash-success .flash-icon {
+    font-size: 1.5rem;
+    color: var(--primary);
 }
 
 /* Animations */
@@ -386,9 +426,9 @@ tr:hover td {
     box-shadow: var(--shadow-xl);
 }
 
-/* Additional fixes for #f1f5f9 remnants */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 6px;
+    height: 6px;
 }
 ::-webkit-scrollbar-track {
     background: var(--bg);
@@ -400,3 +440,265 @@ tr:hover td {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--muted);
 }
+
+/* =========================================
+   Responsive Media Queries
+   ========================================= */
+
+/* Tablet & Smaller Devices */
+@media (max-width: 1024px) {
+    .stats-grid, .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .dashboard-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem;
+    }
+
+    .nav-menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .nav-item {
+        margin-bottom: 0;
+        flex: 1 1 auto;
+    }
+
+    .nav-item a {
+        justify-content: center;
+        text-align: center;
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 4rem;
+        padding: 0.75rem 0;
+        gap: 0.75rem;
+        position: relative;
+    }
+
+    .hamburger-btn {
+        display: block;
+        background: none;
+        border: none;
+        color: var(--text);
+        font-size: 2rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        order: 2;
+    }
+
+    .logo {
+        order: 1;
+        flex: 1 1 auto;
+    }
+
+    .user-info, .nav-buttons {
+        order: 3;
+    }
+
+    .nav-buttons {
+        width: 100%;
+        display: none; /* Hide implicitly, toggle block via JS */
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.5rem;
+        padding-bottom: 0.5rem;
+        animation: fadeIn 0.3s ease-out;
+    }
+    
+    .nav-buttons.active-mobile-nav {
+        display: flex; /* Shown when toggled */
+    }
+
+    .nav-buttons .btn {
+        flex: 1 1 auto;
+        margin-bottom: 0;
+        font-size: 1rem;
+        padding: 1rem;
+        width: 100%;
+    }
+
+    /* Sidebar hide on mobile by default */
+    .sidebar {
+        display: none;
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    .sidebar.active-mobile-nav {
+        display: block;
+    }
+
+    .user-info {
+        display: flex !important; /* Override inline styles */
+        width: 100%;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center;
+        border-top: 1px solid var(--border) !important;
+        padding-top: 1rem !important;
+        margin-top: 0.5rem !important;
+        gap: 0.5rem !important;
+    }
+    
+    .user-info > div {
+        border-right: none !important;
+        padding-right: 0 !important;
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+        text-align: left !important;
+        flex: 1 1 auto;
+        min-width: 0; /* Prevents flex blowout */
+        overflow: hidden;
+    }
+
+    .user-info > div span:last-child {
+        display: none !important; /* Hide role on mobile */
+    }
+
+    .user-info > div span:first-child {
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+    }
+
+    .user-info .btn {
+        margin-bottom: 0 !important;
+        padding: 0.6rem 1rem !important;
+        font-size: 0.85rem !important;
+        flex: 0 0 auto !important;
+        width: auto !important; /* Restore normal width button */
+    }
+
+    /* Fix nav menu spacing when shown on mobile */
+    .sidebar.active-mobile-nav {
+        padding: 1rem 0;
+    }
+    .sidebar.active-mobile-nav .nav-menu {
+        flex-direction: column;
+        gap: 0;
+    }
+    .sidebar.active-mobile-nav .nav-item {
+        width: 100%;
+    }
+    .sidebar.active-mobile-nav .nav-item a {
+        justify-content: flex-start;
+        padding: 1rem;
+        border-radius: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .grid-2, .grid-3, .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    .main-content {
+        padding: 1.5rem 1rem;
+    }
+
+    h1, h2 {
+        font-size: 2rem !important;
+        text-align: center;
+    }
+
+    .hero {
+        padding: 8rem 0 5rem !important;
+    }
+
+    .hero-title {
+        font-size: 2.5rem !important;
+    }
+
+    .hero-description {
+        font-size: 1.1rem !important;
+    }
+
+    .hero-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+
+    .auth-card {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+        border-radius: 20px;
+    }
+
+    .table-container {
+        border-radius: 12px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 600px; /* Forces horizontal scroll on mobile */
+    }
+
+    th, td {
+        padding: 1rem;
+        font-size: 0.85rem;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .grid-2 .card > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+    }
+}
+
+/* Very Small Mobile */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem !important;
+    }
+    
+    .logo-text {
+        font-size: 1.25rem !important;
+    }
+}
+

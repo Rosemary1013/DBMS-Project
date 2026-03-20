@@ -19,7 +19,7 @@
         <div class="card" style="background: rgba(30, 41, 59, 0.4); margin-bottom: 2.5rem; text-align: left;">
             <div style="margin-bottom: 1.5rem;">
                 <span style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600;">Client Name</span>
-                <span style="font-size: 1.25rem; font-weight: 700; color: var(--text);">{{ customer.FNAME }} {{ customer.LNAME }}</span>
+                <span style="font-size: 1.25rem; font-weight: 700; color: var(--text);">{{ customer.FNAME }} {% if customer.MNAME %}{{ customer.MNAME }} {% endif %}{{ customer.LNAME }}</span>
             </div>
             <div>
                 <span style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600;">System Access ID</span>

@@ -17,6 +17,7 @@
                 <i class="ph-bold ph-shield-checkered logo-icon" style="font-size: 1.25rem;"></i>
                 <span class="logo-text" style="font-size: 1.1rem;">Insurix</span>
             </div>
+            <button class="hamburger-btn" aria-label="Toggle Navigation"><i class="ph ph-list"></i></button>
         </header>
 
         <div style="text-align: center; margin-bottom: 3rem;">
@@ -81,5 +82,20 @@
             <p style="margin-top: 1rem; font-size: 0.75rem; color: var(--muted);">Your transaction data is protected by 256-bit AES encryption.</p>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger-btn');
+            const navButtons = document.querySelector('.nav-buttons');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (hamburger) {
+                hamburger.addEventListener('click', () => {
+                    if (navButtons) navButtons.classList.toggle('active-mobile-nav');
+                    if (sidebar) sidebar.classList.toggle('active-mobile-nav');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

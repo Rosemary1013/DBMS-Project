@@ -14,6 +14,7 @@
                 <i class="ph-bold ph-shield-checkered logo-icon"></i>
                 <span class="logo-text">Insurix</span>
             </a>
+            <button class="hamburger-btn" aria-label="Toggle Navigation"><i class="ph ph-list"></i></button>
             <div class="nav-buttons">
                 <a href="{{ url_for('customer_login') }}" class="btn btn-secondary btn-sm">Customer Access</a>
                 <a href="{{ url_for('agent_login') }}" class="btn btn-secondary btn-sm">Agent Gate</a>
@@ -68,7 +69,7 @@
                 <p style="color: var(--muted);">Select a tailored insurance solution designed for your unique lifestyle.</p>
             </div>
 
-            <div class="policies-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+            <div class="policies-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
                 {% if policies %}
                 {% for policy in policies %}
                 <div class="card animate" style="display: flex; flex-direction: column; gap: 1.5rem; transition: all 0.4s; background: #0f172a;">
@@ -137,5 +138,20 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger-btn');
+            const navButtons = document.querySelector('.nav-buttons');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (hamburger) {
+                hamburger.addEventListener('click', () => {
+                    if (navButtons) navButtons.classList.toggle('active-mobile-nav');
+                    if (sidebar) sidebar.classList.toggle('active-mobile-nav');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
