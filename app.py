@@ -4,7 +4,7 @@ import mysql.connector
 import os
 import uuid
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=os.path.abspath('templates'))
 app.secret_key = os.urandom(24)  # Change this to a fixed secret in production
 
 # ─── Database Configuration ───────────────────────────────────────────────────
@@ -318,9 +318,11 @@ def admin_logout():
 @app.route('/customer/login', methods=['GET', 'POST'])
 def customer_login():
     error = None
+    next_page = request.args.get('next')
     if request.method == 'POST':
         email = request.form.get('email', '').strip()
         password = request.form.get('password', '')
+        next_page = request.form.get('next')
 
         if not email or not password:
             error = "All fields are required."
@@ -345,13 +347,15 @@ def customer_login():
                     session['customer_id'] = customer['CUST_ID']
                     mname = customer['MNAME'] + " " if customer['MNAME'] else ""
                     session['customer_name'] = f"{customer['FNAME']} {mname}{customer['LNAME']}"
+                    if next_page:
+                        return redirect(next_page)
                     return redirect(url_for('customer_dashboard'))
                 else:
                     error = "Invalid credentials. Please try again."
             except mysql.connector.Error as e:
                 error = f"Database error: {e}"
 
-    return render_template("customer-login.html", error=error)
+    return render_template("customer-login.html", error=error, next=next_page)
 
 @app.route('/customer/register', methods=['GET', 'POST'])
 def customer_register():
@@ -728,7 +732,7 @@ def take_policy(policy_id):
     target_cust_id = request.args.get('cust_id') or request.form.get('cust_id')
     
     if 'customer_id' not in session and 'agent_id' not in session:
-        return redirect(url_for('customer_login'))
+        return redirect(url_for('customer_login', next=request.url))
     
     # If agent is logged in, they MUST provide a cust_id
     if 'agent_id' in session and not target_cust_id:
@@ -1081,4 +1085,4 @@ def agent_logout():
     return redirect(url_for('agent_login'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

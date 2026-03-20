@@ -1,98 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Registration - Insurix</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Customer Enrollment | Insurix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='master.css') }}">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
+<body class="centered-page">
+    <div class="auth-card animate" style="max-width: 650px;">
+        <a href="{{ url_for('index') }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem;">
+            <i class="ph ph-arrow-left"></i> Systems Overview
+        </a>
 
-<body>
-    <div class="login-container">
-        <div class="login-wrapper">
-            <a href="{{ url_for('index') }}" class="back-button">
-                <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="19" y1="12" x2="5" y2="12" />
-                    <polyline points="12 19 5 12 12 5" />
-                </svg>
-                Back to Home
-            </a>
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <div style="width: 4rem; height: 4rem; background: rgba(59, 130, 246, 0.1); color: var(--primary); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem;">
+                <i class="ph-bold ph-user-circle-plus"></i>
+            </div>
+            <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Begin Your Legacy</h1>
+            <p style="color: var(--muted); font-size: 0.95rem;">Join the elite protection infrastructure of Insurix</p>
+        </div>
 
-            <div class="login-card">
-                <div class="login-header">
-                    <div class="icon-circle">
-                        <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                        </svg>
-                    </div>
-                    <h1 class="login-title">Customer Registration</h1>
-                    <p class="login-subtitle">Create an account to manage your policies and file claims</p>
+        <form action="{{ url_for('customer_register') }}" method="POST">
+            <div class="grid-3" style="grid-template-columns: 1fr 0.4fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                <div class="form-group">
+                    <label class="label">First Name</label>
+                    <input type="text" name="fname" class="input" placeholder="John" required>
                 </div>
-
-                <form class="login-form" method="POST" action="{{ url_for('customer_register') }}">
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" name="fname" class="form-input" placeholder="First Name" required>
-                        <input type="text" name="mname" class="form-input" placeholder="M.I.">
-                        <input type="text" name="lname" class="form-input" placeholder="Last Name" required>
-                    </div>
-
-                    <div class="form-group" style="margin-top: 15px;">
-                        <label class="form-label">Date of Birth</label>
-                        <input type="date" name="dob" class="form-input" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Phone Number</label>
-                        <input type="text" name="phone" class="form-input" placeholder="10-digit number" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" name="email" class="form-input" placeholder="Enter your email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Permanent Address</label>
-                        <input type="text" name="per_addr" class="form-input" placeholder="Permanent Address" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Communication Address</label>
-                        <input type="text" name="comm_addr" class="form-input" placeholder="Communication Address"
-                            required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Password</label>
-                        <input type="password" name="password" class="form-input" placeholder="Max 15 characters"
-                            maxlength="15" required>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-full btn-large"
-                        style="margin-top: 20px;">Register</button>
-
-                    {% if error %}
-                    <p style="color:red; text-align:center; margin-top: 10px;">{{ error }}</p>
-                    {% endif %}
-                </form>
-
-                <div class="switch-links" style="margin-top: 20px;">
-                    <p class="switch-text">Already a customer?</p>
-                    <a href="{{ url_for('customer_login') }}" class="btn btn-outline btn-full">Login Here</a>
+                <div class="form-group">
+                    <label class="label">M.I.</label>
+                    <input type="text" name="mname" class="input" placeholder="D">
                 </div>
-
-                <div class="switch-links">
-                    <p class="switch-text">Login as different user type:</p>
-                    <div class="switch-buttons">
-                        <a href="{{ url_for('agent_login') }}" class="switch-link">Agent</a>
-                        <a href="{{ url_for('admin_login') }}" class="switch-link">Admin</a>
-                    </div>
+                <div class="form-group">
+                    <label class="label">Last Name</label>
+                    <input type="text" name="lname" class="input" placeholder="Doe" required>
                 </div>
             </div>
+
+            <div class="grid-2" style="gap: 1.5rem;">
+                <div class="form-group">
+                    <label class="label">Date of Birth</label>
+                    <input type="date" name="dob" class="input" required>
+                </div>
+                <div class="form-group">
+                    <label class="label">Phone Number</label>
+                    <input type="text" name="phone" class="input" placeholder="10-digit number" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="label">Primary Email Address</label>
+                <input type="email" name="email" class="input" placeholder="name@domain.com" required>
+            </div>
+
+            <div class="grid-2" style="gap: 1.5rem;">
+                <div class="form-group">
+                    <label class="label">Permanent Residence</label>
+                    <input type="text" name="per_addr" class="input" placeholder="123 Elite St." required>
+                </div>
+                <div class="form-group">
+                    <label class="label">Reporting Address</label>
+                    <input type="text" name="comm_addr" class="input" placeholder="Same as permanent?" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="label">Secure Auth Password</label>
+                <input type="password" name="password" class="input" placeholder="Max 15 characters" maxlength="15" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full btn-large" style="margin-top: 2rem;">Authorize Enrollment</button>
+
+            {% if error %}
+            <p style="color: var(--danger); text-align: center; margin-top: 1.5rem; font-size: 0.9rem; font-weight: 500;">
+                <i class="ph ph-warning-circle"></i> {{ error }}
+            </p>
+            {% endif %}
+        </form>
+
+        <div style="margin-top: 3rem; text-align: center; border-top: 1px solid var(--border); padding-top: 2rem;">
+            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Already part of the infrastructure?</p>
+            <a href="{{ url_for('customer_login') }}" class="btn btn-secondary btn-full">Access Personal Terminal</a>
         </div>
     </div>
-
 </body>
-
 </html>

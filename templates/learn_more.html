@@ -3,66 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn More - Insurix</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>About The Ecosystem | Insurix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='master.css') }}">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="container header-content">
-            <div class="logo">
-                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                </svg>
+            <a href="/" class="logo">
+                <i class="ph-bold ph-shield-checkered logo-icon"></i>
                 <span class="logo-text">Insurix</span>
+            </a>
+            <div class="nav-buttons">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">System Overview</a>
+                <a href="{{ url_for('customer_login') }}" class="btn btn-primary">Join Ecosystem</a>
             </div>
-            <nav class="nav-buttons">
-                <a href="{{ url_for('index') }}" class="btn btn-secondary">Home</a>
-                <a href="{{ url_for('customer_login') }}" class="btn btn-primary">Get Started</a>
-            </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main style="padding: 80px 0; background-color: #f8fafc;">
-        <div class="container">
-            <div style="max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">
-                <h1 style="color: #1e40af; font-size: 2.5rem; margin-bottom: 24px; text-align: center;">Welcome to Insurix</h1>
-                
-                <section style="margin-bottom: 40px;">
-                    <h2 style="color: #1f2937; font-size: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px;">About Our Platform</h2>
-                    <p style="color: #4b5563; line-height: 1.7; font-size: 1.1rem;">
-                        Insurix is a state-of-the-art insurance management system designed to streamline the connection between customers, agents, and administrators. Our platform provides a transparent, efficient, and secure way to handle life, health, auto, and home insurance policies.
+    <main class="animate" style="padding: 10rem 0 6rem;">
+        <div class="container" style="max-width: 900px;">
+            <div style="text-align: center; margin-bottom: 6rem;">
+                <h1 style="font-size: 4rem; margin-bottom: 1.5rem; letter-spacing: -2px;">Protection Redefined.</h1>
+                <p style="color: var(--muted); font-size: 1.25rem; max-width: 600px; margin: 0 auto;">Insurix is the world’s most advanced insurance management infrastructure, connecting customers, agents, and administrators on a unified, high-security node.</p>
+            </div>
+
+            <div class="grid-2" style="gap: 4rem; margin-bottom: 6rem;">
+                <div>
+                    <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--primary-light);">Elite Architecture</h2>
+                    <p style="color: var(--muted); line-height: 1.8; font-size: 1.1rem;">
+                        Our platform provides a transparent, efficient, and cryptographically secure way to manage life, health, auto, and property protection plans. Every transaction is authenticated, every claim is verified, and every policy is optimized for the modern digital era.
                     </p>
-                </section>
-
-                <section style="margin-bottom: 40px;">
-                    <h2 style="color: #1f2937; font-size: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px;">Key Features</h2>
-                    <ul style="color: #4b5563; line-height: 2; font-size: 1.1rem;">
-                        <li><strong>For Customers:</strong> Browse available policies, purchase coverage instantly, manage your personal details, and register nominees for financial security.</li>
-                        <li><strong>For Agents:</strong> Represent premium insurance products, manage a diverse client portfolio, and assist customers in finding the perfect coverage.</li>
-                        <li><strong>For Administrators:</strong> Full oversight of the insurance ecosystem, claim verification, and system-wide performance analytics.</li>
-                    </ul>
-                </section>
-
-                <section style="margin-bottom: 40px;">
-                    <h2 style="color: #1f2937; font-size: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px;">Our Technology</h2>
-                    <p style="color: #4b5563; line-height: 1.7; font-size: 1.1rem;">
-                        We utilize modern web technologies to ensure a responsive and intuitive user experience. From real-time claim tracking to automated profile management, Insurix is built to meet the digital demands of the modern insurance industry.
-                    </p>
-                </section>
-
-                <div style="text-align: center; margin-top: 40px;">
-                    <a href="{{ url_for('customer_login') }}" class="btn btn-primary btn-large">Join Us Today</a>
                 </div>
+                <div class="card" style="border-color: rgba(59, 130, 246, 0.2); background: rgba(59, 130, 246, 0.03);">
+                    <i class="ph-bold ph-sketch-logo" style="font-size: 3rem; color: var(--primary); margin-bottom: 2rem; display: block;"></i>
+                    <h3 style="margin-bottom: 1rem;">Protocol Optimized</h3>
+                    <p style="color: var(--muted); font-size: 0.95rem;">Engineered for maximum reliability with real-time state synchronization and automated policy tracking.</p>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 4rem; margin-bottom: 6rem;">
+                <h2 style="font-size: 2rem; margin-bottom: 3rem; text-align: center;">Operational Access Nodes</h2>
+                <div class="grid-3" style="gap: 3rem;">
+                    <div>
+                        <h4 style="color: var(--primary-light); margin-bottom: 1rem;"><i class="ph ph-user"></i> Customers</h4>
+                        <p style="color: var(--muted); font-size: 0.9rem;">Browse curated elite policies, manage personal protection portfolios, and initiate settlements with one-click authorization.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--secondary); margin-bottom: 1rem;"><i class="ph ph-briefcase"></i> Field Agents</h4>
+                        <p style="color: var(--muted); font-size: 0.9rem;">Represent premium products, manage global client networks, and utilize advanced analytics to grow your professional portfolio.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--primary); margin-bottom: 1rem;"><i class="ph ph-lock-key"></i> Administrators</h4>
+                        <p style="color: var(--muted); font-size: 0.9rem;">Maintain system-wide integrity with centralized claim verification, performance oversight, and ecosystem management.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%); padding: 5rem; border-radius: 32px; border: 1px solid var(--border);">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Ready to upgrade your protection node?</h2>
+                <p style="color: var(--muted); margin-bottom: 3rem; font-size: 1.1rem;">Join the Insurix network today and experience the future of secure insurance management.</p>
+                <a href="{{ url_for('customer_login') }}" class="btn btn-primary btn-large">Initialize Session</a>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container footer-content">
-            <p class="footer-text">© 2026 Insurix. All rights reserved.</p>
+            <p class="footer-text">© 2026 Insurix Network Infrastructure. All rights reserved.</p>
         </div>
     </footer>
 </body>
