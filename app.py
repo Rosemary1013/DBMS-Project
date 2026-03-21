@@ -101,6 +101,29 @@ def index():
         print(f"Error fetching data: {e}")
     return render_template('index.html', policies=policies, admin_emails=admin_emails)
 
+@app.route('/policies')
+def view_policies():
+    policies = []
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT p.*, pv.ADMIN_ID as VERIFIED_BY 
+            FROM policy p 
+            LEFT JOIN policy_verify pv ON p.POLICY_ID = pv.POLICY_ID
+        """)
+        policies = cursor.fetchall()
+        for p in policies:
+            dur = format_duration(p['DURATION'])
+            p['DURATION_DISPLAY'] = dur['text']
+            p['DURATION_YEARS'] = dur['years']
+        policies.sort(key=lambda x: (1 if x.get('STATUS', '').lower() == 'expired' else 0))
+        cursor.close()
+        db.close()
+    except Exception as e:
+        print(f"Error fetching policies: {e}")
+    return render_template('view_policies.html', policies=policies)
+
 @app.route('/learn-more')
 def learn_more():
     return render_template('learn_more.html')

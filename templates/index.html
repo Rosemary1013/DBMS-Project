@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='master.css') }}">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
+
 <body>
     <header class="header">
         <div class="container header-content">
@@ -27,12 +29,16 @@
     <main class="animate">
         <section class="hero" style="padding: 15rem 0 10rem;">
             <div class="container">
-                <h1 class="hero-title" style="font-size: 5rem; max-width: 900px; margin: 0 auto 2rem;">Secure Your <span>Legacy</span> with Confidence.</h1>
-                <p class="hero-description" style="font-size: 1.4rem; color: var(--muted); max-width: 700px; margin: 0 auto 3rem;">
-                    Insurix is the Simple digital insurance management. Experience absolute clarity in policies, claims, and protection.
+                <h1 class="hero-title" style="font-size: 5rem; max-width: 900px; margin: 0 auto 2rem;">Secure Your
+                    <span>Legacy</span> with Confidence.</h1>
+                <p class="hero-description"
+                    style="font-size: 1.4rem; color: var(--muted); max-width: 700px; margin: 0 auto 3rem;">
+                    Insurix is the Simple digital insurance management. Experience absolute clarity in policies, claims,
+                    and protection.
                 </p>
                 <div class="hero-buttons">
-                    <a href="{{ url_for('customer_login') }}" class="btn btn-primary btn-large">Get Protected Now <i class="ph ph-arrow-right"></i></a>
+                    <a href="{{ url_for('customer_login') }}" class="btn btn-primary btn-large">Get Protected Now <i
+                            class="ph ph-arrow-right"></i></a>
                     <a href="#policies-section" class="btn btn-secondary btn-large">Explore Plans</a>
                 </div>
             </div>
@@ -41,21 +47,26 @@
         <section class="container" style="padding-bottom: 10rem;">
             <div class="grid-3">
                 <div class="card stat-card animate" style="padding: 3rem; background: rgba(15, 23, 42, 0.8);">
-                    <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--primary);"><i class="ph-bold ph-lightning"></i></div>
+                    <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--primary);"><i
+                            class="ph-bold ph-lightning"></i></div>
                     <div class="stat-info">
                         <h3>Speed</h3>
                         <p style="color: var(--muted);">Instant policy issuance and lightning-fast claim processing.</p>
                     </div>
                 </div>
-                <div class="card stat-card animate" style="padding: 3rem; animation-delay: 0.1s; background: rgba(15, 23, 42, 0.8);">
-                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--secondary);"><i class="ph-bold ph-shield-star"></i></div>
+                <div class="card stat-card animate"
+                    style="padding: 3rem; animation-delay: 0.1s; background: rgba(15, 23, 42, 0.8);">
+                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--secondary);"><i
+                            class="ph-bold ph-shield-star"></i></div>
                     <div class="stat-info">
                         <h3>Security</h3>
                         <p style="color: var(--muted);">Bank-grade encryption protecting your most valuable assets.</p>
                     </div>
                 </div>
-                <div class="card stat-card animate" style="padding: 3rem; animation-delay: 0.2s; background: rgba(15, 23, 42, 0.8);">
-                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--accent);"><i class="ph-bold ph-chart-line-up"></i></div>
+                <div class="card stat-card animate"
+                    style="padding: 3rem; animation-delay: 0.2s; background: rgba(15, 23, 42, 0.8);">
+                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--accent);"><i
+                            class="ph-bold ph-chart-line-up"></i></div>
                     <div class="stat-info">
                         <h3>Transparency</h3>
                         <p style="color: var(--muted);">Real-time tracking of every claim and premium payment.</p>
@@ -70,22 +81,31 @@
                 <h2 style="font-size: 3rem; margin-bottom: 1rem;">How to Use Insurix</h2>
                 <p style="color: var(--muted); font-size: 1.25rem;">A simple, 3-step guide to securing your future.</p>
             </div>
-            
+
             <div class="grid-3">
                 <div class="card animate" style="text-align: center; padding: 3rem 2rem;">
-                    <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--primary); margin: 0 auto 1.5rem; width: 5rem; height: 5rem; font-size: 2.5rem;"><i class="ph-bold ph-user-plus"></i></div>
+                    <div class="stat-icon"
+                        style="background: rgba(59, 130, 246, 0.1); color: var(--primary); margin: 0 auto 1.5rem; width: 5rem; height: 5rem; font-size: 2.5rem;">
+                        <i class="ph-bold ph-user-plus"></i></div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">1. Create an Account</h3>
-                    <p style="color: var(--muted);">Register via the 'Customer Access' portal. Ensure you provide accurate contact and personal details for an easy onboarding process.</p>
+                    <p style="color: var(--muted);">Register via the 'Customer Access' portal. Ensure you provide
+                        accurate contact and personal details for an easy onboarding process.</p>
                 </div>
                 <div class="card animate" style="text-align: center; padding: 3rem 2rem; transition-delay: 0.1s;">
-                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--secondary); margin: 0 auto 1.5rem; width: 5rem; height: 5rem; font-size: 2.5rem;"><i class="ph-bold ph-shield-check"></i></div>
+                    <div class="stat-icon"
+                        style="background: rgba(16, 185, 129, 0.1); color: var(--secondary); margin: 0 auto 1.5rem; width: 5rem; height: 5rem; font-size: 2.5rem;">
+                        <i class="ph-bold ph-shield-check"></i></div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">2. Choose an Insurance</h3>
-                    <p style="color: var(--muted);">Explore our tailored policies on the homepage. Click 'Enroll Now' and register a nominee beneficiary to securely initialize your plan.</p>
+                    <p style="color: var(--muted);">Explore our tailored policies on the homepage. Click 'Enroll Now'
+                        and register a nominee beneficiary to securely initialize your plan.</p>
                 </div>
                 <div class="card animate" style="text-align: center; padding: 3rem 2rem; transition-delay: 0.2s;">
-                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--accent); margin: 0 auto 1.5rem; width: 5rem; height: 5rem; font-size: 2.5rem;"><i class="ph-bold ph-credit-card"></i></div>
+                    <div class="stat-icon"
+                        style="background: rgba(245, 158, 11, 0.1); color: var(--accent); margin: 0 auto 1.5rem; width: 5rem; height: 5rem; font-size: 2.5rem;">
+                        <i class="ph-bold ph-credit-card"></i></div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">3. Pay & Claim Online</h3>
-                    <p style="color: var(--muted);">Pay your policy premiums seamlessly from your dashboard. Once your policy duration concludes, you can submit a one-click maturity claim!</p>
+                    <p style="color: var(--muted);">Pay your policy premiums seamlessly from your dashboard. Once your
+                        policy duration concludes, you can submit a one-click maturity claim!</p>
                 </div>
             </div>
         </section>
@@ -93,24 +113,30 @@
         <section id="policies-section" class="container" style="padding-bottom: 10rem;">
             <div style="text-align: center; margin-bottom: 5rem;">
                 <h2 style="font-size: 3.5rem; margin-bottom: 1rem;">Available Insurance Plans</h2>
-                <p style="color: var(--muted);">Select a tailored insurance solution designed for your unique lifestyle.</p>
+                <p style="color: var(--muted);">Select a tailored insurance solution designed for your unique lifestyle.
+                </p>
             </div>
 
-            <div class="policies-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+            <div class="policies-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
                 {% if policies %}
                 {% for policy in policies %}
-                <div class="card animate" style="display: flex; flex-direction: column; gap: 1.5rem; transition: all 0.4s; background: #0f172a;">
+                <div class="card animate"
+                    style="display: flex; flex-direction: column; gap: 1.5rem; transition: all 0.4s; background: #0f172a;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                         <h3 style="font-size: 1.75rem;">{{ policy.POLICY_TYPE }}</h3>
                         {% if policy.VERIFIED_BY %}
                         <span class="badge badge-success"><i class="ph-fill ph-check-circle"></i> Verified</span>
                         {% endif %}
                     </div>
-                    <p style="font-family: monospace; color: var(--muted); font-size: 0.9rem;">#{{ policy.POLICY_ID }}</p>
-                    
-                    <div style="font-size: 3rem; font-weight: 800; color: var(--primary-light);">₹{{ policy.PREM_AMT }}<span style="font-size: 1rem; color: var(--muted); font-weight: 400;"> / year</span></div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                    <p style="font-family: monospace; color: var(--muted); font-size: 0.9rem;">#{{ policy.POLICY_ID }}
+                    </p>
+
+                    <div style="font-size: 3rem; font-weight: 800; color: var(--primary-light);">₹{{ policy.PREM_AMT
+                        }}<span style="font-size: 1rem; color: var(--muted); font-weight: 400;"> per year</span></div>
+
+                    <div
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
                         <div>
                             <p style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Coverage</p>
                             <p style="font-weight: 700; font-size: 1.1rem;">₹{{ policy.COV_AMT }}</p>
@@ -125,24 +151,29 @@
                         {% if policy.STATUS|lower == 'expired' %}
                         <button class="btn btn-secondary btn-full" disabled style="opacity: 0.4;">Expired</button>
                         {% else %}
-                        <a href="{{ url_for('take_policy', policy_id=policy.POLICY_ID) }}" class="btn btn-primary btn-full">Enroll Now</a>
+                        <a href="{{ url_for('take_policy', policy_id=policy.POLICY_ID) }}"
+                            class="btn btn-primary btn-full">Enroll Now</a>
                         {% endif %}
                     </div>
                 </div>
                 {% endfor %}
                 {% else %}
                 <div class="card" style="grid-column: 1/-1; padding: 5rem; text-align: center;">
-                    <i class="ph ph-folder-open" style="font-size: 4rem; color: var(--muted); margin-bottom: 2rem; display: block;"></i>
-                    <p style="color: var(--muted); font-size: 1.25rem;">No active policies available. Check back soon.</p>
+                    <i class="ph ph-folder-open"
+                        style="font-size: 4rem; color: var(--muted); margin-bottom: 2rem; display: block;"></i>
+                    <p style="color: var(--muted); font-size: 1.25rem;">No active policies available. Check back soon.
+                    </p>
                 </div>
                 {% endif %}
             </div>
         </section>
 
         <section class="container" style="padding-bottom: 10rem;">
-            <div class="card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(16, 185, 129, 0.02)); padding: 6rem; border-radius: 40px; text-align: center; border: 1px solid var(--border);">
+            <div class="card"
+                style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(16, 185, 129, 0.02)); padding: 6rem; border-radius: 40px; text-align: center; border: 1px solid var(--border);">
                 <h2 style="font-size: 4rem; margin-bottom: 1.5rem;">Ready to Begin?</h2>
-                <p style="font-size: 1.4rem; color: var(--muted); max-width: 600px; margin: 0 auto 3rem;">Join tens of thousands of users who have secured their future with Insurix.</p>
+                <p style="font-size: 1.4rem; color: var(--muted); max-width: 600px; margin: 0 auto 3rem;">Join tens of
+                    thousands of users who have secured their future with Insurix.</p>
                 <div style="display: flex; justify-content: center; gap: 1.5rem;">
                     <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">Create Account</a>
                     <a href="mailto:support@insurix.com" class="btn btn-secondary btn-large">Contact Sales</a>
@@ -157,7 +188,8 @@
                 <i class="ph-bold ph-shield-checkered logo-icon" style="color: var(--primary); font-size: 1.5rem;"></i>
                 <span class="logo-text" style="font-size: 1.5rem; color: var(--text);">Insurix</span>
             </div>
-            <p style="color: var(--muted);">&copy; 2026 Insurix Infrastructure. Providing elite protection worldwide.</p>
+            <p style="color: var(--muted);">&copy; 2026 Insurix Infrastructure. Providing elite protection worldwide.
+            </p>
             <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; color: var(--muted);">
                 <a href="#"><i class="ph ph-twitter-logo" style="font-size: 1.5rem; color: var(--muted);"></i></a>
                 <a href="#"><i class="ph ph-instagram-logo" style="font-size: 1.5rem; color: var(--muted);"></i></a>
@@ -171,7 +203,7 @@
             const hamburger = document.querySelector('.hamburger-btn');
             const navButtons = document.querySelector('.nav-buttons');
             const sidebar = document.querySelector('.sidebar');
-            
+
             if (hamburger) {
                 hamburger.addEventListener('click', () => {
                     if (navButtons) navButtons.classList.toggle('active-mobile-nav');
@@ -181,4 +213,5 @@
         });
     </script>
 </body>
+
 </html>
