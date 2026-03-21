@@ -17,6 +17,7 @@
                 <i class="ph-bold ph-shield-checkered logo-icon" style="font-size: 1.5rem;"></i>
                 <span class="logo-text" style="font-size: 1.25rem;">Insurix</span>
             </div>
+            <button class="hamburger-btn" aria-label="Toggle Navigation"><i class="ph ph-list"></i></button>
         </header>
 
         <div style="text-align: center; margin-bottom: 4rem;">
@@ -65,7 +66,7 @@
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
                     <div>
                         <p style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Full Name</p>
-                        <p style="font-weight: 600;">{{ customer_info.FNAME }} {{ customer_info.LNAME }}</p>
+                        <p style="font-weight: 600;">{{ customer_info.FNAME }} {% if customer_info.MNAME %}{{ customer_info.MNAME }} {% endif %}{{ customer_info.LNAME }}</p>
                     </div>
                     <div>
                         <p style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Email</p>
@@ -120,10 +121,25 @@
             </div>
 
             <div style="display: flex; gap: 1.5rem;">
-                <button type="submit" class="btn btn-primary btn-full btn-large"><i class="ph-fill ph-shield-check"></i> Authorize & Activate Policy</button>
-                <a href="{{ url_for('index') }}" class="btn btn-secondary btn-large">Abandon Enrollment</a>
+                <button type="submit" class="btn btn-primary btn-full btn-large"><i class="ph-fill ph-shield-check"></i> Complete Purchase</button>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary btn-large">Cancel</a>
             </div>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger-btn');
+            const navButtons = document.querySelector('.nav-buttons');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (hamburger) {
+                hamburger.addEventListener('click', () => {
+                    if (navButtons) navButtons.classList.toggle('active-mobile-nav');
+                    if (sidebar) sidebar.classList.toggle('active-mobile-nav');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

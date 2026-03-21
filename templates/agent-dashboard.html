@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Terminal | Insurix</title>
+    <title>Agent Dashboard | Insurix</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='master.css') }}">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
@@ -14,6 +14,7 @@
                 <i class="ph-bold ph-shield-checkered logo-icon"></i>
                 <span class="logo-text">Insurix <span style="font-size: 0.8rem; font-weight: 400; color: var(--muted); text-transform: uppercase;">Agent</span></span>
             </a>
+            <button class="hamburger-btn" aria-label="Toggle Navigation"><i class="ph ph-list"></i></button>
             <div class="user-info" style="display: flex; align-items: center; gap: 1.5rem;">
                 <div style="text-align: right; border-right: 1px solid var(--border); padding-right: 1.5rem;">
                     <span style="display: block; font-weight: 700; color: var(--text);">{{ agent_name }}</span>
@@ -28,7 +29,7 @@
         <aside class="sidebar">
             <ul class="nav-menu">
                 <li class="nav-item"><a href="#" class="active" onclick="switchTab('overview')"><i class="ph-bold ph-chart-pie"></i> Performance</a></li>
-                <li class="nav-item"><a href="#" onclick="switchTab('clients')"><i class="ph-bold ph-users"></i> Client Portfolio</a></li>
+                <li class="nav-item"><a href="#" onclick="switchTab('clients')"><i class="ph-bold ph-users"></i> My Clients</a></li>
                 <li class="nav-item"><a href="#" onclick="switchTab('claims')"><i class="ph-bold ph-file-text"></i> Client Claims</a></li>
                 <li style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
                     <a href="{{ url_for('customer_register') }}" class="btn btn-primary btn-sm" style="width: 100%; color: var(--text);"><i class="ph-bold ph-user-plus"></i> New Enrollment</a>
@@ -39,7 +40,7 @@
         <main class="main-content animate">
             <!-- Performance Section -->
             <section id="overview-section" class="tab-section">
-                <h1 style="font-size: 2.5rem; margin-bottom: 2.5rem;">Portfolio Performance</h1>
+                <h1 style="font-size: 2.5rem; margin-bottom: 2.5rem;">Agent Performance</h1>
                 <div class="stats-grid">
                     <div class="card stat-card">
                         <div class="stat-icon" style="color: var(--primary);"><i class="ph-bold ph-users-three"></i></div>
@@ -82,7 +83,7 @@
             <!-- Clients Section -->
             <section id="clients-section" class="tab-section" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
-                    <h1 style="font-size: 2.5rem;">Client Portfolio</h1>
+                    <h1 style="font-size: 2.5rem;">My Clients</h1>
                     <a href="{{ url_for('customer_register') }}" class="btn btn-primary btn-sm"><i class="ph ph-plus"></i> Add Client</a>
                 </div>
                 <div class="table-container">
@@ -102,7 +103,7 @@
                             {% for c in clients %}
                             <tr>
                                 <td style="font-weight: 700;">{{ c.CUST_ID }}</td>
-                                <td style="font-weight: 600;">{{ c.FNAME }} {{ c.LNAME }}</td>
+                                <td style="font-weight: 600;">{{ c.FNAME }} {% if c.MNAME %}{{ c.MNAME }} {% endif %}{{ c.LNAME }}</td>
                                 <td>{{ c.POLICY_TYPE }}</td>
                                 <td style="font-weight: 700; color: var(--primary-light);">₹{{ c.PREM_AMT }}</td>
                                 <td><span class="badge badge-success">Active</span></td>
@@ -141,7 +142,7 @@
                             {% for c in claims %}
                             <tr>
                                 <td style="font-weight: 700;">{{ c.CLAIM_ID }}</td>
-                                <td>{{ c.FNAME }} {{ c.LNAME }}</td>
+                                <td>{{ c.FNAME }} {% if c.MNAME %}{{ c.MNAME }} {% endif %}{{ c.LNAME }}</td>
                                 <td>{{ c.POLICY_TYPE }}</td>
                                 <td style="font-weight: 700; color: var(--danger);">₹{{ c.CLAIM_AMT }}</td>
                                 <td><span class="badge badge-warning">{{ c.CLAIM_STATUS }}</span></td>
@@ -150,7 +151,7 @@
                             {% endfor %}
                             {% else %}
                             <tr>
-                                <td colspan="6" style="text-align: center; padding: 5rem; color: var(--muted);">No pending client claims detected.</td>
+                                <td colspan="6" style="text-align: center; padding: 5rem; color: var(--muted);">No pending Client Claims detected.</td>
                             </tr>
                             {% endif %}
                         </tbody>
@@ -164,8 +165,8 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div style="position: fixed; bottom: 2rem; right: 2rem; z-index: 3000; padding: 1.5rem 2.5rem; border-radius: 16px; background: var(--card-bg); border: 1px solid {% if category == 'error' %}var(--danger){% else %}var(--primary){% endif %}; color: var(--text); display: flex; align-items: center; gap: 1rem; box-shadow: var(--shadow-xl); animation: fadeIn 0.4s ease-out;">
-            <i class="ph-bold {% if category == 'error' %}ph-warning-circle{% else %}ph-check-circle{% endif %}" style="font-size: 1.5rem; color: {% if category == 'error' %}var(--danger){% else %}var(--primary){% endif %};"></i>
+          <div class="flash-overlay {% if category == 'error' %}flash-error{% else %}flash-success{% endif %}">
+            <i class="ph-bold {% if category == 'error' %}ph-warning-circle{% else %}ph-check-circle{% endif %} flash-icon"></i>
             <span>{{ message }}</span>
           </div>
         {% endfor %}
@@ -193,6 +194,21 @@
                 setTimeout(() => el.remove(), 400);
             });
         }, 5000);
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger-btn');
+            const navButtons = document.querySelector('.nav-buttons');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (hamburger) {
+                hamburger.addEventListener('click', () => {
+                    if (navButtons) navButtons.classList.toggle('active-mobile-nav');
+                    if (sidebar) sidebar.classList.toggle('active-mobile-nav');
+                });
+            }
+        });
     </script>
 </body>
 </html>

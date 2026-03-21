@@ -14,8 +14,9 @@
                 <i class="ph-bold ph-shield-checkered logo-icon"></i>
                 <span class="logo-text">Insurix</span>
             </a>
+            <button class="hamburger-btn" aria-label="Toggle Navigation"><i class="ph ph-list"></i></button>
             <div class="nav-buttons">
-                <a href="{{ url_for('index') }}" class="btn btn-secondary">System Overview</a>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Dashboard Home</a>
                 <a href="{{ url_for('customer_login') }}" class="btn btn-primary">Join Ecosystem</a>
             </div>
         </div>
@@ -73,5 +74,20 @@
             <p class="footer-text">© 2026 Insurix Network Infrastructure. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger-btn');
+            const navButtons = document.querySelector('.nav-buttons');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (hamburger) {
+                hamburger.addEventListener('click', () => {
+                    if (navButtons) navButtons.classList.toggle('active-mobile-nav');
+                    if (sidebar) sidebar.classList.toggle('active-mobile-nav');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
