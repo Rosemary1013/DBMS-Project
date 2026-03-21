@@ -127,7 +127,12 @@
                                 <h3 style="font-size: 1.5rem; margin-bottom: 0.25rem;">{{ p.POLICY_TYPE }}</h3>
                                 <p style="font-family: monospace; color: var(--muted); font-size: 0.8rem;">#{{ p.POLICY_ID }}</p>
                             </div>
-                            <span class="badge badge-primary">Active Policy</span>
+                            
+                            {% if p.IS_SETTLED %}
+                            <span class="badge badge-success"><i class="ph-fill ph-check-circle" style="margin-right: 0.2rem;"></i> Settled</span>
+                            {% else %}
+                            <span class="badge badge-primary">Active</span>
+                            {% endif %}
                         </div>
                         
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem; background: rgba(15, 23, 42, 0.3); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">

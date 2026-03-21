@@ -103,12 +103,25 @@
                             {% for c in clients %}
                             <tr>
                                 <td style="font-weight: 700;">{{ c.CUST_ID }}</td>
-                                <td style="font-weight: 600;">{{ c.FNAME }} {% if c.MNAME %}{{ c.MNAME }} {% endif %}{{ c.LNAME }}</td>
-                                <td>{{ c.POLICY_TYPE }}</td>
-                                <td style="font-weight: 700; color: var(--primary-light);">₹{{ c.PREM_AMT }}</td>
-                                <td><span class="badge badge-success">Active</span></td>
+                                <td>
+                                    <div style="font-weight: 600; color: var(--text);">{{ c.FNAME }} {% if c.MNAME %}{{ c.MNAME }} {% endif %}{{ c.LNAME }}</div>
+                                    <div style="font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem;">
+                                        <i class="ph ph-envelope"></i> {{ c.EMAIL }} | <i class="ph ph-phone"></i> {{ c.PHONE }}
+                                    </div>
+                                </td>
+                                <td>{{ c.POLICY_TYPE if c.POLICY_ID else 'No Policy' }}</td>
+                                <td style="font-weight: 700; color: var(--primary-light);">{{ '₹' + (c.PREM_AMT|string) if c.PREM_AMT else 'N/A' }}</td>
+                                <td>
+                                    {% if c.IS_SETTLED %}
+                                    <span class="badge badge-success"><i class="ph-fill ph-check-circle"></i> Settled</span>
+                                    {% elif c.POLICY_ID %}
+                                    <span class="badge badge-primary">Active</span>
+                                    {% else %}
+                                    <span class="badge badge-secondary" style="opacity: 0.6;">Inactive</span>
+                                    {% endif %}
+                                </td>
                                 <td style="text-align: right;">
-                                    <a href="{{ url_for('take_policy', policy_id=c.POLICY_ID, cust_id=c.CUST_ID) }}" class="btn btn-secondary btn-sm"><i class="ph ph-shield-plus"></i> Renew/Add</a>
+                                    <a href="{{ url_for('take_policy', policy_id=c.POLICY_ID or '', cust_id=c.CUST_ID) }}" class="btn btn-secondary btn-sm"><i class="ph ph-shield-plus"></i> Details</a>
                                 </td>
                             </tr>
                             {% endfor %}

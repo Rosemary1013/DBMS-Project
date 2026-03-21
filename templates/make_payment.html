@@ -53,13 +53,118 @@
         <form method="POST">
             <input type="hidden" name="amount" value="{{ policy.PREM_AMT }}">
             
-            <div class="form-group">
-                <label class="label">Secure Payment Method</label>
-                <select name="pay_mode" class="input" style="appearance: auto; color: var(--text); background: var(--card-bg);" required>
-                    <option value="Online">Elite Online Banking</option>
-                    <option value="Card">Master/Visa Credit/Debit</option>
-                    <option value="UPI">Secure UPI Node</option>
-                </select>
+            <div class="form-group" style="text-align: left; margin-bottom: 2rem;">
+                <label class="label">Choose Secure Payment Method</label>
+                <div class="radio-options">
+                    <label class="radio-card">
+                        <input type="radio" name="pay_mode" value="Online" required checked>
+                        <div class="radio-card-content">
+                            <i class="ph-fill ph-bank radio-icon"></i>
+                            <div>
+                                <span class="radio-title">Elite Online Banking</span>
+                                <span class="radio-desc">Direct institutional wire transfer</span>
+                            </div>
+                            <div style="margin-left: auto; width: 1.5rem; height: 1.5rem; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;" class="radio-check"></div>
+                        </div>
+                    </label>
+
+                    <label class="radio-card">
+                        <input type="radio" name="pay_mode" value="Card" required>
+                        <div class="radio-card-content">
+                            <i class="ph-fill ph-credit-card radio-icon"></i>
+                            <div>
+                                <span class="radio-title">Credit / Debit Card</span>
+                                <span class="radio-desc">Mastercard, Visa, and Select</span>
+                            </div>
+                            <div style="margin-left: auto; width: 1.5rem; height: 1.5rem; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;" class="radio-check"></div>
+                        </div>
+                    </label>
+
+                    <label class="radio-card">
+                        <input type="radio" name="pay_mode" value="UPI" required>
+                        <div class="radio-card-content">
+                            <i class="ph-fill ph-qr-code radio-icon"></i>
+                            <div>
+                                <span class="radio-title">Secure UPI Node</span>
+                                <span class="radio-desc">Instant unified protocol transfer</span>
+                            </div>
+                            <div style="margin-left: auto; width: 1.5rem; height: 1.5rem; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;" class="radio-check"></div>
+                        </div>
+                    </label>
+                </div>
+                <style>
+                    .radio-options {
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        gap: 1rem;
+                        margin-bottom: 2rem;
+                    }
+                    .radio-card {
+                        position: relative;
+                        cursor: pointer;
+                        display: block;
+                    }
+                    .radio-card input {
+                        position: absolute;
+                        opacity: 0;
+                        cursor: pointer;
+                        height: 0;
+                        width: 0;
+                    }
+                    .radio-card-content {
+                        background: var(--input-bg);
+                        border: 1px solid var(--border);
+                        border-radius: 16px;
+                        padding: 1.25rem 1.5rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 1.25rem;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    }
+                    .radio-card:hover .radio-card-content {
+                        border-color: rgba(59, 130, 246, 0.4);
+                        background: rgba(30, 41, 59, 0.6);
+                    }
+                    .radio-card input:checked ~ .radio-card-content {
+                        border-color: var(--primary);
+                        background: rgba(59, 130, 246, 0.1);
+                        box-shadow: 0 4px 14px rgba(59, 130, 246, 0.2);
+                    }
+                    .radio-icon {
+                        font-size: 1.75rem;
+                        color: var(--muted);
+                        transition: color 0.3s;
+                    }
+                    .radio-card input:checked ~ .radio-card-content .radio-icon {
+                        color: var(--primary);
+                    }
+                    .radio-title {
+                        font-weight: 600;
+                        color: var(--text);
+                        margin-bottom: 0.15rem;
+                        font-size: 1.05rem;
+                        display: block;
+                    }
+                    .radio-desc {
+                        font-size: 0.85rem;
+                        color: var(--muted);
+                        font-weight: 400;
+                    }
+                    /* Custom Radio Checks */
+                    .radio-check {
+                        transition: all 0.3s;
+                    }
+                    .radio-card input:checked ~ .radio-card-content .radio-check {
+                        border-color: var(--primary);
+                        background-color: var(--primary);
+                    }
+                    .radio-card input:checked ~ .radio-card-content .radio-check::after {
+                        content: '✓'; /* Checkmark */
+                        color: white;
+                        font-size: 0.8rem;
+                        font-weight: bold;
+                    }
+                </style>
             </div>
 
             <button type="submit" class="btn btn-primary btn-full btn-large" style="margin-top: 1.5rem;">

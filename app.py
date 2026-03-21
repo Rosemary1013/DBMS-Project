@@ -999,6 +999,21 @@ def agent_dashboard():
             dur = format_duration(c.get('DURATION'))
             c['DURATION_DISPLAY'] = dur['text']
             c['DURATION_YEARS'] = dur['years']
+            
+            # Fetch latest claim for this specific policy/customer combination
+            if c['POLICY_ID']:
+                cursor.execute("""
+                    SELECT cl.CLAIM_STATUS 
+                    FROM claim cl 
+                    JOIN cust_claim cc ON cl.CLAIM_ID = cc.CLAIM_ID 
+                    WHERE cc.POLICY_ID = %s AND cc.CUST_ID = %s
+                    ORDER BY cl.CLAIM_DATE DESC LIMIT 1
+                """, (c['POLICY_ID'], c['CUST_ID']))
+                latest = cursor.fetchone()
+                c['CLAIM_STATUS'] = latest['CLAIM_STATUS'] if latest else None
+                c['IS_SETTLED'] = c['CLAIM_STATUS'] in ['Success', 'Settled']
+            else:
+                c['IS_SETTLED'] = False
         
         stats = {
             'total_clients': len(total_clients_set),
