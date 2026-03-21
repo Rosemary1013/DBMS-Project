@@ -266,6 +266,13 @@ def admin_claim_details(claim_id):
             db.close()
             return f"Claim {claim_id} not found or data mismatch. Check if customer is linked to this policy.", 404
             
+        # Get full policy details
+        cursor.execute("SELECT * FROM policy WHERE POLICY_ID = %s", (claim['POLICY_ID'],))
+        policy = cursor.fetchone()
+        
+        # Get nominee details
+        cursor.execute("SELECT * FROM nominee WHERE CUST_ID = %s AND POLICY_ID = %s", (claim['CUST_ID'], claim['POLICY_ID']))
+        nominee = cursor.fetchone()
         # Get payment history (only verified payments as per admin_verify_pay)
         cursor.execute("""
             SELECT p.* FROM payment p
@@ -278,7 +285,7 @@ def admin_claim_details(claim_id):
         
         cursor.close()
         db.close()
-        return render_template('admin_claim_details.html', claim=claim, payments=payments)
+        return render_template('admin_claim_details.html', claim=claim, payments=payments, nominee=nominee, policy=policy)
     except Exception as e:
         return f"Error: {e}"
 
@@ -483,9 +490,9 @@ def customer_dashboard():
         policies = cursor.fetchall()
         
         # Calculate stats and format duration
+        stats['total_coverage'] = 0
+        stats['monthly_premium'] = 0
         for p in policies:
-            stats['total_coverage'] += p['COV_AMT']
-            stats['monthly_premium'] += p['PREM_AMT']
             # Convert DURATION to display format
             dur = format_duration(p['DURATION'])
             p['DURATION_DISPLAY'] = dur['text']
@@ -501,6 +508,11 @@ def customer_dashboard():
             """, (p['POLICY_ID'],))
             latest_claim = cursor.fetchone()
             p['LATEST_CLAIM_STATUS'] = latest_claim['CLAIM_STATUS'] if latest_claim else None
+            p['IS_SETTLED'] = p['LATEST_CLAIM_STATUS'] in ['Success', 'Settled']
+            
+            if not p['IS_SETTLED']:
+                stats['total_coverage'] += p['COV_AMT']
+                stats['monthly_premium'] += p['PREM_AMT']
             
             # Check if payment is done
             cursor.execute("""

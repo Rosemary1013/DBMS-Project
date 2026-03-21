@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Terminal | Insurix</title>
+    <title>Agent Dashboard | Insurix</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='master.css') }}">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
@@ -29,7 +29,7 @@
         <aside class="sidebar">
             <ul class="nav-menu">
                 <li class="nav-item"><a href="#" class="active" onclick="switchTab('overview')"><i class="ph-bold ph-chart-pie"></i> Performance</a></li>
-                <li class="nav-item"><a href="#" onclick="switchTab('clients')"><i class="ph-bold ph-users"></i> Client Portfolio</a></li>
+                <li class="nav-item"><a href="#" onclick="switchTab('clients')"><i class="ph-bold ph-users"></i> My Clients</a></li>
                 <li class="nav-item"><a href="#" onclick="switchTab('claims')"><i class="ph-bold ph-file-text"></i> Client Claims</a></li>
                 <li style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
                     <a href="{{ url_for('customer_register') }}" class="btn btn-primary btn-sm" style="width: 100%; color: var(--text);"><i class="ph-bold ph-user-plus"></i> New Enrollment</a>
@@ -40,7 +40,7 @@
         <main class="main-content animate">
             <!-- Performance Section -->
             <section id="overview-section" class="tab-section">
-                <h1 style="font-size: 2.5rem; margin-bottom: 2.5rem;">Portfolio Performance</h1>
+                <h1 style="font-size: 2.5rem; margin-bottom: 2.5rem;">Agent Performance</h1>
                 <div class="stats-grid">
                     <div class="card stat-card">
                         <div class="stat-icon" style="color: var(--primary);"><i class="ph-bold ph-users-three"></i></div>
@@ -83,7 +83,7 @@
             <!-- Clients Section -->
             <section id="clients-section" class="tab-section" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
-                    <h1 style="font-size: 2.5rem;">Client Portfolio</h1>
+                    <h1 style="font-size: 2.5rem;">My Clients</h1>
                     <a href="{{ url_for('customer_register') }}" class="btn btn-primary btn-sm"><i class="ph ph-plus"></i> Add Client</a>
                 </div>
                 <div class="table-container">
@@ -151,7 +151,7 @@
                             {% endfor %}
                             {% else %}
                             <tr>
-                                <td colspan="6" style="text-align: center; padding: 5rem; color: var(--muted);">No pending client claims detected.</td>
+                                <td colspan="6" style="text-align: center; padding: 5rem; color: var(--muted);">No pending Client Claims detected.</td>
                             </tr>
                             {% endif %}
                         </tbody>

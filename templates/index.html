@@ -16,8 +16,9 @@
             </a>
             <button class="hamburger-btn" aria-label="Toggle Navigation"><i class="ph ph-list"></i></button>
             <div class="nav-buttons">
+                <a href="#guidelines" class="btn btn-secondary btn-sm"><i class="ph ph-book-open"></i> How It Works</a>
                 <a href="{{ url_for('customer_login') }}" class="btn btn-secondary btn-sm">Customer Access</a>
-                <a href="{{ url_for('agent_login') }}" class="btn btn-secondary btn-sm">Agent Gate</a>
+                <a href="{{ url_for('agent_login') }}" class="btn btn-secondary btn-sm">Agent Access</a>
                 <a href="{{ url_for('admin_login') }}" class="btn btn-primary btn-sm">Admin Portal</a>
             </div>
         </div>
@@ -28,7 +29,7 @@
             <div class="container">
                 <h1 class="hero-title" style="font-size: 5rem; max-width: 900px; margin: 0 auto 2rem;">Secure Your <span>Legacy</span> with Confidence.</h1>
                 <p class="hero-description" style="font-size: 1.4rem; color: var(--muted); max-width: 700px; margin: 0 auto 3rem;">
-                    Insurix is the elite standard in digital insurance management. Experience absolute clarity in policies, claims, and protection.
+                    Insurix is the Simple digital insurance management. Experience absolute clarity in policies, claims, and protection.
                 </p>
                 <div class="hero-buttons">
                     <a href="{{ url_for('customer_login') }}" class="btn btn-primary btn-large">Get Protected Now <i class="ph ph-arrow-right"></i></a>
@@ -63,9 +64,35 @@
             </div>
         </section>
 
+        <!-- Guidelines Section -->
+        <section id="guidelines" class="container" style="padding-bottom: 10rem;">
+            <div style="text-align: center; margin-bottom: 4rem;">
+                <h2 style="font-size: 3rem; margin-bottom: 1rem;">How to Use Insurix</h2>
+                <p style="color: var(--muted); font-size: 1.25rem;">A simple, 3-step guide to securing your future.</p>
+            </div>
+            
+            <div class="grid-3">
+                <div class="card animate" style="text-align: center; padding: 3rem 2rem;">
+                    <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--primary); margin: 0 auto 1.5rem; width: 5rem; height: 5rem; font-size: 2.5rem;"><i class="ph-bold ph-user-plus"></i></div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">1. Create an Account</h3>
+                    <p style="color: var(--muted);">Register via the 'Customer Access' portal. Ensure you provide accurate contact and personal details for an easy onboarding process.</p>
+                </div>
+                <div class="card animate" style="text-align: center; padding: 3rem 2rem; transition-delay: 0.1s;">
+                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--secondary); margin: 0 auto 1.5rem; width: 5rem; height: 5rem; font-size: 2.5rem;"><i class="ph-bold ph-shield-check"></i></div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">2. Choose an Insurance</h3>
+                    <p style="color: var(--muted);">Explore our tailored policies on the homepage. Click 'Enroll Now' and register a nominee beneficiary to securely initialize your plan.</p>
+                </div>
+                <div class="card animate" style="text-align: center; padding: 3rem 2rem; transition-delay: 0.2s;">
+                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--accent); margin: 0 auto 1.5rem; width: 5rem; height: 5rem; font-size: 2.5rem;"><i class="ph-bold ph-credit-card"></i></div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">3. Pay & Claim Online</h3>
+                    <p style="color: var(--muted);">Pay your policy premiums seamlessly from your dashboard. Once your policy duration concludes, you can submit a one-click maturity claim!</p>
+                </div>
+            </div>
+        </section>
+
         <section id="policies-section" class="container" style="padding-bottom: 10rem;">
             <div style="text-align: center; margin-bottom: 5rem;">
-                <h2 style="font-size: 3.5rem; margin-bottom: 1rem;">Premier Protection Plans</h2>
+                <h2 style="font-size: 3.5rem; margin-bottom: 1rem;">Available Insurance Plans</h2>
                 <p style="color: var(--muted);">Select a tailored insurance solution designed for your unique lifestyle.</p>
             </div>
 

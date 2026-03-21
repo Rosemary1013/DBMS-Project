@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin High Command | Insurix</title>
+    <title>Admin Portal | Insurix</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='master.css') }}">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
@@ -38,7 +38,7 @@
         <main class="main-content animate">
             <!-- Analytics Overview -->
             <section id="analytics-section" class="tab-section">
-                <h1 style="font-size: 2.5rem; margin-bottom: 2.5rem;">Core Metrics & Performance</h1>
+                <h1 style="font-size: 2.5rem; margin-bottom: 2.5rem;">Key Metrics</h1>
                 <div class="stats-grid">
                     <div class="card stat-card">
                         <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--primary);"><i class="ph-bold ph-users"></i></div>
@@ -72,7 +72,7 @@
 
                 <div class="grid-2">
                     <div class="card">
-                        <h3 style="margin-bottom: 2rem;">System Status</h3>
+                        <h3 style="margin-bottom: 2rem;">System Health</h3>
                         <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                             <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.25rem; background: rgba(15, 23, 42, 0.5); border-radius: 12px; border: 1px solid var(--border);">
                                 <p style="font-weight: 600;">Database Engine</p>
@@ -99,7 +99,7 @@
 
             <!-- Pending Claims -->
             <section id="claims-section" class="tab-section" style="display: none;">
-                <h1 style="font-size: 2.5rem; margin-bottom: 2.5rem;">Claims Pending Decision</h1>
+                <h1 style="font-size: 2.5rem; margin-bottom: 2.5rem;">Claims Pending Review</h1>
                 <div class="table-container">
                     <table>
                         <thead>
@@ -185,7 +185,7 @@
 
             <!-- Policy Management -->
             <section id="policies-section" class="tab-section" style="display: none;">
-                <h1 style="font-size: 2.5rem; margin-bottom: 2.5rem;">Policy Issuance Verification</h1>
+                <h1 style="font-size: 2.5rem; margin-bottom: 2.5rem;">Policy Verifications</h1>
                 <div class="grid-2">
                     {% if all_policies %}
                     {% for p in all_policies %}

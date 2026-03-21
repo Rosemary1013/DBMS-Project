@@ -12,7 +12,7 @@
         <header style="margin-bottom: 3rem; display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Policy Audit</h1>
-                <p style="color: var(--muted);">Comprehensive review of your protection profile #{{ policy.POLICY_ID }}</p>
+                <p style="color: var(--muted);">Comprehensive review of your insurance policy #{{ policy.POLICY_ID }}</p>
             </div>
             <a href="{{ url_for('customer_dashboard') }}" class="btn btn-secondary">
                 <i class="ph ph-arrow-left"></i> Back to Dashboard
@@ -93,7 +93,7 @@
         <!-- Payment History -->
         <div class="table-container" style="margin-bottom: 2rem;">
             <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="font-size: 1.25rem;">Transaction Ledger</h2>
+                <h2 style="font-size: 1.25rem;">Payment History</h2>
                 <span style="color: var(--muted); font-size: 0.85rem;">Total Payments: {{ payments|length }}</span>
             </div>
             <table>
