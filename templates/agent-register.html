@@ -49,7 +49,10 @@
 
             <div class="form-group">
                 <label class="label">Terminal Password</label>
-                <input type="password" name="password" class="input" placeholder="Secure alphanumeric" maxlength="15" required>
+                <div style="position: relative;">
+                    <input type="password" id="agent_reg_password" name="password" class="input" placeholder="Secure alphanumeric" maxlength="15" required style="padding-right: 3rem;">
+                    <i class="ph-bold ph-eye" onclick="const p=document.getElementById('agent_reg_password');if(p.type==='password'){p.type='text';this.classList.replace('ph-eye','ph-eye-slash');this.style.color='var(--accent)';}else{p.type='password';this.classList.replace('ph-eye-slash','ph-eye');this.style.color='var(--primary-light)';}" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: var(--primary-light); font-size: 1.25rem; cursor: pointer; transition: all 0.3s;" title="Toggle Password Visibility"></i>
+                </div>
             </div>
 
             <button type="submit" class="btn btn-primary btn-full btn-large" style="margin-top: 2rem;">Authorize Enlistment</button>
