@@ -11,7 +11,7 @@ app.secret_key = os.urandom(24)  # Change this to a fixed secret in production
 DB_CONFIG = {
     'host': 'localhost',
     'user': 'root',         # ← your MySQL username
-    'password': 'rosemary@2006',  # ← your MySQL password
+    'password': 'password',  # ← your MySQL password
     'database': 'policy_claim'  # ← your database name
 }
 
