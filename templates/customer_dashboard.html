@@ -18,7 +18,7 @@
             <div class="user-info" style="display: flex; align-items: center; gap: 1.5rem;">
                 <div style="text-align: right; border-right: 1px solid var(--border); padding-right: 1.5rem;">
                     <span style="display: block; font-weight: 700; color: var(--text);">{{ customer_name }}</span>
-                    <span style="display: block; font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Standard Authorized User</span>
+                    <span style="display: block; font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Authorized User</span>
                 </div>
                 <a href="{{ url_for('customer_logout') }}" class="btn btn-secondary btn-sm"><i class="ph-bold ph-sign-out"></i> Logout</a>
             </div>
@@ -62,7 +62,7 @@
                     <div class="card stat-card">
                         <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--accent);"><i class="ph-bold ph-file-text"></i></div>
                         <div class="stat-info">
-                            <h3>Open Requests</h3>
+                            <h3>Claims</h3>
                             <p class="stat-value">{{ stats.total_claims }}</p>
                         </div>
                     </div>
@@ -151,10 +151,25 @@
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
                             <a href="{{ url_for('policy_details', policy_id=p.POLICY_ID) }}" class="btn btn-secondary btn-sm"><i class="ph ph-info"></i> Audit</a>
+                            
+                            {% if p.IS_SETTLED %}
+                            <button class="btn btn-secondary btn-sm disabled-action" disabled style="opacity: 0.5;"><i class="ph ph-check-circle"></i> Settled</button>
+                            <button class="btn btn-secondary btn-sm disabled-action" disabled style="opacity: 0.5; width: 100%;"><i class="ph ph-lock"></i> Finalized</button>
+                            {% else %}
                             <a href="{{ url_for('make_payment', policy_id=p.POLICY_ID) }}" class="btn btn-primary btn-sm"><i class="ph ph-credit-card"></i> Pay Now</a>
                             <form action="{{ url_for('request_claim', policy_id=p.POLICY_ID) }}" method="POST" style="flex: 1;">
-                                <button type="submit" class="btn btn-secondary btn-sm" style="width: 100%;"><i class="ph ph-file-plus"></i> Claim</button>
+                                {% if not p.IS_MATURE or not p.HAS_PAYMENT %}
+                                <button type="button" class="btn btn-secondary btn-sm disabled-action" disabled style="opacity: 0.4; width: 100%;" 
+                                        title="{% if not p.HAS_PAYMENT %}Payment Required{% else %}Not Matured{% endif %}">
+                                    <i class="ph ph-clock-countdown"></i> Claim 
+                                </button>
+                                {% else %}
+                                <button type="submit" class="btn btn-secondary btn-sm" style="width: 100%;">
+                                    <i class="ph ph-file-plus"></i> Claim
+                                </button>
+                                {% endif %}
                             </form>
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
@@ -283,6 +298,12 @@
     {% endwith %}
 
     <script>
+        // Force the page to scroll to the top on load/refresh
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-section').forEach(section => {
                 section.style.display = 'none';

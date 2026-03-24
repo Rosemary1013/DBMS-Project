@@ -40,8 +40,11 @@
         <main class="main-content animate">
             <!-- Performance Section -->
             <section id="overview-section" class="tab-section">
-                <h1 style="font-size: 2.5rem; margin-bottom: 2.5rem;">Agent Performance</h1>
-                <div class="stats-grid">
+                <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Agent Performance</h1>
+                <p style="color: var(--muted); margin-bottom: 2.5rem; font-size: 0.95rem;">Live summary of your portfolio and client activity.</p>
+
+                <!-- Top Stats Grid -->
+                <div class="stats-grid" style="margin-bottom: 2rem;">
                     <div class="card stat-card">
                         <div class="stat-icon" style="color: var(--primary);"><i class="ph-bold ph-users-three"></i></div>
                         <div class="stat-info">
@@ -50,32 +53,65 @@
                         </div>
                     </div>
                     <div class="card stat-card">
-                        <div class="stat-icon" style="color: var(--secondary);"><i class="ph-bold ph-trend-up"></i></div>
+                        <div class="stat-icon" style="color: var(--secondary);"><i class="ph-bold ph-shield-checkered"></i></div>
                         <div class="stat-info">
                             <h3>Active Policies</h3>
                             <p class="stat-value">{{ stats.active_policies }}</p>
                         </div>
                     </div>
                     <div class="card stat-card">
-                        <div class="stat-icon" style="color: var(--accent);"><i class="ph-bold ph-currency-circle-dollar"></i></div>
+                        <div class="stat-icon" style="color: var(--accent);"><i class="ph-bold ph-file-text"></i></div>
                         <div class="stat-info">
-                            <h3>Portfolio Value</h3>
-                            <p class="stat-value">₹{{ stats.total_value }}</p>
+                            <h3>Pending Claims</h3>
+                            <p class="stat-value">{{ stats.pending_claims }}</p>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon" style="color: #10b981;"><i class="ph-bold ph-check-circle"></i></div>
+                        <div class="stat-info">
+                            <h3>Settled Claims</h3>
+                            <p class="stat-value">{{ stats.settled_claims }}</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid-2">
+                <!-- Policy Type Breakdown + Recent Enrollments -->
+                <div class="grid-2" style="gap: 1.5rem;">
+                    <!-- Policy Type Breakdown -->
                     <div class="card">
-                        <h3 style="margin-bottom: 2rem;">Market Insights</h3>
-                        <p style="color: var(--muted); line-height: 1.8;">Your portfolio has grown by 12% this quarter. Most new enrollments are directed towards Life and Health protection nodes.</p>
-                    </div>
-                    <div class="card" style="background: rgba(16, 185, 129, 0.02); border-color: rgba(16, 185, 129, 0.2);">
-                        <h3 style="margin-bottom: 1rem;">Target Reached</h3>
-                        <div style="height: 12px; background: rgba(0,0,0,0.3); border-radius: 6px; overflow: hidden; margin: 1.5rem 0;">
-                            <div style="width: 85%; height: 100%; background: var(--secondary);"></div>
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem;">Policy Type Breakdown</h3>
+                        {% if stats.policy_types %}
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            {% for pt in stats.policy_types %}
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(255,255,255,0.02); border-radius: 10px; border: 1px solid var(--border);">
+                                <span style="font-weight: 600;">{{ pt.POLICY_TYPE }}</span>
+                                <span style="background: rgba(59,130,246,0.15); color: var(--primary-light); font-weight: 700; padding: 0.2rem 0.75rem; border-radius: 999px; font-size: 0.9rem;">{{ pt.cnt }} polic{{ 'y' if pt.cnt == 1 else 'ies' }}</span>
+                            </div>
+                            {% endfor %}
                         </div>
-                        <p style="font-size: 0.85rem; color: var(--muted);">85% of monthly enrollment target achieved.</p>
+                        {% else %}
+                        <p style="color: var(--muted); font-size: 0.9rem;">No policies enrolled yet.</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Recent Enrollments -->
+                    <div class="card">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem;">Recent Enrollments</h3>
+                        {% if stats.recent_enrollments %}
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            {% for e in stats.recent_enrollments %}
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(255,255,255,0.02); border-radius: 10px; border: 1px solid var(--border);">
+                                <div>
+                                    <span style="display: block; font-weight: 700; font-size: 0.95rem;">{{ e.FNAME }} {{ e.LNAME }}</span>
+                                    <span style="font-size: 0.78rem; color: var(--muted);">{{ e.POLICY_TYPE or 'No policy yet' }}</span>
+                                </div>
+                                <span style="font-size: 0.8rem; color: var(--muted); white-space: nowrap;">{{ e.TAKEN_DATE or '—' }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p style="color: var(--muted); font-size: 0.9rem;">No recent enrollments found.</p>
+                        {% endif %}
                     </div>
                 </div>
             </section>
@@ -108,7 +144,11 @@
                                 <td style="font-weight: 700; color: var(--primary-light);">₹{{ c.PREM_AMT }}</td>
                                 <td><span class="badge badge-success">Active</span></td>
                                 <td style="text-align: right;">
+                                    {% if c.POLICY_ID %}
                                     <a href="{{ url_for('take_policy', policy_id=c.POLICY_ID, cust_id=c.CUST_ID) }}" class="btn btn-secondary btn-sm"><i class="ph ph-shield-plus"></i> Renew/Add</a>
+                                    {% else %}
+                                    <a href="{{ url_for('view_policies', cust_id=c.CUST_ID) }}" class="btn btn-primary btn-sm"><i class="ph ph-plus"></i> Select Policy</a>
+                                    {% endif %}
                                 </td>
                             </tr>
                             {% endfor %}
@@ -174,6 +214,10 @@
     {% endwith %}
 
     <script>
+        // Force the page to scroll to the top on load/refresh
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.scrollTo(0, 0);
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-section').forEach(section => {
                 section.style.display = 'none';

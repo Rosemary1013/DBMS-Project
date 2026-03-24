@@ -28,7 +28,7 @@
         </div>
         
         <div style="display: flex; flex-direction: column; gap: 1rem;">
-            <a href="{{ url_for('index') }}" class="btn btn-primary btn-large btn-full"><i class="ph ph-shield-check"></i> Assign Protection Plan</a>
+            <a href="{{ url_for('view_policies', cust_id=customer.CUST_ID) }}" class="btn btn-primary btn-large btn-full"><i class="ph ph-shield-check"></i> Assign Protection Plan</a>
             <a href="{{ url_for('agent_dashboard') }}" class="btn btn-secondary btn-full">Return to Agent Dashboard</a>
         </div>
         

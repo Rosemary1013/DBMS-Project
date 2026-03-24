@@ -21,7 +21,7 @@
                 <a href="#guidelines" class="btn btn-secondary btn-sm"><i class="ph ph-book-open"></i> How It Works</a>
                 <a href="{{ url_for('customer_login') }}" class="btn btn-secondary btn-sm">Customer Access</a>
                 <a href="{{ url_for('agent_login') }}" class="btn btn-secondary btn-sm">Agent Access</a>
-                <a href="{{ url_for('admin_login') }}" class="btn btn-primary btn-sm">Admin Portal</a>
+                <a href="{{ url_for('admin_login') }}" class="btn btn-primary btn-sm">Admin Access</a>
             </div>
         </div>
     </header>
@@ -29,8 +29,13 @@
     <main class="animate">
         <section class="hero" style="padding: 15rem 0 10rem;">
             <div class="container">
-                <h1 class="hero-title" style="font-size: 5rem; max-width: 900px; margin: 0 auto 2rem;">Secure Your
-                    <span>Legacy</span> with Confidence.</h1>
+                <h1 class="hero-title" style="font-size: 5rem; max-width: 900px; margin: 0 auto 2rem; line-height: 1.15;">
+                    <span class="animated-word">Secure</span>
+                    <span class="animated-word">Your</span>
+                    <span class="animated-word">Legacy</span>
+                    <span class="animated-word">with</span>
+                    <span class="animated-word">Confidence.</span>
+                </h1>
                 <p class="hero-description"
                     style="font-size: 1.4rem; color: var(--muted); max-width: 700px; margin: 0 auto 3rem;">
                     Insurix is the Simple digital insurance management. Experience absolute clarity in policies, claims,
@@ -86,7 +91,8 @@
                 <div class="card animate" style="text-align: center; padding: 3rem 2rem;">
                     <div class="stat-icon"
                         style="background: rgba(59, 130, 246, 0.1); color: var(--primary); margin: 0 auto 1.5rem; width: 5rem; height: 5rem; font-size: 2.5rem;">
-                        <i class="ph-bold ph-user-plus"></i></div>
+                        <i class="ph-bold ph-user-plus"></i>
+                    </div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">1. Create an Account</h3>
                     <p style="color: var(--muted);">Register via the 'Customer Access' portal. Ensure you provide
                         accurate contact and personal details for an easy onboarding process.</p>
@@ -94,7 +100,8 @@
                 <div class="card animate" style="text-align: center; padding: 3rem 2rem; transition-delay: 0.1s;">
                     <div class="stat-icon"
                         style="background: rgba(16, 185, 129, 0.1); color: var(--secondary); margin: 0 auto 1.5rem; width: 5rem; height: 5rem; font-size: 2.5rem;">
-                        <i class="ph-bold ph-shield-check"></i></div>
+                        <i class="ph-bold ph-shield-check"></i>
+                    </div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">2. Choose an Insurance</h3>
                     <p style="color: var(--muted);">Explore our tailored policies on the homepage. Click 'Enroll Now'
                         and register a nominee beneficiary to securely initialize your plan.</p>
@@ -102,7 +109,8 @@
                 <div class="card animate" style="text-align: center; padding: 3rem 2rem; transition-delay: 0.2s;">
                     <div class="stat-icon"
                         style="background: rgba(245, 158, 11, 0.1); color: var(--accent); margin: 0 auto 1.5rem; width: 5rem; height: 5rem; font-size: 2.5rem;">
-                        <i class="ph-bold ph-credit-card"></i></div>
+                        <i class="ph-bold ph-credit-card"></i>
+                    </div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">3. Pay & Claim Online</h3>
                     <p style="color: var(--muted);">Pay your policy premiums seamlessly from your dashboard. Once your
                         policy duration concludes, you can submit a one-click maturity claim!</p>
@@ -199,17 +207,155 @@
     </footer>
 
     <script>
+        // Force the page to scroll to the top on load/refresh
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        };
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+             window.scrollTo(0, 0);
+            // --- Mobile Navigation Toggle ---
             const hamburger = document.querySelector('.hamburger-btn');
             const navButtons = document.querySelector('.nav-buttons');
-            const sidebar = document.querySelector('.sidebar');
+            const header = document.querySelector('.header');
 
             if (hamburger) {
                 hamburger.addEventListener('click', () => {
-                    if (navButtons) navButtons.classList.toggle('active-mobile-nav');
-                    if (sidebar) sidebar.classList.toggle('active-mobile-nav');
+                    hamburger.classList.toggle('active');
+                    navButtons.classList.toggle('active-mobile-nav');
+                    
+                    // Toggle icon between list and close
+                    const icon = hamburger.querySelector('i');
+                    if (icon.classList.contains('ph-list')) {
+                        icon.classList.replace('ph-list', 'ph-x');
+                    } else {
+                        icon.classList.replace('ph-x', 'ph-list');
+                    }
                 });
             }
+
+            // Close mobile nav when clicking a link
+            document.querySelectorAll('.nav-buttons a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navButtons.classList.remove('active-mobile-nav');
+                    const icon = hamburger.querySelector('i');
+                    icon.classList.replace('ph-x', 'ph-list');
+                });
+            });
+
+            // --- Sticky Header Scroll Effect ---
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    header.style.padding = '0.5rem 0';
+                    header.style.background = 'rgba(15, 23, 42, 0.95)';
+                    header.style.boxShadow = 'var(--shadow-xl)';
+                } else {
+                    header.style.padding = '0';
+                    header.style.background = 'rgba(15, 23, 42, 0.9)';
+                    header.style.boxShadow = 'none';
+                }
+            });
+
+            // --- Reveal Animations on Scroll ---
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal');
+                        observer.unobserve(entry.target); // Only animate once
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate').forEach(el => {
+                // Initialize state
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
+                observer.observe(el);
+            });
+
+            // Add 'reveal' style via JS for cleaner CSS
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .reveal {
+                    opacity: 1 !important;
+                    transform: translateY(0) !important;
+                }
+                .hero-buttons .btn:hover i {
+                    transform: translateX(5px);
+                    transition: transform 0.3s ease;
+                }
+                .card:hover {
+                    border-color: var(--primary) !important;
+                    box-shadow: 0 20px 40px -20px rgba(59, 130, 246, 0.3) !important;
+                }
+                
+                /* Advanced Hero Title Enhancements */
+                .animated-word {
+                    display: inline-block;
+                    opacity: 0;
+                    transform: translateY(20px);
+                    transition: all 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+                    color: #f1f5f9;
+                    font-weight: 700;
+                }
+                .hero-title.reveal .animated-word {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                .hero-title.reveal .animated-word:nth-child(1) { transition-delay: 0.1s; }
+                .hero-title.reveal .animated-word:nth-child(2) { transition-delay: 0.2s; }
+                .hero-title.reveal .animated-word:nth-child(3) { transition-delay: 0.3s; }
+                .hero-title.reveal .animated-word:nth-child(4) { transition-delay: 0.4s; }
+                .hero-title.reveal .animated-word:nth-child(5) { transition-delay: 0.5s; }
+
+                .hero-title {
+                    text-shadow: 0 10px 30px rgba(0,0,0,0.4);
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Special trigger for hero section if not already in view
+            setTimeout(() => {
+                const heroTitle = document.querySelector('.hero-title');
+                if (heroTitle) {
+                    heroTitle.classList.add('reveal');
+                }
+            }, 300);
+
+            // --- Smooth Scrolling for Anchor Links ---
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // --- Dynamic Counter for Stats (Optional/Visual) ---
+            // Just a fun micro-interaction on hover for coverage amounts
+            document.querySelectorAll('.policies-grid div p[style*="font-weight: 700"]').forEach(price => {
+                price.addEventListener('mouseenter', () => {
+                    price.style.color = 'var(--primary-light)';
+                    price.style.transition = 'color 0.3s ease';
+                });
+                price.addEventListener('mouseleave', () => {
+                    price.style.color = '';
+                });
+            });
         });
     </script>
 </body>

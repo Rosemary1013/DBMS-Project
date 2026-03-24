@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='master.css') }}">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
+
 <body style="padding: 4rem 0;">
     <div class="container animate" style="max-width: 900px;">
         <header style="margin-bottom: 3rem; display: flex; justify-content: space-between; align-items: center;">
@@ -22,7 +24,8 @@
         <div class="card" style="margin-bottom: 2rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--primary);"><i class="ph-bold ph-file-text"></i></div>
+                    <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--primary);"><i
+                            class="ph-bold ph-file-text"></i></div>
                     <h2 style="font-size: 1.5rem;">Claim Parameters</h2>
                 </div>
                 <span class="badge badge-warning">{{ claim.CLAIM_STATUS }} Verification</span>
@@ -31,7 +34,8 @@
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
                 <div>
                     <p style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Client Name</p>
-                    <p style="font-weight: 700;">{{ claim.FNAME }} {% if claim.MNAME %}{{ claim.MNAME }} {% endif %}{{ claim.LNAME }}</p>
+                    <p style="font-weight: 700;">{{ claim.FNAME }} {% if claim.MNAME %}{{ claim.MNAME }} {% endif %}{{
+                        claim.LNAME }}</p>
                 </div>
                 <div>
                     <p style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Policy Type</p>
@@ -39,7 +43,8 @@
                 </div>
                 <div>
                     <p style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Claim Request</p>
-                    <p style="font-weight: 800; color: var(--primary-light);">₹{{ "{:,.2f}".format(claim.CLAIM_AMT) }}</p>
+                    <p style="font-weight: 800; color: var(--primary-light);">₹{{ "{:,.2f}".format(claim.CLAIM_AMT) }}
+                    </p>
                 </div>
                 <div>
                     <p style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Submission Date</p>
@@ -53,15 +58,17 @@
                     <p style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Nominee Details</p>
                     <p style="font-weight: 700;">
                         {% if nominee %}
-                            {{ nominee.FNAME }} {% if nominee.MNAME %}{{ nominee.MNAME }} {% endif %}{{ nominee.LNAME }} ({{ nominee.RELATION }})
+                        {{ nominee.FNAME }} {% if nominee.MNAME %}{{ nominee.MNAME }} {% endif %}{{ nominee.LNAME }} ({{
+                        nominee.RELATION }})
                         {% else %}
-                            <span style="color: var(--danger);">No Nominee on File</span>
+                        <span style="color: var(--danger);">No Nominee on File</span>
                         {% endif %}
                     </p>
                 </div>
                 <div>
                     <p style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Policy Premium</p>
-                    <p style="font-weight: 500; color: var(--secondary);">₹{{ "{:,.2f}".format(policy.PREM_AMT) if policy else 'N/A' }} / year</p>
+                    <p style="font-weight: 500; color: var(--secondary);">₹{{ "{:,.2f}".format(policy.PREM_AMT) if
+                        policy else 'N/A' }} / year</p>
                 </div>
                 <div>
                     <p style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Policy Duration</p>
@@ -73,7 +80,8 @@
         <div class="table-container" style="margin-bottom: 3rem;">
             <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--border);">
                 <h2 style="font-size: 1.25rem;">Payment Audit Trail</h2>
-                <p style="color: var(--muted); font-size: 0.85rem;">Verification of premium compliance for this policy.</p>
+                <p style="color: var(--muted); font-size: 0.85rem;">Verification of premium compliance for this policy.
+                </p>
             </div>
             <table>
                 <thead>
@@ -96,7 +104,8 @@
                     {% endfor %}
                     {% else %}
                     <tr>
-                        <td colspan="4" style="text-align: center; padding: 4rem; color: var(--danger);">WARNING: NO PAYMENT RECORDS FOUND IN AUDIT TRAIL!</td>
+                        <td colspan="4" style="text-align: center; padding: 4rem; color: var(--danger);">WARNING: NO
+                            PAYMENT RECORDS FOUND IN AUDIT TRAIL!</td>
                     </tr>
                     {% endif %}
                 </tbody>
@@ -104,13 +113,17 @@
         </div>
 
         <div class="grid-2" style="gap: 1.5rem;">
-            <form action="{{ url_for('admin_claim_action', claim_id=claim.CLAIM_ID, action='approve') }}" method="POST" style="flex: 1;">
-                <button type="submit" class="btn btn-primary btn-full btn-large" style="background: var(--secondary); box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.4);">
+            <form action="{{ url_for('admin_claim_action', claim_id=claim.CLAIM_ID, action='approve') }}" method="POST"
+                style="flex: 1;">
+                <button type="submit" class="btn btn-primary btn-full btn-large"
+                    style="background: var(--secondary); box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.4);">
                     <i class="ph ph-check-circle"></i> Authorize Claim Settlement
                 </button>
             </form>
-            <form action="{{ url_for('admin_claim_action', claim_id=claim.CLAIM_ID, action='reject') }}" method="POST" style="flex: 1;">
-                <button type="submit" class="btn btn-full btn-large" style="background: var(--danger); color: var(--text); box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.4);">
+            <form action="{{ url_for('admin_claim_action', claim_id=claim.CLAIM_ID, action='reject') }}" method="POST"
+                style="flex: 1;">
+                <button type="submit" class="btn btn-full btn-large"
+                    style="background: var(--danger); color: var(--text); box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.4);">
                     <i class="ph ph-x-circle"></i> Deny Authorization
                 </button>
             </form>
@@ -121,4 +134,5 @@
         </div>
     </div>
 </body>
+
 </html>

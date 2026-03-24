@@ -31,9 +31,8 @@
     <main class="animate">
         <section class="container" style="padding: 5rem 0 10rem;">
             <div style="text-align: center; margin-bottom: 5rem;">
-                <h1 style="font-size: 3.5rem; margin-bottom: 1rem;">Elite Protection Catalog</h1>
-                <p style="color: var(--muted); font-size: 1.2rem;">Choose the institutional-grade coverage that fits
-                    your future.</p>
+                <h1 style="font-size: 3.5rem; margin-bottom: 1rem;">Browse Insurance Plans</h1>
+                <p style="color: var(--muted); font-size: 1.2rem;">Choose the best protection plan for your future needs.</p>
             </div>
 
             <div class="policies-grid"
@@ -69,11 +68,9 @@
 
                     <div style="margin-top: auto; padding-top: 2rem;">
                         {% if policy.STATUS|lower == 'expired' %}
-                        <button class="btn btn-secondary btn-full" disabled style="opacity: 0.4;">Policy
-                            Expired</button>
+                        <button class="btn btn-secondary btn-full" disabled style="opacity: 0.4;">Policy Expired</button>
                         {% else %}
-                        <a href="{{ url_for('take_policy', policy_id=policy.POLICY_ID) }}"
-                            class="btn btn-primary btn-full btn-large">Enroll Now</a>
+                        <a href="{{ url_for('take_policy', policy_id=policy.POLICY_ID, cust_id=target_cust_id) }}" class="btn btn-primary btn-full btn-large">Enroll Now</a>
                         {% endif %}
                     </div>
                 </div>
@@ -93,6 +90,11 @@
     <footer class="footer" style="padding: 4rem 0; border-top: 1px solid var(--border); text-align: center;">
         <p style="color: var(--muted);">&copy; 2026 Insurix Infrastructure.</p>
     </footer>
+    <script>
+        // Force scroll-to-top on refresh
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.scrollTo(0, 0);
+    </script>
 </body>
 
 </html>
