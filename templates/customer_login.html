@@ -34,7 +34,8 @@
                 <label class="label">Secure Password</label>
                 <div style="position: relative;">
                     <i class="ph ph-lock" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--muted);"></i>
-                    <input type="password" name="password" class="input" placeholder="••••••••" required style="padding-left: 3rem;">
+                    <input type="password" id="pw-login" name="password" class="input" placeholder="••••••••" required style="padding-left: 3rem; padding-right: 3rem;">
+                    <button type="button" class="pw-toggle" onclick="togglePw('pw-login', this)" tabindex="-1"><i class="ph ph-eye"></i></button>
                 </div>
             </div>
 
@@ -55,15 +56,22 @@
         </form>
 
         <div style="margin-top: 3rem; text-align: center; border-top: 1px solid var(--border); padding-top: 2rem;">
-            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">New to insurance?</p>
+            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">New to Insurix?</p>
             <a href="{{ url_for('customer_register') }}" class="btn btn-secondary btn-full">Register Account</a>
         </div>
 
         <div style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; font-size: 0.85rem; color: var(--muted);">
-            <a href="{{ url_for('agent_login') }}" style="color: var(--primary);">Agent Entry</a>
+            <a href="{{ url_for('agent_login') }}" style="color: var(--primary);">Agent Access</a>
             <span>•</span>
-            <a href="{{ url_for('admin_login') }}" style="color: var(--primary);">Admin Portal</a>
+            <a href="{{ url_for('admin_login') }}" style="color: var(--primary);">Admin Access</a>
         </div>
-    </div>
+<script>
+function togglePw(id, btn) {
+    const inp = document.getElementById(id);
+    const isHidden = inp.type === 'password';
+    inp.type = isHidden ? 'text' : 'password';
+    btn.querySelector('i').className = isHidden ? 'ph ph-eye-slash' : 'ph ph-eye';
+}
+</script>
 </body>
 </html>

@@ -349,9 +349,9 @@ tr:hover td {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.animate {
+/* .animate {
     animation: fadeIn 0.6s ease-out forwards;
-}
+} */
 
 /* Stat Card Special */
 .stat-card {
@@ -711,3 +711,29 @@ tr:hover td {
     }
 }
 
+
+/* --- Password Eye Toggle --- */
+.pw-wrapper {
+    position: relative;
+}
+.pw-wrapper .input {
+    padding-right: 3rem;
+}
+.pw-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    transition: color 0.2s;
+}
+.pw-toggle:hover {
+    color: #93c5fd;
+}

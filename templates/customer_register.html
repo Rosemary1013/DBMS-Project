@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,32 +8,35 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='master.css') }}">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
+
 <body class="centered-page">
     <div class="auth-card animate" style="max-width: 650px;">
-        <a href="{{ url_for('index') }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem;">
-            <i class="ph ph-arrow-left"></i> Systems Overview
+        <a href="{{ url_for('index') }}"
+            style="display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem;">
+            <i class="ph ph-arrow-left"></i> Back to Home
         </a>
 
         <div style="text-align: center; margin-bottom: 3rem;">
-            <div style="width: 4rem; height: 4rem; background: rgba(59, 130, 246, 0.1); color: var(--primary); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem;">
+            <div
+                style="width: 4rem; height: 4rem; background: rgba(59, 130, 246, 0.1); color: var(--primary); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem;">
                 <i class="ph-bold ph-user-circle-plus"></i>
             </div>
-            <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Begin Your Legacy</h1>
-            <p style="color: var(--muted); font-size: 0.95rem;">Join the elite protection infrastructure of Insurix</p>
+            <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Join Insurix</h1>
+            <p style="color: var(--muted); font-size: 0.95rem;">Get protected with our simple insurance plans</p>
         </div>
 
         <form action="{{ url_for('customer_register') }}" method="POST">
             <div class="grid-3" style="grid-template-columns: 1fr 0.4fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
                 <div class="form-group">
-                    <label class="label">First Name</label>
+                    <label class="label">  First </label>
                     <input type="text" name="fname" class="input" placeholder="John" required>
                 </div>
                 <div class="form-group">
-                    <label class="label">M.I.</label>
+                    <label class="label">  Middle</label>
                     <input type="text" name="mname" class="input" placeholder="D">
                 </div>
                 <div class="form-group">
-                    <label class="label">Last Name</label>
+                    <label class="label">  Last </label>
                     <input type="text" name="lname" class="input" placeholder="Doe" required>
                 </div>
             </div>
@@ -44,12 +48,12 @@
                 </div>
                 <div class="form-group">
                     <label class="label">Phone Number</label>
-                    <input type="text" name="phone" class="input" placeholder="10-digit number" required>
+                    <input type="tel" name="phone" class="input" placeholder="10-digit number" pattern="[0-9]{10}" minlength="10" maxlength="10" required title="Please enter a valid 10-digit phone number">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="label">Primary Email Address</label>
+                <label class="label">Email Address</label>
                 <input type="email" name="email" class="input" placeholder="name@domain.com" required>
             </div>
 
@@ -59,29 +63,41 @@
                     <input type="text" name="per_addr" class="input" placeholder="123 Elite St." required>
                 </div>
                 <div class="form-group">
-                    <label class="label">Reporting Address</label>
-                    <input type="text" name="comm_addr" class="input" placeholder="Same as permanent?" required>
+                    <label class="label">Current Address</label>
+                    <input type="text" name="comm_addr" class="input" placeholder="City, State, Zip" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="label">Secure Auth Password</label>
-                <input type="password" name="password" class="input" placeholder="Max 15 characters" maxlength="15" required>
+                <label class="label">Password</label>
+                <div style="position: relative;">
+                    <input type="password" id="pw-reg" name="password" class="input" placeholder="Max 15 characters" maxlength="15" required style="padding-right: 3rem;">
+                    <button type="button" class="pw-toggle" onclick="togglePw('pw-reg', this)" tabindex="-1"><i class="ph ph-eye"></i></button>
+                </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-full btn-large" style="margin-top: 2rem;">Authorize Enrollment</button>
+            <button type="submit" class="btn btn-primary btn-full btn-large" style="margin-top: 2rem;">Create My
+                Account</button>
 
             {% if error %}
-            <p style="color: var(--danger); text-align: center; margin-top: 1.5rem; font-size: 0.9rem; font-weight: 500;">
+            <p
+                style="color: var(--danger); text-align: center; margin-top: 1.5rem; font-size: 0.9rem; font-weight: 500;">
                 <i class="ph ph-warning-circle"></i> {{ error }}
             </p>
             {% endif %}
         </form>
 
         <div style="margin-top: 3rem; text-align: center; border-top: 1px solid var(--border); padding-top: 2rem;">
-            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Already part of the infrastructure?</p>
-            <a href="{{ url_for('customer_login') }}" class="btn btn-secondary btn-full">Access Personal Terminal</a>
+            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Already part of the Insurix?</p>
+            <a href="{{ url_for('customer_login') }}" class="btn btn-secondary btn-full">Login</a>
         </div>
-    </div>
+<script>
+function togglePw(id, btn) {
+    const inp = document.getElementById(id);
+    const isHidden = inp.type === 'password';
+    inp.type = isHidden ? 'text' : 'password';
+    btn.querySelector('i').className = isHidden ? 'ph ph-eye-slash' : 'ph ph-eye';
+}
+</script>
 </body>
 </html>

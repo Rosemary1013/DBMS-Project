@@ -18,7 +18,7 @@
             <div class="user-info" style="display: flex; align-items: center; gap: 1.5rem;">
                 <div style="text-align: right; border-right: 1px solid var(--border); padding-right: 1.5rem;">
                     <span style="display: block; font-weight: 700; color: var(--text);">{{ admin_name }}</span>
-                    <span style="display: block; font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">System Administrator</span>
+                    <span style="display: block; font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Insurix Admin</span>
                 </div>
                 <a href="{{ url_for('admin_logout') }}" class="btn btn-secondary btn-sm"><i class="ph-bold ph-sign-out"></i> System Logout</a>
             </div>
@@ -230,6 +230,10 @@
     {% endwith %}
 
     <script>
+        // Force scroll to top on refresh
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.scrollTo(0, 0);
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-section').forEach(section => {
                 section.style.display = 'none';
@@ -253,7 +257,12 @@
     </script>
 
     <script>
+        // Force scroll to top on refresh
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.scrollTo(0, 0);
+
         document.addEventListener('DOMContentLoaded', () => {
+             window.scrollTo(0, 0);
             const hamburger = document.querySelector('.hamburger-btn');
             const navButtons = document.querySelector('.nav-buttons');
             const sidebar = document.querySelector('.sidebar');

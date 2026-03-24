@@ -10,7 +10,7 @@
 <body class="centered-page">
     <div class="auth-card animate" style="max-width: 600px;">
         <a href="{{ url_for('index') }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem;">
-            <i class="ph ph-arrow-left"></i> Systems Overview
+            <i class="ph ph-arrow-left"></i> Back to Home
         </a>
 
         <div style="text-align: center; margin-bottom: 4rem;">
@@ -37,11 +37,11 @@
         </div>
 
         <div style="margin-top: 4rem; text-align: center; border-top: 1px solid var(--border); padding-top: 2rem;">
-            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem;">Already part of our secure infrastructure?</p>
+            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem;">Already part of Insurix?</p>
             <div style="display: flex; justify-content: center; gap: 1rem; font-size: 0.9rem;">
-                <a href="{{ url_for('customer_login') }}" style="color: var(--primary); font-weight: 600;">Customer Login</a>
+                <a href="{{ url_for('customer_login') }}" style="color: var(--primary); font-weight: 600;">Customer Access</a>
                 <span style="color: var(--border);">/</span>
-                <a href="{{ url_for('agent_login') }}" style="color: var(--primary); font-weight: 600;">Agent Dashboard</a>
+                <a href="{{ url_for('agent_login') }}" style="color: var(--primary); font-weight: 600;">Agent Access</a>
             </div>
         </div>
     </div>

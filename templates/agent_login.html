@@ -10,7 +10,7 @@
 <body class="centered-page">
     <div class="auth-card animate">
         <a href="{{ url_for('index') }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem;">
-            <i class="ph ph-arrow-left"></i> Systems Overview
+            <i class="ph ph-arrow-left"></i> Back to Home
         </a>
 
         <div style="text-align: center; margin-bottom: 3rem;">
@@ -31,14 +31,15 @@
             </div>
 
             <div class="form-group">
-                <label class="label">Secure Terminal Password</label>
+                <label class="label">Password</label>
                 <div style="position: relative;">
                     <i class="ph ph-lock-key" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--muted);"></i>
-                    <input type="password" name="password" class="input" placeholder="••••••••" required style="padding-left: 3rem;">
+                    <input type="password" id="pw-agent" name="password" class="input" placeholder="••••••••" required style="padding-left: 3rem; padding-right: 3rem;">
+                    <button type="button" class="pw-toggle" onclick="togglePw('pw-agent', this)" tabindex="-1"><i class="ph ph-eye"></i></button>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-full btn-large">Access Agent Dashboard</button>
+            <button type="submit" class="btn btn-primary btn-full btn-large">Login</button>
 
             {% if error %}
             <p style="color: var(--danger); text-align: center; margin-top: 1.5rem; font-size: 0.9rem; font-weight: 500;">
@@ -48,15 +49,22 @@
         </form>
 
         <div style="margin-top: 3rem; text-align: center; border-top: 1px solid var(--border); padding-top: 2rem;">
-            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Need to register a new agent node?</p>
+            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Register as a new Insurix Agent?</p>
             <a href="{{ url_for('agent_register') }}" class="btn btn-secondary btn-full">Enroll as Agent</a>
         </div>
 
         <div style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; font-size: 0.85rem; color: var(--muted);">
-            <a href="{{ url_for('customer_login') }}" style="color: var(--primary);">Customer Portal</a>
+            <a href="{{ url_for('customer_login') }}" style="color: var(--primary);">Customer Access</a>
             <span>•</span>
-            <a href="{{ url_for('admin_login') }}" style="color: var(--primary);">Admin command Center</a>
-        </div>
+            <a href="{{ url_for('admin_login') }}" style="color: var(--primary);">Admin Access</a>
     </div>
+<script>
+function togglePw(id, btn) {
+    const inp = document.getElementById(id);
+    const isHidden = inp.type === 'password';
+    inp.type = isHidden ? 'text' : 'password';
+    btn.querySelector('i').className = isHidden ? 'ph ph-eye-slash' : 'ph ph-eye';
+}
+</script>
 </body>
 </html>

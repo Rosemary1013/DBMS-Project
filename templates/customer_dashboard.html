@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='master.css') }}">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
+
 <body>
     <header class="header">
         <div class="container header-content">
@@ -18,9 +20,12 @@
             <div class="user-info" style="display: flex; align-items: center; gap: 1.5rem;">
                 <div style="text-align: right; border-right: 1px solid var(--border); padding-right: 1.5rem;">
                     <span style="display: block; font-weight: 700; color: var(--text);">{{ customer_name }}</span>
-                    <span style="display: block; font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Standard Authorized User</span>
+                    <span
+                        style="display: block; font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Authorized
+                        User</span>
                 </div>
-                <a href="{{ url_for('customer_logout') }}" class="btn btn-secondary btn-sm"><i class="ph-bold ph-sign-out"></i> Logout</a>
+                <a href="{{ url_for('customer_logout') }}" class="btn btn-secondary btn-sm"><i
+                        class="ph-bold ph-sign-out"></i> Logout</a>
             </div>
         </div>
     </header>
@@ -28,13 +33,19 @@
     <div class="dashboard-layout">
         <aside class="sidebar">
             <ul class="nav-menu">
-                <li class="nav-item"><a href="#" class="active" onclick="switchTab('overview')"><i class="ph-bold ph-squares-four"></i> Overview</a></li>
-                <li class="nav-item"><a href="#" onclick="switchTab('policies')"><i class="ph-bold ph-shield-checkered"></i> My Policies</a></li>
-                <li class="nav-item"><a href="#" onclick="switchTab('claims')"><i class="ph-bold ph-file-text"></i> My Claims</a></li>
-                <li class="nav-item"><a href="#" onclick="switchTab('payments')"><i class="ph-bold ph-credit-card"></i> Payment History</a></li>
-                <li class="nav-item"><a href="#" onclick="switchTab('nominees')"><i class="ph-bold ph-users-three"></i> Nominees</a></li>
+                <li class="nav-item"><a href="#" class="active" onclick="switchTab('overview')"><i
+                            class="ph-bold ph-squares-four"></i> Overview</a></li>
+                <li class="nav-item"><a href="#" onclick="switchTab('policies')"><i
+                            class="ph-bold ph-shield-checkered"></i> My Policies</a></li>
+                <li class="nav-item"><a href="#" onclick="switchTab('claims')"><i class="ph-bold ph-file-text"></i> My
+                        Claims</a></li>
+                <li class="nav-item"><a href="#" onclick="switchTab('payments')"><i class="ph-bold ph-credit-card"></i>
+                        Payment History</a></li>
+                <li class="nav-item"><a href="#" onclick="switchTab('nominees')"><i class="ph-bold ph-users-three"></i>
+                        Nominees</a></li>
                 <li style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
-                    <a href="{{ url_for('index') }}" style="color: var(--primary-light); font-weight: 700;"><i class="ph-bold ph-magnifying-glass"></i> Explore New Plans</a>
+                    <a href="{{ url_for('index') }}" style="color: var(--primary-light); font-weight: 700;"><i
+                            class="ph-bold ph-magnifying-glass"></i> Explore New Plans</a>
                 </li>
             </ul>
         </aside>
@@ -43,26 +54,29 @@
             <!-- Overview Section -->
             <section id="overview-section" class="tab-section">
                 <h1 style="font-size: 2.5rem; margin-bottom: 2.5rem;">Dashboard Home</h1>
-                
+
                 <div class="stats-grid">
                     <div class="card stat-card">
-                        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--primary);"><i class="ph-bold ph-shield-checkered"></i></div>
+                        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--primary);"><i
+                                class="ph-bold ph-shield-checkered"></i></div>
                         <div class="stat-info">
                             <h3>Total Protection</h3>
                             <p class="stat-value">₹{{ stats.total_coverage }}</p>
                         </div>
                     </div>
                     <div class="card stat-card">
-                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--secondary);"><i class="ph-bold ph-coins"></i></div>
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--secondary);"><i
+                                class="ph-bold ph-coins"></i></div>
                         <div class="stat-info">
                             <h3>Active Premium</h3>
                             <p class="stat-value">₹{{ stats.monthly_premium }}</p>
                         </div>
                     </div>
                     <div class="card stat-card">
-                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--accent);"><i class="ph-bold ph-file-text"></i></div>
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--accent);"><i
+                                class="ph-bold ph-file-text"></i></div>
                         <div class="stat-info">
-                            <h3>Open Requests</h3>
+                            <h3>Claims</h3>
                             <p class="stat-value">{{ stats.total_claims }}</p>
                         </div>
                     </div>
@@ -70,14 +84,20 @@
 
                 <div class="grid-2">
                     <div class="card">
-                        <h3 style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">Recent Portfolio Nodes <span><a href="#" onclick="switchTab('policies')" style="font-size: 0.8rem; color: var(--primary); font-weight: 500;">Audit All</a></span></h3>
+                        <h3
+                            style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                            Recent Portfolio Nodes <span><a href="#" onclick="switchTab('policies')"
+                                    style="font-size: 0.8rem; color: var(--primary); font-weight: 500;">Audit
+                                    All</a></span></h3>
                         {% if policies %}
                         <div style="display: flex; flex-direction: column; gap: 1rem;">
                             {% for policy in policies[:2] %}
-                            <div style="background: rgba(30, 41, 59, 0.4); padding: 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border);">
+                            <div
+                                style="background: rgba(30, 41, 59, 0.4); padding: 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border);">
                                 <div>
                                     <p style="font-weight: 700; color: var(--text);">{{ policy.POLICY_TYPE }}</p>
-                                    <p style="font-size: 0.8rem; color: var(--muted);">Policy ID: #{{ policy.POLICY_ID }}</p>
+                                    <p style="font-size: 0.8rem; color: var(--muted);">Policy ID: #{{ policy.POLICY_ID
+                                        }}</p>
                                 </div>
                                 <span class="badge badge-success">Active</span>
                             </div>
@@ -85,7 +105,8 @@
                         </div>
                         {% else %}
                         <div style="text-align: center; padding: 2rem;">
-                            <p style="color: var(--muted); margin-bottom: 1.5rem;">No protection plans detected in your portfolio.</p>
+                            <p style="color: var(--muted); margin-bottom: 1.5rem;">No protection plans detected in your
+                                portfolio.</p>
                             <a href="{{ url_for('index') }}" class="btn btn-primary btn-sm">Browse Available Plans</a>
                         </div>
                         {% endif %}
@@ -94,17 +115,25 @@
                         <h3 style="margin-bottom: 2rem;">Security Status</h3>
                         <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                             <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                                <div style="width: 2.5rem; height: 2.5rem; border-radius: 8px; background: rgba(16, 185, 129, 0.1); color: var(--secondary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><i class="ph-bold ph-shield-check"></i></div>
+                                <div
+                                    style="width: 2.5rem; height: 2.5rem; border-radius: 8px; background: rgba(16, 185, 129, 0.1); color: var(--secondary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="ph-bold ph-shield-check"></i>
+                                </div>
                                 <div>
                                     <p style="font-size: 0.95rem; font-weight: 600;">System Integrity</p>
-                                    <p style="font-size: 0.8rem; color: var(--muted);">Insurance Policys are online and fully protected by Insurix security layers.</p>
+                                    <p style="font-size: 0.8rem; color: var(--muted);">Insurance Policys are online and
+                                        fully protected by Insurix security layers.</p>
                                 </div>
                             </div>
                             <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                                <div style="width: 2.5rem; height: 2.5rem; border-radius: 8px; background: rgba(59, 130, 246, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><i class="ph-bold ph-lock-key"></i></div>
+                                <div
+                                    style="width: 2.5rem; height: 2.5rem; border-radius: 8px; background: rgba(59, 130, 246, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="ph-bold ph-lock-key"></i>
+                                </div>
                                 <div>
                                     <p style="font-size: 0.95rem; font-weight: 600;">Authorized Session</p>
-                                    <p style="font-size: 0.8rem; color: var(--muted);">Your current terminal session is encrypted and authenticated.</p>
+                                    <p style="font-size: 0.8rem; color: var(--muted);">Your current terminal session is
+                                        encrypted and authenticated.</p>
                                 </div>
                             </div>
                         </div>
@@ -116,53 +145,85 @@
             <section id="policies-section" class="tab-section" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
                     <h1 style="font-size: 2.5rem;">My Policy Portfolio</h1>
-                    <a href="{{ url_for('index') }}" class="btn btn-primary btn-sm"><i class="ph ph-plus"></i> New Enrollment</a>
+                    <a href="{{ url_for('index') }}" class="btn btn-primary btn-sm"><i class="ph ph-plus"></i> New
+                        Enrollment</a>
                 </div>
                 <div class="grid-2">
                     {% if policies %}
                     {% for p in policies %}
                     <div class="card">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; align-items: flex-start;">
+                        <div
+                            style="display: flex; justify-content: space-between; margin-bottom: 2rem; align-items: flex-start;">
                             <div>
                                 <h3 style="font-size: 1.5rem; margin-bottom: 0.25rem;">{{ p.POLICY_TYPE }}</h3>
-                                <p style="font-family: monospace; color: var(--muted); font-size: 0.8rem;">#{{ p.POLICY_ID }}</p>
+                                <p style="font-family: monospace; color: var(--muted); font-size: 0.8rem;">#{{
+                                    p.POLICY_ID }}</p>
                             </div>
                             <span class="badge badge-primary">Active Policy</span>
                         </div>
-                        
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem; background: rgba(30, 41, 59, 0.3); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+
+                        <div
+                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem; background: rgba(30, 41, 59, 0.3); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
                             <div>
-                                <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Duration</p>
+                                <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Duration
+                                </p>
                                 <p style="font-weight: 700;">{{ p.DURATION_DISPLAY }}</p>
                             </div>
                             <div>
-                                <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Premium Due</p>
+                                <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Premium
+                                    Due</p>
                                 <p style="font-weight: 700; color: var(--primary-light);">₹{{ p.PREM_AMT }}</p>
                             </div>
                             <div>
-                                <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Activation</p>
+                                <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Activation
+                                </p>
                                 <p style="font-weight: 700;">{{ p.TAKEN_DATE }}</p>
                             </div>
                             <div>
-                                <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Coverage</p>
+                                <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Coverage
+                                </p>
                                 <p style="font-weight: 700; color: var(--secondary);">₹{{ p.COV_AMT }}</p>
                             </div>
                         </div>
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
-                            <a href="{{ url_for('policy_details', policy_id=p.POLICY_ID) }}" class="btn btn-secondary btn-sm"><i class="ph ph-info"></i> Audit</a>
-                            <a href="{{ url_for('make_payment', policy_id=p.POLICY_ID) }}" class="btn btn-primary btn-sm"><i class="ph ph-credit-card"></i> Pay Now</a>
-                            <form action="{{ url_for('request_claim', policy_id=p.POLICY_ID) }}" method="POST" style="flex: 1;">
-                                <button type="submit" class="btn btn-secondary btn-sm" style="width: 100%;"><i class="ph ph-file-plus"></i> Claim</button>
+                            <a href="{{ url_for('policy_details', policy_id=p.POLICY_ID) }}"
+                                class="btn btn-secondary btn-sm"><i class="ph ph-info"></i> Audit</a>
+
+                            {% if p.IS_SETTLED %}
+                            <button class="btn btn-secondary btn-sm disabled-action" disabled style="opacity: 0.5;"><i
+                                    class="ph ph-check-circle"></i> Settled</button>
+                            <button class="btn btn-secondary btn-sm disabled-action" disabled
+                                style="opacity: 0.5; width: 100%;"><i class="ph ph-lock"></i> Finalized</button>
+                            {% else %}
+                            <a href="{{ url_for('make_payment', policy_id=p.POLICY_ID) }}"
+                                class="btn btn-primary btn-sm"><i class="ph ph-credit-card"></i> Pay Now</a>
+                            <form action="{{ url_for('request_claim', policy_id=p.POLICY_ID) }}" method="POST"
+                                style="flex: 1;">
+                                {% if not p.IS_MATURE or not p.HAS_PAYMENT %}
+                                <button type="button" class="btn btn-secondary btn-sm disabled-action" disabled
+                                    style="opacity: 0.4; width: 100%;"
+                                    title="{% if not p.HAS_PAYMENT %}Payment Required{% else %}Not Matured{% endif %}">
+                                    <i class="ph ph-clock-countdown"></i> Claim
+                                </button>
+                                {% else %}
+                                <button type="submit" class="btn btn-secondary btn-sm" style="width: 100%;">
+                                    <i class="ph ph-file-plus"></i> Claim
+                                </button>
+                                {% endif %}
                             </form>
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
                     {% else %}
                     <div class="card" style="grid-column: 1/-1; padding: 5rem; text-align: center;">
-                        <i class="ph ph-shield-slash" style="font-size: 4rem; color: var(--muted); margin-bottom: 2rem; display: block;"></i>
-                        <p style="font-size: 1.25rem; color: var(--muted);">No protection plans found in current authorization.</p>
-                        <a href="{{ url_for('index') }}" class="btn btn-primary" style="margin-top: 2rem;">Initialize First Plan</a>
+                        <i class="ph ph-shield-slash"
+                            style="font-size: 4rem; color: var(--muted); margin-bottom: 2rem; display: block;"></i>
+                        <p style="font-size: 1.25rem; color: var(--muted);">No protection plans found in current
+                            authorization.</p>
+                        <a href="{{ url_for('index') }}" class="btn btn-primary" style="margin-top: 2rem;">Initialize
+                            First Plan</a>
                     </div>
                     {% endif %}
                 </div>
@@ -191,7 +252,8 @@
                                 <td style="font-weight: 700;">₹{{ c.CLAIM_AMT }}</td>
                                 <td>{{ c.CLAIM_DATE }}</td>
                                 <td>
-                                    <span class="badge {% if c.CLAIM_STATUS == 'Success' %}badge-success{% elif c.CLAIM_STATUS == 'Failed' %}badge-danger{% else %}badge-warning{% endif %}">
+                                    <span
+                                        class="badge {% if c.CLAIM_STATUS == 'Success' %}badge-success{% elif c.CLAIM_STATUS == 'Failed' %}badge-danger{% else %}badge-warning{% endif %}">
                                         {{ c.CLAIM_STATUS }}
                                     </span>
                                 </td>
@@ -199,7 +261,8 @@
                             {% endfor %}
                             {% else %}
                             <tr>
-                                <td colspan="5" style="text-align: center; padding: 5rem; color: var(--muted);">No settlement requests documented.</td>
+                                <td colspan="5" style="text-align: center; padding: 5rem; color: var(--muted);">No
+                                    settlement requests documented.</td>
                             </tr>
                             {% endif %}
                         </tbody>
@@ -229,12 +292,13 @@
                                 <td>#{{ pay.POLICY_ID }}</td>
                                 <td style="font-weight: 700; color: var(--secondary);">₹{{ pay.AMOUNT }}</td>
                                 <td>{{ pay.PAY_DATE }}</td>
-                                <td><span class="badge badge-success">Verified</span></td>
+                                <td><span class="badge badge-success">Success</span></td>
                             </tr>
                             {% endfor %}
                             {% else %}
                             <tr>
-                                <td colspan="5" style="text-align: center; padding: 5rem; color: var(--muted);">No cleared transactions found.</td>
+                                <td colspan="5" style="text-align: center; padding: 5rem; color: var(--muted);">No
+                                    cleared transactions found.</td>
                             </tr>
                             {% endif %}
                         </tbody>
@@ -249,19 +313,27 @@
                     {% if nominees %}
                     {% for n in nominees %}
                     <div class="card">
-                        <div class="stat-icon" style="background: rgba(30, 41, 59, 0.6); color: var(--primary); margin-bottom: 2rem;"><i class="ph-bold ph-identification-card"></i></div>
-                        <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">{{ n.FNAME }} {% if n.MNAME %}{{ n.MNAME }} {% endif %}{{ n.LNAME }}</h3>
-                        <p style="color: var(--primary-light); font-weight: 600; font-size: 0.85rem; margin-bottom: 1.5rem; text-transform: uppercase;">{{ n.RELATION }}</p>
-                        
-                        <div style="border-top: 1px solid var(--border); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                        <div class="stat-icon"
+                            style="background: rgba(30, 41, 59, 0.6); color: var(--primary); margin-bottom: 2rem;"><i
+                                class="ph-bold ph-identification-card"></i></div>
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">{{ n.FNAME }} {% if n.MNAME %}{{ n.MNAME
+                            }} {% endif %}{{ n.LNAME }}</h3>
+                        <p
+                            style="color: var(--primary-light); font-weight: 600; font-size: 0.85rem; margin-bottom: 1.5rem; text-transform: uppercase;">
+                            {{ n.RELATION }}</p>
+
+                        <div
+                            style="border-top: 1px solid var(--border); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
                             <p style="font-size: 0.75rem; color: var(--muted);">Nominee Node: #{{ n.NOMINEE_ID }}</p>
                             <p style="font-size: 0.75rem; color: var(--muted);">Auth Policy: #{{ n.POLICY_ID }}</p>
                         </div>
                     </div>
                     {% endfor %}
                     {% else %}
-                    <div class="card" style="grid-column: 1/-1; padding: 5rem; text-align: center; border-style: dashed;">
-                        <i class="ph ph-users-three" style="font-size: 4rem; color: var(--muted); margin-bottom: 2rem; display: block;"></i>
+                    <div class="card"
+                        style="grid-column: 1/-1; padding: 5rem; text-align: center; border-style: dashed;">
+                        <i class="ph ph-users-three"
+                            style="font-size: 4rem; color: var(--muted); margin-bottom: 2rem; display: block;"></i>
                         <p style="color: var(--muted);">No beneficiaries registered in global directory.</p>
                     </div>
                     {% endif %}
@@ -272,17 +344,24 @@
 
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="flash-overlay {% if category == 'error' %}flash-error{% else %}flash-success{% endif %}">
-            <i class="ph-bold {% if category == 'error' %}ph-warning-circle{% else %}ph-check-circle{% endif %} flash-icon"></i>
-            <span>{{ message }}</span>
-          </div>
-        {% endfor %}
-      {% endif %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="flash-overlay {% if category == 'error' %}flash-error{% else %}flash-success{% endif %}">
+        <i
+            class="ph-bold {% if category == 'error' %}ph-warning-circle{% else %}ph-check-circle{% endif %} flash-icon"></i>
+        <span>{{ message }}</span>
+    </div>
+    {% endfor %}
+    {% endif %}
     {% endwith %}
 
     <script>
+        // Force the page to scroll to the top on load/refresh
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-section').forEach(section => {
                 section.style.display = 'none';
@@ -290,10 +369,10 @@
             document.querySelectorAll('.nav-item a').forEach(link => {
                 link.classList.remove('active');
             });
-            
+
             document.getElementById(tabId + '-section').style.display = 'block';
             event.target.closest('a').classList.add('active');
-            if(window.event) window.event.preventDefault();
+            if (window.event) window.event.preventDefault();
         }
 
         setTimeout(() => {
@@ -310,7 +389,7 @@
             const hamburger = document.querySelector('.hamburger-btn');
             const navButtons = document.querySelector('.nav-buttons');
             const sidebar = document.querySelector('.sidebar');
-            
+
             if (hamburger) {
                 hamburger.addEventListener('click', () => {
                     if (navButtons) navButtons.classList.toggle('active-mobile-nav');
@@ -320,4 +399,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -101,6 +101,30 @@ def index():
         print(f"Error fetching data: {e}")
     return render_template('index.html', policies=policies, admin_emails=admin_emails)
 
+@app.route('/policies')
+def view_policies():
+    cust_id = request.args.get('cust_id')
+    policies = []
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT p.*, pv.ADMIN_ID as VERIFIED_BY 
+            FROM policy p 
+            LEFT JOIN policy_verify pv ON p.POLICY_ID = pv.POLICY_ID
+        """)
+        policies = cursor.fetchall()
+        for p in policies:
+            dur = format_duration(p['DURATION'])
+            p['DURATION_DISPLAY'] = dur['text']
+            p['DURATION_YEARS'] = dur['years']
+        policies.sort(key=lambda x: (1 if x.get('STATUS', '').lower() == 'expired' else 0))
+        cursor.close()
+        db.close()
+    except Exception as e:
+        print(f"Error fetching policies: {e}")
+    return render_template('view_policies.html', policies=policies, target_cust_id=cust_id)
+
 @app.route('/learn-more')
 def learn_more():
     return render_template('learn_more.html')
@@ -146,7 +170,7 @@ def admin_login():
             except mysql.connector.Error as e:
                 error = f"Database error: {e}"
 
-    return render_template("admin-login.html", error=error)
+    return render_template("admin_login.html", error=error)
 
 @app.route('/admin/dashboard')
 def admin_dashboard():
@@ -172,28 +196,30 @@ def admin_dashboard():
         cursor.execute("SELECT COUNT(*) as count FROM policy")
         stats['policy_count'] = cursor.fetchone()['count']
         
-        # Fetch Pending Claims
+        # Fetch Pending Claims (ONLY for policies verified by THIS admin)
         cursor.execute("""
             SELECT c.*, p.POLICY_TYPE, p.POLICY_ID, cust.FNAME, cust.MNAME, cust.LNAME 
             FROM claim c 
             JOIN cust_claim cc ON c.CLAIM_ID = cc.CLAIM_ID 
             JOIN policy p ON cc.POLICY_ID = p.POLICY_ID
             JOIN customer cust ON cc.CUST_ID = cust.CUST_ID
-            WHERE c.CLAIM_STATUS = 'Pending'
-        """)
+            JOIN policy_verify pv ON p.POLICY_ID = pv.POLICY_ID
+            WHERE c.CLAIM_STATUS = 'Pending' AND pv.ADMIN_ID = %s
+        """, (session['admin_id'],))
         pending_claims = cursor.fetchall()
         stats['pending_claims_count'] = len(pending_claims)
         
-        # Fetch Processed Claims (History)
+        # Fetch Processed Claims History (ONLY for policies verified by THIS admin)
         cursor.execute("""
             SELECT c.*, p.POLICY_TYPE, p.POLICY_ID, cust.FNAME, cust.MNAME, cust.LNAME 
             FROM claim c 
             JOIN cust_claim cc ON c.CLAIM_ID = cc.CLAIM_ID 
             JOIN policy p ON cc.POLICY_ID = p.POLICY_ID
             JOIN customer cust ON cc.CUST_ID = cust.CUST_ID
-            WHERE c.CLAIM_STATUS IN ('Success', 'Failed')
+            JOIN policy_verify pv ON p.POLICY_ID = pv.POLICY_ID
+            WHERE c.CLAIM_STATUS IN ('Success', 'Failed') AND pv.ADMIN_ID = %s
             ORDER BY c.CLAIM_DATE DESC
-        """)
+        """, (session['admin_id'],))
         processed_claims = cursor.fetchall()
 
         # Fetch All Policies for Verification Management
@@ -212,7 +238,7 @@ def admin_dashboard():
     except Exception as e:
         print(f"Admin Dashboard error: {e}")
 
-    return render_template('admin-dashboard.html', 
+    return render_template('admin_dashboard.html', 
                           admin_name=session['admin_name'],
                           stats=stats,
                           pending_claims=pending_claims,
@@ -249,22 +275,23 @@ def admin_claim_details(claim_id):
         cursor = db.cursor(dictionary=True)
         
         # Get claim and policy info plus TAKEN_DATE
-        # Joining via cust_claim which now has the specific CUST_ID
+        # Enforce that only the admin who verified the policy can see its claims
         cursor.execute("""
             SELECT c.*, p.POLICY_TYPE, p.POLICY_ID, pt.TAKEN_DATE, cust.FNAME, cust.MNAME, cust.LNAME, cust.CUST_ID
             FROM claim c
             JOIN cust_claim cc ON c.CLAIM_ID = cc.CLAIM_ID
             JOIN policy p ON cc.POLICY_ID = p.POLICY_ID
             JOIN customer cust ON cc.CUST_ID = cust.CUST_ID
+            JOIN policy_verify pv ON p.POLICY_ID = pv.POLICY_ID
             LEFT JOIN policy_taken pt ON (p.POLICY_ID = pt.POLICY_ID AND cust.CUST_ID = pt.CUST_ID)
-            WHERE c.CLAIM_ID = %s
-        """, (claim_id,))
+            WHERE c.CLAIM_ID = %s AND pv.ADMIN_ID = %s
+        """, (claim_id, session['admin_id']))
         claim = cursor.fetchone()
         
         if not claim:
             cursor.close()
             db.close()
-            return f"Claim {claim_id} not found or data mismatch. Check if customer is linked to this policy.", 404
+            return f"Unauthorized or Claim {claim_id} not found. Only the verifying administrator can process this claim.", 403
             
         # Get full policy details
         cursor.execute("SELECT * FROM policy WHERE POLICY_ID = %s", (claim['POLICY_ID'],))
@@ -300,7 +327,19 @@ def admin_claim_action(claim_id, action):
         db = get_db()
         cursor = db.cursor()
         
-        # Update claim status
+        # Verify ownership: Only the admin who verified the policy can settle its claims
+        cursor.execute("""
+            SELECT 1 FROM cust_claim cc
+            JOIN policy_verify pv ON cc.POLICY_ID = pv.POLICY_ID
+            WHERE cc.CLAIM_ID = %s AND pv.ADMIN_ID = %s
+        """, (claim_id, session['admin_id']))
+        
+        if not cursor.fetchone():
+            cursor.close()
+            db.close()
+            return "Unauthorized action: You are not the verifying administrator for this policy.", 403
+
+        # Update claim status if authorized
         cursor.execute("UPDATE claim SET CLAIM_STATUS = %s WHERE CLAIM_ID = %s", (status, claim_id))
         
         if action == 'approve':
@@ -362,7 +401,7 @@ def customer_login():
             except mysql.connector.Error as e:
                 error = f"Database error: {e}"
 
-    return render_template("customer-login.html", error=error, next=next_page)
+    return render_template("customer_login.html", error=error, next=next_page)
 
 @app.route('/customer/register', methods=['GET', 'POST'])
 def customer_register():
@@ -396,7 +435,7 @@ def customer_register():
                     error = "An account with this email already exists."
                     cursor.close()
                     db.close()
-                    return render_template("customer-register.html", error=error)
+                    return render_template("customer_register.html", error=error)
 
                 # Insert into customer table
                 agent_id_from_session = session.get('agent_id')
@@ -440,7 +479,7 @@ def customer_register():
             except mysql.connector.Error as e:
                 error = f"Database error: {e}"
 
-    return render_template("customer-register.html", error=error)
+    return render_template("customer_register.html", error=error)
 
 @app.route('/agent/registration_success/<cust_id>')
 def agent_registration_success(cust_id):
@@ -498,21 +537,22 @@ def customer_dashboard():
             p['DURATION_DISPLAY'] = dur['text']
             p['DURATION_YEARS'] = dur['years']
             
-            # Fetch latest claim for this policy
+            # Fetch latest claim for this policy explicitly for this customer
             cursor.execute("""
                 SELECT cl.CLAIM_STATUS 
                 FROM claim cl 
                 JOIN cust_claim cc ON cl.CLAIM_ID = cc.CLAIM_ID 
-                WHERE cc.POLICY_ID = %s 
+                WHERE cc.POLICY_ID = %s AND cc.CUST_ID = %s
                 ORDER BY cl.CLAIM_DATE DESC LIMIT 1
-            """, (p['POLICY_ID'],))
+            """, (p['POLICY_ID'], customer_id))
             latest_claim = cursor.fetchone()
             p['LATEST_CLAIM_STATUS'] = latest_claim['CLAIM_STATUS'] if latest_claim else None
             p['IS_SETTLED'] = p['LATEST_CLAIM_STATUS'] in ['Success', 'Settled']
             
+            # Use Active Stats (only for non-settled policies)
             if not p['IS_SETTLED']:
-                stats['total_coverage'] += p['COV_AMT']
-                stats['monthly_premium'] += p['PREM_AMT']
+                stats['total_coverage'] += float(p['COV_AMT'] or 0)
+                stats['monthly_premium'] += float(p['PREM_AMT'] or 0)
             
             # Check if payment is done
             cursor.execute("""
@@ -557,10 +597,19 @@ def customer_dashboard():
         
         cursor.close()
         db.close()
+        
+        # Pre-format stats for reliable UI display
+        stats['total_coverage'] = f"{int(stats['total_coverage']):,}"
+        stats['monthly_premium'] = f"{int(stats['monthly_premium']):,}"
+
     except Exception as e:
         print(f"Dashboard error: {e}")
+        # Ensure stats are always present as strings to avoid Jinja errors
+        stats['total_coverage'] = stats.get('total_coverage', "0")
+        stats['monthly_premium'] = stats.get('monthly_premium', "0")
+        stats['total_claims'] = stats.get('total_claims', 0)
 
-    return render_template('customer-dashboard.html', 
+    return render_template('customer_dashboard.html', 
                             customer_name=session['customer_name'],
                             policies=policies,
                             claims=claims,
@@ -890,7 +939,7 @@ def agent_login():
             except mysql.connector.Error as e:
                 error = f"Database error: {e}"
 
-    return render_template("agent-login.html", error=error)
+    return render_template("agent_login.html", error=error)
 
 @app.route('/agent/register', methods=['GET', 'POST'])
 def agent_register():
@@ -921,7 +970,7 @@ def agent_register():
                     error = "An account with this email already exists."
                     cursor.close()
                     db.close()
-                    return render_template("agent-register.html", error=error)
+                    return render_template("agent_register.html", error=error)
 
                 # Insert into agent table
                 cursor.execute(
@@ -952,7 +1001,7 @@ def agent_register():
             except mysql.connector.Error as e:
                 error = f"Database error: {e}"
 
-    return render_template("agent-register.html", error=error)
+    return render_template("agent_register.html", error=error)
 
 @app.route('/agent/dashboard')
 def agent_dashboard():
@@ -1015,9 +1064,57 @@ def agent_dashboard():
             else:
                 c['IS_SETTLED'] = False
         
+        # Compute extra performance metrics
+        settled_count = sum(1 for c in clients if c.get('IS_SETTLED'))
+        pending_count = sum(1 for c in clients if not c.get('IS_SETTLED') and c.get('CLAIM_STATUS') == 'Pending')
+        total_premium = sum(float(c.get('PREM_AMT') or 0) for c in clients if c.get('PREM_AMT'))
+        total_coverage = sum(0 for c in clients)  # will fetch below
+
+        # Fetch actual coverage sum for clients under this agent
+        cursor.execute("""
+            SELECT SUM(p.COV_AMT) as total_cov, SUM(p.PREM_AMT) as total_prem
+            FROM policy p
+            JOIN policy_taken pt ON p.POLICY_ID = pt.POLICY_ID
+            JOIN agent_cust ac ON pt.CUST_ID = ac.CUST_ID
+            WHERE ac.AGENT_ID = %s
+        """, (agent_id,))
+        agg = cursor.fetchone()
+        total_coverage = float(agg['total_cov'] or 0) if agg else 0
+        total_premium = float(agg['total_prem'] or 0) if agg else 0
+
+        # Policy type breakdown
+        cursor.execute("""
+            SELECT p.POLICY_TYPE, COUNT(*) as cnt
+            FROM policy p
+            JOIN policy_taken pt ON p.POLICY_ID = pt.POLICY_ID
+            JOIN agent_cust ac ON pt.CUST_ID = ac.CUST_ID
+            WHERE ac.AGENT_ID = %s
+            GROUP BY p.POLICY_TYPE
+        """, (agent_id,))
+        policy_types = cursor.fetchall()
+
+        # Recently enrolled clients (last 5)
+        cursor.execute("""
+            SELECT c.CUST_ID, c.FNAME, c.LNAME, pt.TAKEN_DATE, p.POLICY_TYPE
+            FROM customer c
+            JOIN agent_cust ac ON c.CUST_ID = ac.CUST_ID
+            LEFT JOIN policy_taken pt ON c.CUST_ID = pt.CUST_ID
+            LEFT JOIN policy p ON pt.POLICY_ID = p.POLICY_ID
+            WHERE ac.AGENT_ID = %s
+            ORDER BY pt.TAKEN_DATE DESC
+            LIMIT 5
+        """, (agent_id,))
+        recent_enrollments = cursor.fetchall()
+
         stats = {
             'total_clients': len(total_clients_set),
-            'active_policies': active_policies_count
+            'active_policies': active_policies_count,
+            'settled_claims': settled_count,
+            'pending_claims': pending_count,
+            'total_premium': f"{int(total_premium):,}",
+            'total_coverage': f"{int(total_coverage):,}",
+            'policy_types': policy_types,
+            'recent_enrollments': recent_enrollments,
         }
 
         # Fetch claims for all customers linked to this agent
@@ -1038,7 +1135,7 @@ def agent_dashboard():
     except Exception as e:
         print(f"Agent Dashboard error: {e}")
 
-    return render_template('agent-dashboard.html', 
+    return render_template('agent_dashboard.html', 
                           agent_name=session['agent_name'],
                           clients=clients,
                           claims=claims,
